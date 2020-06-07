@@ -10,20 +10,21 @@ var OFFER_NUMBER = 8;
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var mapPins = document.querySelector('.map__pins');
-var pinTemplate = document.querySelector('#pin').content;
 var fragment = document.createDocumentFragment();
 
+// получение рандомной информации из массива (пока не понимаю откуда брать данные)
 var getRandomData = function (data) {
   var dataNumber = Math.floor(Math.random() * data.length);
   return data[dataNumber];
 };
 
+// создание рандомных чисел, тоже временные пока не узнаю откудать брать данные
 var getRandomNumber = function (min, max) {
   var number = Math.floor(Math.random() * (max - min) + min);
   return number;
 };
 
+// создание объекта
 var createPinObject = function (ownerNumber) {
   var pin = {};
   pin.author = {};
@@ -46,6 +47,7 @@ var createPinObject = function (ownerNumber) {
   return pin;
 };
 
+// создание массива из объектов
 var getOwnersArray = function () {
   var ownerArray = [];
   var ownerNumber;
@@ -57,12 +59,14 @@ var getOwnersArray = function () {
   return ownerArray;
 };
 
+// создание пинов
 var createPins = function () {
+  var pinTemplate = document.querySelector('#pin').content;
+  var ownerPins = getOwnersArray();
   for (var n = 0; n < OFFER_NUMBER; n++) {
-    var ownerPins = getOwnersArray();
     var newOwnerPin = pinTemplate.cloneNode(true);
-
     var pinButton = newOwnerPin.querySelector('.map__pin');
+
     pinButton.children[0].src = ownerPins[n].author.avatar;
     pinButton.children[0].alt = ownerPins[n].offer.title;
     pinButton.style.left = ownerPins[n].location.x + 'px';
@@ -71,7 +75,9 @@ var createPins = function () {
   }
 };
 
+// Добавлеение пинов на карту
 var addPinsOnMap = function () {
+  var mapPins = document.querySelector('.map__pins');
   createPins();
   mapPins.appendChild(fragment);
 };
