@@ -6,6 +6,10 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var OFFER_NUMBER = 8;
+var PIN_HEIGHT = 70;
+var PIN_WIDTH = 50;
+var PIN_TITLES_ADJ = ['красивая', 'светлая', 'чистая', 'уютная','недорогая', 'просторная'];
+
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -26,25 +30,28 @@ var getRandomNumber = function (min, max) {
 
 // создание объекта
 var createPinObject = function (ownerNumber) {
-  var pin = {};
-  pin.author = {};
-  pin.author.avatar = AVATAR + '0' + ownerNumber + '.png';
-  pin.offer = {};
-  pin.offer.title = 'Название';
-  pin.offer.address = 'место';
-  pin.offer.price = getRandomNumber(1000, 5000);
-  pin.offer.type = getRandomData(TYPE);
-  pin.offer.rooms = getRandomNumber(1, 4);
-  pin.offer.guests = getRandomNumber(1, 4);
-  pin.offer.checkin = getRandomData(CHECK_IN_OUT);
-  pin.offer.checkout = getRandomData(CHECK_IN_OUT);
-  pin.offer.features = getRandomData(FEATURES);
-  pin.offer.description = 'Текст';
-  pin.offer.photos = getRandomData(PHOTOS);
-  pin.location = {};
-  pin.location.x = getRandomNumber(130, 630);
-  pin.location.y = getRandomNumber(130, 630);
-  return pin;
+  return {
+    author: {
+      avatar: AVATAR + '0' + ownerNumber + '.png'
+    },
+    offer: {
+      title: PIN_TITLES_ADJ + getRandomData(TYPE),
+      address: 'Улица' + getRandomData(PIN_TITLES_ADJ) + ', дом ' + getRandomNumber(1, 50) + 'б кв. ' + getRandomNumber(1, 600),
+      price: getRandomNumber(1000, 5000),
+      type: getRandomData(TYPE),
+      rooms: getRandomNumber(1, 4),
+      guests: getRandomNumber(1, 4),
+      checkin: getRandomData(CHECK_IN_OUT),
+      checkout: getRandomData(CHECK_IN_OUT),
+      features: getRandomData(FEATURES),
+      description: PIN_TITLES_ADJ + getRandomData(TYPE) + getRandomData(FEATURES) + ' и' + getRandomData(FEATURES),
+      photos: getRandomData(PHOTOS)
+    },
+    location: {
+      x: getRandomNumber(1, 1000),
+      y: getRandomNumber(130, 630)
+    }
+  };
 };
 
 // создание массива из объектов
@@ -69,8 +76,8 @@ var createPins = function () {
 
     pinButton.children[0].src = ownerPins[n].author.avatar;
     pinButton.children[0].alt = ownerPins[n].offer.title;
-    pinButton.style.left = ownerPins[n].location.x + 'px';
-    pinButton.style.top = ownerPins[n].location.y + 'px';
+    pinButton.style.left = ownerPins[n].location.x - (PIN_WIDTH / 2) + 'px';
+    pinButton.style.top = ownerPins[n].location.y - PIN_HEIGHT + 'px';
     fragment.appendChild(newOwnerPin);
   }
 };
