@@ -8,7 +8,7 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var OFFER_NUMBER = 8;
 var PIN_HEIGHT = 70;
 var PIN_WIDTH = 50;
-var PIN_TITLES_ADJ = ['красивая', 'светлая', 'чистая', 'уютная','недорогая', 'просторная'];
+var PIN_TITLES_ADJ = ['красивая', 'светлая', 'чистая', 'уютная', 'недорогая', 'просторная'];
 
 
 var map = document.querySelector('.map');
