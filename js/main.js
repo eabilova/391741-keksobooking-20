@@ -1,7 +1,6 @@
 'use strict';
 
-var AVATAR = 'img/avatars/user';
-var AVATARNUMBER = ['1', '2', '3', '4', '5', '6', '7', '8'];
+var AVATARIMAGES = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
 var CHECK_IN_OUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
@@ -9,12 +8,74 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var OFFER_NUMBER = 8;
 var PIN_HEIGHT = 70;
 var PIN_WIDTH = 50;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 65;
+var PIN_TAIL_HEIGHT = 22;
 var PIN_TITLES_ADJ = ['красивая', 'светлая', 'чистая', 'уютная', 'недорогая', 'просторная'];
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 var fragment = document.createDocumentFragment();
+var mapFilters = document.querySelector('.map__filters');
+var newForm = document.querySelector('.ad-form');
+var mapPins = document.querySelector('.map__pins');
+
+// Добавление атрибута disabled в формы
+var disableFormElement = function (element) {
+  for (var i = 0; i < element.length; i++) {
+    element[i].disabled = true;
+  }
+};
+
+disableFormElement(mapFilters);
+disableFormElement(newForm);
+
+// Удаление атрибута disabled
+var enableFormElement = function (element) {
+  for (var i = 0; i < element.length; i++) {
+    element[i].disabled = false;
+  }
+};
+
+// Активация пина
+var mainMapPin = mapPins.querySelector('.map__pin--main');
+
+var activatePin = function () {
+  var map = document.querySelector('.map');
+  map.classList.remove('map--faded');
+  newForm.classList.remove('ad-form--disabled');
+  enableFormElement(mapFilters);
+  enableFormElement(newForm);
+  addPinsOnMap();
+  locateMainPinPosition();
+};
+
+mainMapPin.addEventListener('mousedown', function (evt) {
+  if (evt.which === 1) {
+    activatePin();
+  }
+});
+
+mainMapPin.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    activatePin();
+  }
+});
+
+// Определение начального положение главного пина
+var myAddress = document.getElementById('address');
+var pinCenterPositionX = Math.round(mainMapPin.offsetLeft + MAIN_PIN_WIDTH / 2);
+var pinCenterPositionY = Math.round(mainMapPin.offsetTop + MAIN_PIN_HEIGHT / 2);
+
+var initialMainPinPosition = function () {
+  myAddress.value = pinCenterPositionX + ', ' + pinCenterPositionY;
+};
+// Определение положение главного пина после активации и смещения
+var locateMainPinPosition = function () {
+  var newPinPositionY = Math.round(mainMapPin.offsetTop + MAIN_PIN_HEIGHT + PIN_TAIL_HEIGHT);
+  myAddress.value = pinCenterPositionX + ', ' + newPinPositionY;
+};
+
+initialMainPinPosition();
 
 // получение рандомной информации из массива (пока не понимаю откуда брать данные)
 var getRandomData = function (data) {
@@ -22,7 +83,7 @@ var getRandomData = function (data) {
   return data[dataNumber];
 };
 
-// создание рандомных чисел, тоже временные пока не узнаю откудать брать данные
+// создание рандомных чисел, тоже временные пока не узнаю откуда брать данные
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
@@ -31,10 +92,10 @@ var getRandomNumber = function (min, max) {
 var createPinObject = function () {
   return {
     author: {
-      avatar: AVATAR + '0' + AVATARNUMBER.shift() + '.png'
+      avatar: AVATARIMAGES.shift()
     },
     offer: {
-      title: PIN_TITLES_ADJ + getRandomData(TYPE),
+      title: getRandomData(PIN_TITLES_ADJ) + ' ' + getRandomData(TYPE),
       address: 'Улица' + getRandomData(PIN_TITLES_ADJ) + ', дом ' + getRandomNumber(1, 50) + ', кв. ' + getRandomNumber(1, 600),
       price: getRandomNumber(1000, 5000),
       type: getRandomData(TYPE),
@@ -43,7 +104,7 @@ var createPinObject = function () {
       checkin: getRandomData(CHECK_IN_OUT),
       checkout: getRandomData(CHECK_IN_OUT),
       features: getRandomData(FEATURES),
-      description: PIN_TITLES_ADJ + getRandomData(TYPE) + getRandomData(FEATURES) + ' и' + getRandomData(FEATURES),
+      description: getRandomData(PIN_TITLES_ADJ) + getRandomData(TYPE) + getRandomData(FEATURES) + ' и' + getRandomData(FEATURES),
       photos: getRandomData(PHOTOS)
     },
     location: {
@@ -81,9 +142,7 @@ var createPins = function () {
 
 // Добавление пинов на карту
 var addPinsOnMap = function () {
-  var mapPins = document.querySelector('.map__pins');
+
   createPins();
   mapPins.appendChild(fragment);
 };
-
-addPinsOnMap();
