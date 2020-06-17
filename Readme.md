@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Elena Abilova](https://up.htmlacademy.ru/javascript/20/user/391741).
-* Наставник: [Ксения Толстых](https://htmlacademy.ru/profile/id618277).
+* Наставник: [Алексей Хапов](https://htmlacademy.ru/profile/id118459).
 
 ---
 
