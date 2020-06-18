@@ -39,30 +39,59 @@ var enableFormElement = function (element) {
 // Активация пина
 var mainMapPin = mapPins.querySelector('.map__pin--main');
 
+var listenMouseLeft = function (evt) {
+  if (evt.which === 1) {
+    activatePin();
+  }
+};
+
+var listenEnter = function (evt) {
+  if (evt.key === 'Enter') {
+    activatePin();
+  }
+};
+
+mainMapPin.addEventListener('mousedown', listenMouseLeft);
+mainMapPin.addEventListener('keydown', listenEnter);
+
 var activatePin = function () {
   var map = document.querySelector('.map');
   map.classList.remove('map--faded');
   newForm.classList.remove('ad-form--disabled');
+  locateMainPinPosition();
   enableFormElement(mapFilters);
+  validateNumbers();
   enableFormElement(newForm);
   addPinsOnMap();
-  locateMainPinPosition();
+  mainMapPin.removeEventListener('mousedown', listenMouseLeft);
+  mainMapPin.removeEventListener('keydown', listenEnter);
 };
 
-mainMapPin.addEventListener('mousedown', function (evt) {
-  if (evt.which === 1) {
-    activatePin();
-  }
-});
+// Валидация соответствия количества комнат и гостей
+var roomNumber = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
 
-mainMapPin.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    activatePin();
+var validateNumbers = function () {
+  if (Number(roomNumber.value) === 100 && Number(capacity.value) === 0) {
+    capacity.setCustomValidity('');
+    roomNumber.setCustomValidity('');
+    return;
+  } else if (Number(capacity.value) <= Number(roomNumber.value)) {
+    capacity.setCustomValidity('');
+    roomNumber.setCustomValidity('');
+    return;
+  } else {
+    capacity.setCustomValidity('Число гостей не может превышать количество комнат. Выберите другое значение.');
+    roomNumber.setCustomValidity('Число комнат не может быть меньше количества гостей. Выберите другое значение.');
   }
-});
+};
+
+roomNumber.addEventListener('change', validateNumbers);
+
+capacity.addEventListener('change', validateNumbers);
 
 // Определение начального положение главного пина
-var myAddress = document.getElementById('address');
+var myAddress = document.querySelector('#address');
 var pinCenterPositionX = Math.round(mainMapPin.offsetLeft + MAIN_PIN_WIDTH / 2);
 var pinCenterPositionY = Math.round(mainMapPin.offsetTop + MAIN_PIN_HEIGHT / 2);
 
@@ -115,11 +144,10 @@ var createPinObject = function () {
 };
 
 // создание массива из объектов
-var getOwnersArray = function () {
+var getOffers = function () {
   var ownerArray = [];
   for (var i = 0; i < OFFER_NUMBER; i++) {
-    var owner = createPinObject();
-    ownerArray[i] = owner;
+    ownerArray[i] = createPinObject();
   }
   return ownerArray;
 };
@@ -127,13 +155,14 @@ var getOwnersArray = function () {
 // создание пинов
 var createPins = function () {
   var pinTemplate = document.querySelector('#pin').content;
-  var ownerPins = getOwnersArray();
+  var ownerPins = getOffers();
   for (var n = 0; n < OFFER_NUMBER; n++) {
     var newOwnerPin = pinTemplate.cloneNode(true);
     var pinButton = newOwnerPin.querySelector('.map__pin');
+    var pinButtonImage = pinButton.querySelector('img');
 
-    pinButton.children[0].src = ownerPins[n].author.avatar;
-    pinButton.children[0].alt = ownerPins[n].offer.title;
+    pinButtonImage.src = ownerPins[n].author.avatar;
+    pinButtonImage.alt = ownerPins[n].offer.title;
     pinButton.style.left = ownerPins[n].location.x - (PIN_WIDTH / 2) + 'px';
     pinButton.style.top = ownerPins[n].location.y - PIN_HEIGHT + 'px';
     fragment.appendChild(newOwnerPin);
@@ -146,29 +175,3 @@ var addPinsOnMap = function () {
   createPins();
   mapPins.appendChild(fragment);
 };
-
-// Валидация соответствия количества комнат и гостей
-var roomNumber = document.getElementById('room_number');
-var capacity = document.getElementById('capacity');
-
-roomNumber.addEventListener('change', function () {
-  if (Number(roomNumber.value) === 100 && Number(capacity.value) === 0) {
-    return;
-  } else if (Number(roomNumber.value) === 100 && Number(capacity.value) === 0) {
-    return;
-  } else {
-    roomNumber.setCustomValidity('Число комнат не может быть меньше количества гостей. Выберите другое значение.');
-  }
-});
-
-capacity.addEventListener('change', function () {
-  if (Number(roomNumber.value) === 100 && Number(capacity.value) === 0) {
-    return;
-  } else if (Number(capacity.value) <= Number(roomNumber.value)) {
-    return;
-  } else {
-    capacity.setCustomValidity('Число гостей не может превышать количество комнат. Выберите другое значение.');
-  }
-});
-
-
