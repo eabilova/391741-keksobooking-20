@@ -21,9 +21,9 @@ var newForm = document.querySelector('.ad-form');
 var mapPins = document.querySelector('.map__pins');
 
 // Изменение состояния карты и форм
-var toggleFormElement = function (element, boolean) {
+var toggleFormElement = function (element, isDisabled) {
   for (var i = 0; i < element.length; i++) {
-    element[i].disabled = boolean;
+    element[i].disabled = isDisabled;
   }
 };
 
@@ -33,20 +33,20 @@ toggleFormElement(newForm, true);
 // Активация пина
 var mainMapPin = mapPins.querySelector('.map__pin--main');
 
-var onPinLeftClick = function (evt) {
+var onMainPinMouseDown = function (evt) {
   if (evt.which === 1) {
     activatePin();
   }
 };
 
-var onPinPressEnter = function (evt) {
+var onMainPinKeyDown = function (evt) {
   if (evt.key === 'Enter') {
     activatePin();
   }
 };
 
-mainMapPin.addEventListener('mousedown', onPinLeftClick);
-mainMapPin.addEventListener('keydown', onPinPressEnter);
+mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
+mainMapPin.addEventListener('keydown', onMainPinKeyDown);
 
 var activatePin = function () {
   map.classList.remove('map--faded');
@@ -56,8 +56,8 @@ var activatePin = function () {
   validateNumbers();
   toggleFormElement(newForm, false);
   addPinsOnMap();
-  mainMapPin.removeEventListener('mousedown', onPinLeftClick);
-  mainMapPin.removeEventListener('keydown', onPinPressEnter);
+  mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
+  mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
 };
 
 // Валидация соответствия количества комнат и гостей
@@ -65,13 +65,14 @@ var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
 
 var validateNumbers = function () {
-  if ((Number(roomNumber.value) === 100 && Number(capacity.value) === 0) || (Number(capacity.value) <= Number(roomNumber.value))) {
-    capacity.setCustomValidity('');
-    roomNumber.setCustomValidity('');
-  } else {
-    capacity.setCustomValidity('Число гостей не может превышать количество комнат. Выберите другое значение.');
-    roomNumber.setCustomValidity('Число комнат не может быть меньше количества гостей. Выберите другое значение.');
+  var capacityError = '';
+  var roomNumberError = '';
+  if ((Number(roomNumber.value) !== 100 && Number(capacity.value) !== 0) && (Number(capacity.value) > Number(roomNumber.value))) {
+    capacityError = 'Число гостей не может превышать количество комнат. Выберите другое значение.';
+    roomNumberError = 'Число комнат не может быть меньше количества гостей. Выберите другое значение.';
   }
+  capacity.setCustomValidity(capacityError);
+  roomNumber.setCustomValidity(roomNumberError);
 };
 
 roomNumber.addEventListener('change', function () {
