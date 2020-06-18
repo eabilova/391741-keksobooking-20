@@ -15,56 +15,49 @@ var PIN_TITLES_ADJ = ['красивая', 'светлая', 'чистая', 'у�
 
 
 var fragment = document.createDocumentFragment();
+var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters');
 var newForm = document.querySelector('.ad-form');
 var mapPins = document.querySelector('.map__pins');
 
-// Добавление атрибута disabled в формы
-var disableFormElement = function (element) {
+// Изменение состояния карты и форм
+var toggleFormElement = function (element, boolean) {
   for (var i = 0; i < element.length; i++) {
-    element[i].disabled = true;
+    element[i].disabled = boolean;
   }
 };
 
-disableFormElement(mapFilters);
-disableFormElement(newForm);
-
-// Удаление атрибута disabled
-var enableFormElement = function (element) {
-  for (var i = 0; i < element.length; i++) {
-    element[i].disabled = false;
-  }
-};
+toggleFormElement(mapFilters, true);
+toggleFormElement(newForm, true);
 
 // Активация пина
 var mainMapPin = mapPins.querySelector('.map__pin--main');
 
-var listenMouseLeft = function (evt) {
+var onPinLeftClick = function (evt) {
   if (evt.which === 1) {
     activatePin();
   }
 };
 
-var listenEnter = function (evt) {
+var onPinPressEnter = function (evt) {
   if (evt.key === 'Enter') {
     activatePin();
   }
 };
 
-mainMapPin.addEventListener('mousedown', listenMouseLeft);
-mainMapPin.addEventListener('keydown', listenEnter);
+mainMapPin.addEventListener('mousedown', onPinLeftClick);
+mainMapPin.addEventListener('keydown', onPinPressEnter);
 
 var activatePin = function () {
-  var map = document.querySelector('.map');
   map.classList.remove('map--faded');
   newForm.classList.remove('ad-form--disabled');
-  locateMainPinPosition();
-  enableFormElement(mapFilters);
+  setAddress();
+  toggleFormElement(mapFilters, false);
   validateNumbers();
-  enableFormElement(newForm);
+  toggleFormElement(newForm, false);
   addPinsOnMap();
-  mainMapPin.removeEventListener('mousedown', listenMouseLeft);
-  mainMapPin.removeEventListener('keydown', listenEnter);
+  mainMapPin.removeEventListener('mousedown', onPinLeftClick);
+  mainMapPin.removeEventListener('keydown', onPinPressEnter);
 };
 
 // Валидация соответствия количества комнат и гостей
@@ -72,23 +65,21 @@ var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
 
 var validateNumbers = function () {
-  if (Number(roomNumber.value) === 100 && Number(capacity.value) === 0) {
+  if ((Number(roomNumber.value) === 100 && Number(capacity.value) === 0) || (Number(capacity.value) <= Number(roomNumber.value))) {
     capacity.setCustomValidity('');
     roomNumber.setCustomValidity('');
-    return;
-  } else if (Number(capacity.value) <= Number(roomNumber.value)) {
-    capacity.setCustomValidity('');
-    roomNumber.setCustomValidity('');
-    return;
   } else {
     capacity.setCustomValidity('Число гостей не может превышать количество комнат. Выберите другое значение.');
     roomNumber.setCustomValidity('Число комнат не может быть меньше количества гостей. Выберите другое значение.');
   }
 };
 
-roomNumber.addEventListener('change', validateNumbers);
-
-capacity.addEventListener('change', validateNumbers);
+roomNumber.addEventListener('change', function () {
+  validateNumbers();
+});
+capacity.addEventListener('change', function () {
+  validateNumbers();
+});
 
 // Определение начального положение главного пина
 var myAddress = document.querySelector('#address');
@@ -101,7 +92,7 @@ var initialMainPinPosition = function () {
 initialMainPinPosition();
 
 // Определение положение главного пина после активации и смещения
-var locateMainPinPosition = function () {
+var setAddress = function () {
   var newPinPositionY = Math.round(mainMapPin.offsetTop + MAIN_PIN_HEIGHT + PIN_TAIL_HEIGHT);
   myAddress.value = pinCenterPositionX + ', ' + newPinPositionY;
 };
