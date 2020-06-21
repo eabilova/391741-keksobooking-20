@@ -113,17 +113,17 @@ var getRandomNumber = function (min, max) {
 
 // Присваивание значений типу помещения
 var defineTypeOfBuilding = function (type) {
-  var type = getRandomData(type);
+  var newType = getRandomData(type);
   if (type === 'palace') {
-    type = 'Дворец';
-  } else if (type === 'flat') {
-    type = 'Квартира';
-  } else if (type === 'house') {
-    type = 'Дом';
-  } else if (type === 'bungalo') {
-    type = 'Бунгало';
+    newType = 'Дворец';
+  } else if (newType === 'flat') {
+    newType = 'Квартира';
+  } else if (newType === 'house') {
+    newType = 'Дом';
+  } else if (newType === 'bungalo') {
+    newType = 'Бунгало';
   }
-  return type;
+  return newType;
 };
 
 // создание объекта
