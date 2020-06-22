@@ -179,6 +179,15 @@ var renderPins = function (i) {
   pinButton.style.left = offerPins[i].location.x - (PIN_WIDTH / 2) + 'px';
   pinButton.style.top = offerPins[i].location.y - PIN_HEIGHT + 'px';
   fragment.appendChild(newOfferPin);
+
+  var allPinButtons = document.querySelectorAll('.map__pin');
+  for (var k = 0; k < allPinButtons.length; k++) {
+    if (!allPinButtons[k].classList.contains('.map__pin--main')) {
+      allPinButtons[k].addEventListener('click', function () {
+        addCardsOnMap(k);
+      });
+    }
+  }
 };
 
 var createPins = function () {
@@ -216,18 +225,11 @@ var createOfferCard = function (offerPin) {
   map.appendChild(newOfferCard);
 };
 
-var addCardsOnMap = function () {
-  var allOfferButtons = document.querySelectorAll('.map__pin');
-  for (var i = 1; i < allOfferButtons.length; i++) {
-    if (!allOfferButtons[i].classList.contains('.map__pin--main')) {
-      allOfferButtons[i].addEventListener('click', function () {
-        createOfferCard(offerPins[0]);
-      });
-    }
-  }
+// Добавление карточек предложений на карту
+var addCardsOnMap = function (data) {
+  createOfferCard(offerPins[data]);
 };
 
-// Добавление карточек предложений на карту
 // var addCardsOnMap = function () {
 //   renderOfferCards();
 //   map.appendChild(fragment);
