@@ -146,6 +146,7 @@ var createPinObject = function () {
   };
 };
 
+// Скрытие фих, которых нет в предложении
 var hideUnusedFeatures = function (childrenElements, offerData) {
   for (var k = 0; k < FEATURES.length; k++) {
     var feature = offerData.offer.features;
@@ -212,11 +213,22 @@ var createOfferCard = function (offerPin) {
   mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
   hideUnusedFeatures(offerFeature, offerPin);
   popPhotos.querySelector('img').src = offerPin.offer.photos;
-  fragment.appendChild(newOfferCard);
+  map.appendChild(newOfferCard);
+};
+
+var addCardsOnMap = function () {
+  var allOfferButtons = document.querySelectorAll('.map__pin');
+  for (var i = 1; i < allOfferButtons.length; i++) {
+    if (!allOfferButtons[i].classList.contains('.map__pin--main')) {
+      allOfferButtons[i].addEventListener('click', function () {
+        createOfferCard(offerPins[0]);
+      });
+    }
+  }
 };
 
 // Добавление карточек предложений на карту
-var addCardsOnMap = function () {
-  createOfferCard(offerPins[0]);
-  map.appendChild(fragment);
-};
+// var addCardsOnMap = function () {
+//   renderOfferCards();
+//   map.appendChild(fragment);
+// };
