@@ -178,21 +178,17 @@ var renderPins = function (i) {
   pinButtonImage.alt = offerPins[i].offer.title;
   pinButton.style.left = offerPins[i].location.x - (PIN_WIDTH / 2) + 'px';
   pinButton.style.top = offerPins[i].location.y - PIN_HEIGHT + 'px';
-  fragment.appendChild(newOfferPin);
 
-  var allPinButtons = document.querySelectorAll('.map__pin');
-  for (var k = 0; k < allPinButtons.length; k++) {
-    if (!allPinButtons[k].classList.contains('.map__pin--main')) {
-      allPinButtons[k].addEventListener('click', function () {
-        addCardsOnMap(k);
-      });
-    }
-  }
+  pinButton.addEventListener('click', function () {
+    addCardsOnMap(i);
+  });
+
+  return newOfferPin;
 };
 
 var createPins = function () {
   for (var n = 0; n < OFFER_NUMBER; n++) {
-    renderPins(n);
+    fragment.appendChild(renderPins(n));
   }
 };
 
@@ -229,8 +225,3 @@ var createOfferCard = function (offerPin) {
 var addCardsOnMap = function (data) {
   createOfferCard(offerPins[data]);
 };
-
-// var addCardsOnMap = function () {
-//   renderOfferCards();
-//   map.appendChild(fragment);
-// };
