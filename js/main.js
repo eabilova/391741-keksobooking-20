@@ -3,7 +3,6 @@
 var AVATARIMAGES = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
 var CHECK_IN_OUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-// var TYPE = [{key: 'palace', value: 'Дворец'}, {key: 'flat', value: 'Квартира'}, {key: 'house', value: 'Дом'}, {key: 'bungalo', value: 'Бунгало'}];
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var TYPE_DICTIONARY = {
   palace: 'Дворец',
@@ -72,8 +71,8 @@ var activatePin = function () {
 };
 
 // Валидация соответствия количества комнат и гостей
-var roomNumber = document.querySelector('#room_number');
-var capacity = document.querySelector('#capacity');
+var roomNumber = newForm.querySelector('#room_number');
+var capacity = newForm.querySelector('#capacity');
 
 var validateNumbers = function () {
   var capacityError = '';
@@ -91,6 +90,47 @@ roomNumber.addEventListener('change', function () {
 });
 capacity.addEventListener('change', function () {
   validateNumbers();
+});
+
+// Валидация количества комант и минимальной цены
+var roomType = newForm.querySelector('#type');
+var roomPrice = newForm.querySelector('#price');
+
+var validateRoomTypeAndMinPrice = function () {
+  // roomPrice.min = '';
+  if (roomType.value === 'palace') {
+    roomPrice.min = 10000;
+  } else if (roomType.value === 'house') {
+    roomPrice.min = 5000;
+  } else if (roomType.value === 'flat') {
+    roomPrice.min = 1000;
+  } else if (roomType.value === 'bungalo') {
+    roomPrice.min = 0;
+  }
+};
+
+roomType.addEventListener('change', function () {
+  validateRoomTypeAndMinPrice();
+});
+
+// Валидация checkin-checkout
+var checkin = newForm.querySelector('#timein');
+var checkout = newForm.querySelector('#timeout');
+
+var validateTimeInOut = function (optionOne, optionTwo) {
+  var checkTime;
+  if (optionOne.value !== optionTwo.value) {
+    checkTime = optionOne.value;
+  }
+  optionTwo.value = checkTime;
+};
+
+checkin.addEventListener('change', function () {
+  validateTimeInOut(checkin, checkout);
+});
+
+checkout.addEventListener('change', function () {
+  validateTimeInOut(checkout, checkin);
 });
 
 // Определение начального положение главного пина
@@ -166,7 +206,7 @@ var getOffers = function () {
   return offerArray;
 };
 
-// создание пинов
+// создание пинов и открытие карточек для каждого пина
 var offerPins = getOffers();
 var pinTemplate = document.querySelector('#pin').content;
 
@@ -183,6 +223,11 @@ var renderPins = function (i) {
     addCardsOnMap(i);
   });
 
+  pinButton.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') {
+      addCardsOnMap(i);
+    }
+  });
   return newOfferPin;
 };
 
@@ -206,6 +251,7 @@ var createOfferCard = function (offerPin) {
   var offerFeatures = newOfferCard.querySelector('.popup__features');
   var offerFeature = offerFeatures.querySelectorAll('.popup__feature');
   var popPhotos = newOfferCard.querySelector('.popup__photos');
+  var closePopupButton = newOfferCard.querySelector('.popup__close');
 
   mapCard.querySelector('.popup__avatar').src = offerPin.author.avatar;
   mapCard.querySelector('.popup__avatar').alt = offerPin.offer.title;
@@ -219,9 +265,26 @@ var createOfferCard = function (offerPin) {
   hideUnusedFeatures(offerFeature, offerPin);
   popPhotos.querySelector('img').src = offerPin.offer.photos;
   map.appendChild(newOfferCard);
+
+  closePopupButton.addEventListener('click', function () {
+    map.removeChild(mapCard);
+  });
+
+  document.addEventListener('keydown', function (evt) {
+    onPopupEscPress(evt, map, mapCard);
+  });
+
 };
 
 // Добавление карточек предложений на карту
 var addCardsOnMap = function (data) {
   createOfferCard(offerPins[data]);
+};
+
+// Закрытие окошка попапа
+var onPopupEscPress = function (evt, nodeElement, closedElement) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    nodeElement.removeChild(closedElement);
+  }
 };
