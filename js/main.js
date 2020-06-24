@@ -200,23 +200,24 @@ var getOffers = function () {
 // создание пинов и открытие карточек для каждого пина
 var offerPins = getOffers();
 var pinTemplate = document.querySelector('#pin').content;
+var offerCard;
 
-var renderPins = function (offerNumber) {
+var renderPins = function (offerPin) {
   var newOfferPin = pinTemplate.cloneNode(true);
   var pinButton = newOfferPin.querySelector('.map__pin');
   var pinButtonImage = pinButton.querySelector('img');
-  pinButtonImage.src = offerNumber.author.avatar;
-  pinButtonImage.alt = offerNumber.offer.title;
-  pinButton.style.left = offerNumber.location.x - (PIN_WIDTH / 2) + 'px';
-  pinButton.style.top = offerNumber.location.y - PIN_HEIGHT + 'px';
+  pinButtonImage.src = offerPin.author.avatar;
+  pinButtonImage.alt = offerPin.offer.title;
+  pinButton.style.left = offerPin.location.x - (PIN_WIDTH / 2) + 'px';
+  pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
 
   pinButton.addEventListener('click', function () {
-    createOfferCard(offerNumber);
+    offerCard = createOfferCard(offerPin);
   });
 
   pinButton.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
-      createOfferCard(offerNumber);
+      offerCard = createOfferCard(offerPin);
     }
   });
   return newOfferPin;
@@ -268,8 +269,7 @@ var createOfferCard = function (offerPin) {
 var onDocumentKeyDown = function (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    var newCard = createOfferCard();
-    newCard.remove();
+    offerCard.remove();
   }
 };
 
