@@ -65,7 +65,7 @@ var activatePin = function () {
   validateNumbers();
   toggleFormElement(newForm, false);
   addPinsOnMap();
-  addCardsOnMap();
+  // addCardsOnMap();
   mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
   mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
 };
@@ -97,7 +97,6 @@ var roomType = newForm.querySelector('#type');
 var roomPrice = newForm.querySelector('#price');
 
 var validateRoomTypeAndMinPrice = function () {
-  // roomPrice.min = '';
   if (roomType.value === 'palace') {
     roomPrice.min = 10000;
   } else if (roomType.value === 'house') {
@@ -117,20 +116,12 @@ roomType.addEventListener('change', function () {
 var checkin = newForm.querySelector('#timein');
 var checkout = newForm.querySelector('#timeout');
 
-var validateTimeInOut = function (optionOne, optionTwo) {
-  var checkTime;
-  if (optionOne.value !== optionTwo.value) {
-    checkTime = optionOne.value;
-  }
-  optionTwo.value = checkTime;
-};
-
 checkin.addEventListener('change', function () {
-  validateTimeInOut(checkin, checkout);
+  checkout.value = checkin.value;
 });
 
 checkout.addEventListener('change', function () {
-  validateTimeInOut(checkout, checkin);
+  checkin.value = checkout.value;
 });
 
 // Определение начального положение главного пина
@@ -210,22 +201,22 @@ var getOffers = function () {
 var offerPins = getOffers();
 var pinTemplate = document.querySelector('#pin').content;
 
-var renderPins = function (i) {
+var renderPins = function (offerNumber) {
   var newOfferPin = pinTemplate.cloneNode(true);
   var pinButton = newOfferPin.querySelector('.map__pin');
   var pinButtonImage = pinButton.querySelector('img');
-  pinButtonImage.src = offerPins[i].author.avatar;
-  pinButtonImage.alt = offerPins[i].offer.title;
-  pinButton.style.left = offerPins[i].location.x - (PIN_WIDTH / 2) + 'px';
-  pinButton.style.top = offerPins[i].location.y - PIN_HEIGHT + 'px';
+  pinButtonImage.src = offerNumber.author.avatar;
+  pinButtonImage.alt = offerNumber.offer.title;
+  pinButton.style.left = offerNumber.location.x - (PIN_WIDTH / 2) + 'px';
+  pinButton.style.top = offerNumber.location.y - PIN_HEIGHT + 'px';
 
   pinButton.addEventListener('click', function () {
-    addCardsOnMap(i);
+    createOfferCard(offerNumber);
   });
 
   pinButton.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
-      addCardsOnMap(i);
+      createOfferCard(offerNumber);
     }
   });
   return newOfferPin;
@@ -233,7 +224,7 @@ var renderPins = function (i) {
 
 var createPins = function () {
   for (var n = 0; n < OFFER_NUMBER; n++) {
-    fragment.appendChild(renderPins(n));
+    fragment.appendChild(renderPins(offerPins[n]));
   }
 };
 
@@ -264,27 +255,22 @@ var createOfferCard = function (offerPin) {
   mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
   hideUnusedFeatures(offerFeature, offerPin);
   popPhotos.querySelector('img').src = offerPin.offer.photos;
-  map.appendChild(newOfferCard);
+  map.appendChild(mapCard);
 
   closePopupButton.addEventListener('click', function () {
     map.removeChild(mapCard);
   });
 
-  document.addEventListener('keydown', function (evt) {
-    onPopupEscPress(evt, map, mapCard);
-  });
-
-};
-
-// Добавление карточек предложений на карту
-var addCardsOnMap = function (data) {
-  createOfferCard(offerPins[data]);
+  return mapCard;
 };
 
 // Закрытие окошка попапа
-var onPopupEscPress = function (evt, nodeElement, closedElement) {
+var onDocumentKeyDown = function (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    nodeElement.removeChild(closedElement);
+    var newCard = createOfferCard();
+    newCard.remove();
   }
 };
+
+document.addEventListener('keydown', onDocumentKeyDown);
