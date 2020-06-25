@@ -65,7 +65,6 @@ var activatePin = function () {
   validateNumbers();
   toggleFormElement(newForm, false);
   addPinsOnMap();
-  // addCardsOnMap();
   mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
   mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
 };
@@ -97,14 +96,19 @@ var roomType = newForm.querySelector('#type');
 var roomPrice = newForm.querySelector('#price');
 
 var validateRoomTypeAndMinPrice = function () {
-  if (roomType.value === 'palace') {
-    roomPrice.min = 10000;
-  } else if (roomType.value === 'house') {
-    roomPrice.min = 5000;
-  } else if (roomType.value === 'flat') {
-    roomPrice.min = 1000;
-  } else if (roomType.value === 'bungalo') {
-    roomPrice.min = 0;
+  switch (roomType.value) {
+    case 'palace':
+      roomPrice.min = 10000;
+      break;
+    case 'house':
+      roomPrice.min = 5000;
+      break;
+    case 'flat':
+      roomPrice.min = 1000;
+      break;
+    case 'bungalo':
+      roomPrice.min = 0;
+      break;
   }
 };
 
@@ -211,15 +215,25 @@ var renderPins = function (offerPin) {
   pinButton.style.left = offerPin.location.x - (PIN_WIDTH / 2) + 'px';
   pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
 
+  // var pinButtonArray = [];
   pinButton.addEventListener('click', function () {
-    offerCard = createOfferCard(offerPin);
+    if (offerCard === undefined) {
+      offerCard = createOfferCard(offerPin);
+    } else {
+      offerCard.remove();
+      offerCard = createOfferCard(offerPin);
+    }
+    document.addEventListener('keydown', onDocumentKeyDown);
   });
 
   pinButton.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
       offerCard = createOfferCard(offerPin);
     }
+    pinButton.disabled = true;
+    document.addEventListener('keydown', onDocumentKeyDown);
   });
+
   return newOfferPin;
 };
 
@@ -273,4 +287,4 @@ var onDocumentKeyDown = function (evt) {
   }
 };
 
-document.addEventListener('keydown', onDocumentKeyDown);
+document.removeEventListener('keydown', onDocumentKeyDown);
