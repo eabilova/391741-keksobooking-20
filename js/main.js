@@ -216,12 +216,12 @@ var renderPins = function (offerPin) {
   pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
 
   pinButton.addEventListener('click', function () {
-    toggleOfferCard(offerPin);
+    replaceOfferCard(offerPin);
   });
 
   pinButton.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
-      toggleOfferCard(offerPin);
+      replaceOfferCard(offerPin);
     }
   });
 
@@ -234,7 +234,7 @@ var createPins = function () {
   }
 };
 
-var toggleOfferCard = function (offerPin) {
+var replaceOfferCard = function (offerPin) {
   if (offerCard) {
     offerCard.remove();
     document.removeEventListener('keydown', onDocumentKeyDown);
