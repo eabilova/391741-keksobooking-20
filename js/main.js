@@ -215,23 +215,14 @@ var renderPins = function (offerPin) {
   pinButton.style.left = offerPin.location.x - (PIN_WIDTH / 2) + 'px';
   pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
 
-  // var pinButtonArray = [];
   pinButton.addEventListener('click', function () {
-    if (offerCard === undefined) {
-      offerCard = createOfferCard(offerPin);
-    } else {
-      offerCard.remove();
-      offerCard = createOfferCard(offerPin);
-    }
-    document.addEventListener('keydown', onDocumentKeyDown);
+    toggleOfferCard(offerPin);
   });
 
   pinButton.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
-      offerCard = createOfferCard(offerPin);
+      toggleOfferCard(offerPin);
     }
-    pinButton.disabled = true;
-    document.addEventListener('keydown', onDocumentKeyDown);
   });
 
   return newOfferPin;
@@ -241,6 +232,15 @@ var createPins = function () {
   for (var n = 0; n < OFFER_NUMBER; n++) {
     fragment.appendChild(renderPins(offerPins[n]));
   }
+};
+
+var toggleOfferCard = function (offerPin) {
+  if (offerCard) {
+    offerCard.remove();
+    document.removeEventListener('keydown', onDocumentKeyDown);
+  }
+  offerCard = createOfferCard(offerPin);
+  document.addEventListener('keydown', onDocumentKeyDown);
 };
 
 // Добавление пинов на карту
@@ -274,6 +274,7 @@ var createOfferCard = function (offerPin) {
 
   closePopupButton.addEventListener('click', function () {
     map.removeChild(mapCard);
+    document.removeEventListener('keydown', onDocumentKeyDown);
   });
 
   return mapCard;
@@ -287,4 +288,4 @@ var onDocumentKeyDown = function (evt) {
   }
 };
 
-document.removeEventListener('keydown', onDocumentKeyDown);
+
