@@ -113,6 +113,10 @@ var validateRoomTypeAndMinPrice = function () {
   }
 };
 
+roomType.addEventListener('change', function () {
+  validateRoomTypeAndMinPrice();
+});
+
 // Валидация checkin-checkout
 var checkin = newForm.querySelector('#timein');
 var checkout = newForm.querySelector('#timeout');
