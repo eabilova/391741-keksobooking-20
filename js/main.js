@@ -77,9 +77,12 @@ var capacity = newForm.querySelector('#capacity');
 var validateNumbers = function () {
   var capacityError = '';
   var roomNumberError = '';
-  if ((Number(roomNumber.value) !== 100 && Number(capacity.value) !== 0) && (Number(capacity.value) > Number(roomNumber.value))) {
+  if ((Number(capacity.value) > Number(roomNumber.value) && Number(capacity.value) !== 0)) {
     capacityError = 'Число гостей не может превышать количество комнат. Выберите другое значение.';
     roomNumberError = 'Число комнат не может быть меньше количества гостей. Выберите другое значение.';
+  } else if ((Number(roomNumber.value) === 100 && Number(capacity.value) !== 0) || (Number(roomNumber.value) !== 100 && Number(capacity.value) === 0)) {
+    capacityError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
+    roomNumberError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
   }
   capacity.setCustomValidity(capacityError);
   roomNumber.setCustomValidity(roomNumberError);
