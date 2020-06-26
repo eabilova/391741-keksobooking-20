@@ -75,12 +75,14 @@ var roomNumber = newForm.querySelector('#room_number');
 var capacity = newForm.querySelector('#capacity');
 
 var validateNumbers = function () {
+  var capacityValue = Number(capacity.value);
+  var roomNumberValue = Number(roomNumber.value);
   var capacityError = '';
   var roomNumberError = '';
-  if ((Number(capacity.value) > Number(roomNumber.value) && Number(capacity.value) !== 0)) {
+  if ((capacityValue > roomNumberValue && capacityValue !== 0)) {
     capacityError = 'Число гостей не может превышать количество комнат. Выберите другое значение.';
     roomNumberError = 'Число комнат не может быть меньше количества гостей. Выберите другое значение.';
-  } else if ((Number(roomNumber.value) === 100 && Number(capacity.value) !== 0) || (Number(roomNumber.value) !== 100 && Number(capacity.value) === 0)) {
+  } else if ((roomNumberValue === 100 && capacityValue !== 0) || (roomNumberValue !== 100 && capacityValue === 0)) {
     capacityError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
     roomNumberError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
   }
