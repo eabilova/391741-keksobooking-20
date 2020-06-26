@@ -223,13 +223,6 @@ var renderPins = function (offerPin) {
     clickedButton = evt.currentTarget;
   });
 
-  pinButton.addEventListener('keydown', function (evt) {
-    if ((evt.key === 'Enter') && (pinButton !== clickedButton)) {
-      replaceOfferCard(offerPin);
-    }
-    clickedButton = evt.currentTarget;
-  });
-
   return newOfferPin;
 };
 
