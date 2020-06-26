@@ -205,6 +205,7 @@ var getOffers = function () {
 var offerPins = getOffers();
 var pinTemplate = document.querySelector('#pin').content;
 var offerCard;
+var clickedButton;
 
 var renderPins = function (offerPin) {
   var newOfferPin = pinTemplate.cloneNode(true);
@@ -215,8 +216,11 @@ var renderPins = function (offerPin) {
   pinButton.style.left = offerPin.location.x - (PIN_WIDTH / 2) + 'px';
   pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
 
-  pinButton.addEventListener('click', function () {
-    replaceOfferCard(offerPin);
+  pinButton.addEventListener('click', function (evt) {
+    clickedButton = evt.target;
+    if (pinButton !== clickedButton) {
+      replaceOfferCard(offerPin);
+    }
   });
 
   pinButton.addEventListener('keydown', function (evt) {
@@ -236,7 +240,7 @@ var createPins = function () {
 
 var replaceOfferCard = function (offerPin) {
   if (offerCard) {
-    offerCard.remove();
+    removeCard();
     document.removeEventListener('keydown', onDocumentKeyDown);
   }
   offerCard = createOfferCard(offerPin);
@@ -273,18 +277,24 @@ var createOfferCard = function (offerPin) {
   map.appendChild(mapCard);
 
   closePopupButton.addEventListener('click', function () {
-    map.removeChild(mapCard);
+    removeCard();
     document.removeEventListener('keydown', onDocumentKeyDown);
   });
 
   return mapCard;
 };
 
+// Удаление карточки предложения
+var removeCard = function () {
+  offerCard.remove();
+};
+
 // Закрытие окошка попапа
 var onDocumentKeyDown = function (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    offerCard.remove();
+    removeCard();
+    console.log('1');
   }
 };
 
