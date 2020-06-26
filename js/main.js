@@ -63,6 +63,7 @@ var activatePin = function () {
   setAddress();
   toggleFormElement(mapFilters, false);
   validateNumbers();
+  validateRoomTypeAndMinPrice();
   toggleFormElement(newForm, false);
   addPinsOnMap();
   mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
@@ -111,10 +112,6 @@ var validateRoomTypeAndMinPrice = function () {
       break;
   }
 };
-
-roomType.addEventListener('change', function () {
-  validateRoomTypeAndMinPrice();
-});
 
 // Валидация checkin-checkout
 var checkin = newForm.querySelector('#timein');
