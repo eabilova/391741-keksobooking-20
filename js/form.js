@@ -1,13 +1,20 @@
 'use strict';
 (function () {
-  // Валидация соответствия количества комнат и гостей
   var newForm = document.querySelector('.ad-form');
+  window.main.toggle(newForm, true);
+
+  // Валидация соответствия количества комнат и гостей
   var roomNumber = newForm.querySelector('#room_number');
   var capacity = newForm.querySelector('#capacity');
 
-  window.toggleFormElement(newForm, true);
+  roomNumber.addEventListener('change', function () {
+    validateNumbers();
+  });
+  capacity.addEventListener('change', function () {
+    validateNumbers();
+  });
 
-  window.validateNumbers = function () {
+  var validateNumbers = function () {
     var capacityValue = Number(capacity.value);
     var roomNumberValue = Number(roomNumber.value);
     var capacityError = '';
@@ -23,18 +30,15 @@
     roomNumber.setCustomValidity(roomNumberError);
   };
 
-  roomNumber.addEventListener('change', function () {
-    window.validateNumbers();
-  });
-  capacity.addEventListener('change', function () {
-    window.validateNumbers();
-  });
-
   // Валидация количества комант и минимальной цены
   var roomType = newForm.querySelector('#type');
   var roomPrice = newForm.querySelector('#price');
 
-  window.validateRoomTypeAndMinPrice = function () {
+  roomType.addEventListener('change', function () {
+    validateRoomTypeAndMinPrice();
+  });
+
+  var validateRoomTypeAndMinPrice = function () {
     switch (roomType.value) {
       case 'palace':
         roomPrice.min = 10000;
@@ -51,9 +55,6 @@
     }
   };
 
-  roomType.addEventListener('change', function () {
-    window.validateRoomTypeAndMinPrice();
-  });
 
   // Валидация checkin-checkout
   var checkin = newForm.querySelector('#timein');
@@ -67,7 +68,9 @@
     checkin.value = checkout.value;
   });
 
-  window.formClass = {
-    newForm: newForm
+  window.form = {
+    new: newForm,
+    validateNumbers: validateNumbers,
+    validatePrice: validateRoomTypeAndMinPrice
   };
 })();

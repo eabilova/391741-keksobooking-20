@@ -1,16 +1,46 @@
 'use strict';
 (function () {
+  // Создание карточек предложений
+  var createOfferCard = function (offerPin) {
+    var cardTemplate = document.querySelector('#card').content;
+    var newOfferCard = cardTemplate.cloneNode(true);
+    var mapCard = newOfferCard.querySelector('.map__card');
+    var offerFeatures = newOfferCard.querySelector('.popup__features');
+    var offerFeature = offerFeatures.querySelectorAll('.popup__feature');
+    var popPhotos = newOfferCard.querySelector('.popup__photos');
+    var closePopupButton = newOfferCard.querySelector('.popup__close');
+
+    mapCard.querySelector('.popup__avatar').src = offerPin.author.avatar;
+    mapCard.querySelector('.popup__avatar').alt = offerPin.offer.title;
+    mapCard.querySelector('.popup__title').textContent = offerPin.offer.title;
+    mapCard.querySelector('.popup__text--address').textContent = offerPin.location.x + '-' + offerPin.location.y + ', ' + offerPin.offer.address;
+    mapCard.querySelector('.popup__text--price').textContent = offerPin.offer.price + '₽/ночь';
+    mapCard.querySelector('.popup__type').textContent = window.const.TYPE_DICTIONARY[offerPin.offer.type];
+    mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
+    mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
+    mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
+    hideUnusedFeatures(offerFeature, offerPin);
+    popPhotos.querySelector('img').src = offerPin.offer.photos;
+    window.map.element.appendChild(mapCard);
+
+    closePopupButton.addEventListener('click', function () {
+      removeCard();
+    });
+
+    return mapCard;
+  };
+
   var offerCard;
-  window.replaceOfferCard = function (offerPin) {
+  var replaceOfferCard = function (offerPin) {
     if (offerCard) {
-      window.removeCard();
+      removeCard();
     }
-    offerCard = window.createOfferCard(offerPin);
+    offerCard = createOfferCard(offerPin);
     document.addEventListener('keydown', onDocumentKeyDown);
   };
 
   // Удаление карточки предложения
-  window.removeCard = function () {
+  var removeCard = function () {
     offerCard.remove();
     document.removeEventListener('keydown', onDocumentKeyDown);
   };
@@ -18,12 +48,12 @@
   // Закрытие окошка попапа
   var onDocumentKeyDown = function (evt) {
     if (evt.key === 'Escape') {
-      window.removeCard();
+      removeCard();
     }
   };
 
   // Скрытие фич, которых нет в предложении
-  window.hideUnusedFeatures = function (childrenElements, offerData) {
+  var hideUnusedFeatures = function (childrenElements, offerData) {
     for (var k = 0; k < window.const.FEATURES.length; k++) {
       var feature = offerData.offer.features;
       var featureCheck = childrenElements[k];
@@ -31,5 +61,9 @@
         featureCheck.classList.add('hidden');
       }
     }
+  };
+
+  window.card = {
+    replace: replaceOfferCard
   };
 })();

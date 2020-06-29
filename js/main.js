@@ -44,8 +44,15 @@
 
 
 // Изменение состояния карты и форм
-window.toggleFormElement = function (element, isDisabled) {
-  for (var i = 0; i < element.length; i++) {
-    element[i].disabled = isDisabled;
-  }
-};
+(function () {
+  var toggleFormElement = function (element, isDisabled) {
+    for (var i = 0; i < element.length; i++) {
+      element[i].disabled = isDisabled;
+    }
+  };
+
+  window.main = {
+    toggle: toggleFormElement
+  };
+})();
+

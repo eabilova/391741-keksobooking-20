@@ -1,11 +1,8 @@
 'use strict';
 (function () {
   var map = document.querySelector('.map');
-  var mapFilters = document.querySelector('.map__filters');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
-
-  window.toggleFormElement(mapFilters, true);
 
   // Активация карты
   var onMainPinMouseDown = function (evt) {
@@ -25,13 +22,13 @@
 
   var activatePin = function () {
     map.classList.remove('map--faded');
-    window.formClass.newForm.classList.remove('ad-form--disabled');
+    window.form.new.classList.remove('ad-form--disabled');
     setAddress();
-    window.toggleFormElement(mapFilters, false);
-    window.validateNumbers();
-    window.validateRoomTypeAndMinPrice();
-    window.toggleFormElement(window.formClass.newForm, false);
-    window.addPinsOnMap();
+    window.main.toggle(window.filter.set, false);
+    window.form.validateNumbers();
+    window.form.validatePrice();
+    window.main.toggle(window.form.new, false);
+    window.pin.addPins();
     mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
   };
@@ -52,8 +49,8 @@
     myAddress.value = pinCenterPositionX + ', ' + newPinPositionY;
   };
 
-  window.mapClass = {
-    map: map,
-    mapPins: mapPins
+  window.map = {
+    element: map,
+    pins: mapPins
   };
 })();
