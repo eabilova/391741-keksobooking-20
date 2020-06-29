@@ -1,8 +1,10 @@
 'use strict';
 (function () {
   var mapFilters = document.querySelector('.map__filters');
-  window.main.toggle(mapFilters, true);
 
+  window.form.toggle(mapFilters, true);
+
+  // Объявление экспорта
   window.filter = {
     set: mapFilters
   };

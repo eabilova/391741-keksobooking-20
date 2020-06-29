@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var offerCard;
+
   // Создание карточек предложений
   var createOfferCard = function (offerPin) {
     var cardTemplate = document.querySelector('#card').content;
@@ -15,7 +17,7 @@
     mapCard.querySelector('.popup__title').textContent = offerPin.offer.title;
     mapCard.querySelector('.popup__text--address').textContent = offerPin.location.x + '-' + offerPin.location.y + ', ' + offerPin.offer.address;
     mapCard.querySelector('.popup__text--price').textContent = offerPin.offer.price + '₽/ночь';
-    mapCard.querySelector('.popup__type').textContent = window.const.TYPE_DICTIONARY[offerPin.offer.type];
+    mapCard.querySelector('.popup__type').textContent = window.main.TYPE_DICTIONARY[offerPin.offer.type];
     mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
@@ -30,7 +32,6 @@
     return mapCard;
   };
 
-  var offerCard;
   var replaceOfferCard = function (offerPin) {
     if (offerCard) {
       removeCard();
@@ -54,7 +55,7 @@
 
   // Скрытие фич, которых нет в предложении
   var hideUnusedFeatures = function (childrenElements, offerData) {
-    for (var k = 0; k < window.const.FEATURES.length; k++) {
+    for (var k = 0; k < window.data.FEATURES.length; k++) {
       var feature = offerData.offer.features;
       var featureCheck = childrenElements[k];
       if (!featureCheck.classList.contains('popup__feature--' + feature)) {
@@ -63,6 +64,7 @@
     }
   };
 
+  // Объявление экспорта
   window.card = {
     replace: replaceOfferCard
   };

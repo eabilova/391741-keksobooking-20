@@ -1,19 +1,34 @@
 'use strict';
 (function () {
-  var newForm = document.querySelector('.ad-form');
-  window.main.toggle(newForm, true);
+  var formElement = document.querySelector('.ad-form');
+  var roomNumber = formElement.querySelector('#room_number');
+  var capacity = formElement.querySelector('#capacity');
+  var roomType = formElement.querySelector('#type');
+  var roomPrice = formElement.querySelector('#price');
+  var checkin = formElement.querySelector('#timein');
+  var checkout = formElement.querySelector('#timeout');
 
-  // Валидация соответствия количества комнат и гостей
-  var roomNumber = newForm.querySelector('#room_number');
-  var capacity = newForm.querySelector('#capacity');
+  // Изменение состояния карты и форм
+  var toggleFormElement = function (element, isDisabled) {
+    for (var i = 0; i < element.length; i++) {
+      element[i].disabled = isDisabled;
+    }
+  };
 
-  roomNumber.addEventListener('change', function () {
+  toggleFormElement(formElement, true);
+
+
+  // Активация формы
+  var activateFormElements = function () {
+    formElement.classList.remove('ad-form--disabled');
+    setAddress();
+    toggleFormElement(window.filter.set, false);
     validateNumbers();
-  });
-  capacity.addEventListener('change', function () {
-    validateNumbers();
-  });
+    validateRoomTypeAndMinPrice();
+    toggleFormElement(formElement, false);
+  };
 
+  // Функция валидации соответствия количества комнат и гостей
   var validateNumbers = function () {
     var capacityValue = Number(capacity.value);
     var roomNumberValue = Number(roomNumber.value);
@@ -30,14 +45,7 @@
     roomNumber.setCustomValidity(roomNumberError);
   };
 
-  // Валидация количества комант и минимальной цены
-  var roomType = newForm.querySelector('#type');
-  var roomPrice = newForm.querySelector('#price');
-
-  roomType.addEventListener('change', function () {
-    validateRoomTypeAndMinPrice();
-  });
-
+  // Функция валидации количества комнат и минимальной цены
   var validateRoomTypeAndMinPrice = function () {
     switch (roomType.value) {
       case 'palace':
@@ -55,10 +63,23 @@
     }
   };
 
+  // Определение положение главного пина после активации и смещения
+  var setAddress = function () {
+    var newPinPositionY = Math.round(window.map.mainPin.offsetTop + window.main.BIG_PIN_HEIGHT + window.main.PIN_TAIL_HEIGHT);
+    window.map.address.value = window.map.pinCenterPositionX + ', ' + newPinPositionY;
+  };
 
-  // Валидация checkin-checkout
-  var checkin = newForm.querySelector('#timein');
-  var checkout = newForm.querySelector('#timeout');
+  // Обработчики событий
+  roomNumber.addEventListener('change', function () {
+    validateNumbers();
+  });
+  capacity.addEventListener('change', function () {
+    validateNumbers();
+  });
+
+  roomType.addEventListener('change', function () {
+    validateRoomTypeAndMinPrice();
+  });
 
   checkin.addEventListener('change', function () {
     checkout.value = checkin.value;
@@ -68,9 +89,13 @@
     checkin.value = checkout.value;
   });
 
+  // Объявление экспорта
   window.form = {
-    new: newForm,
+    toggle: toggleFormElement,
+    activate: activateFormElements,
+    element: formElement,
     validateNumbers: validateNumbers,
-    validatePrice: validateRoomTypeAndMinPrice
+    validatePrice: validateRoomTypeAndMinPrice,
+    setAddress: setAddress
   };
 })();
