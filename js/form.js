@@ -7,10 +7,6 @@
 
   window.toggleFormElement(newForm, true);
 
-  window.form = {
-    newForm: newForm
-  };
-
   window.validateNumbers = function () {
     var capacityValue = Number(capacity.value);
     var roomNumberValue = Number(roomNumber.value);
@@ -70,4 +66,8 @@
   checkout.addEventListener('change', function () {
     checkin.value = checkout.value;
   });
+
+  window.formClass = {
+    newForm: newForm
+  };
 })();

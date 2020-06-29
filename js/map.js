@@ -1,17 +1,11 @@
 'use strict';
 (function () {
-  var fragment = document.createDocumentFragment();
   var map = document.querySelector('.map');
   var mapFilters = document.querySelector('.map__filters');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
 
   window.toggleFormElement(mapFilters, true);
-
-
-  window.map = {
-    map: map
-  };
 
   // Активация карты
   var onMainPinMouseDown = function (evt) {
@@ -31,13 +25,13 @@
 
   var activatePin = function () {
     map.classList.remove('map--faded');
-    window.form.newForm.classList.remove('ad-form--disabled');
+    window.formClass.newForm.classList.remove('ad-form--disabled');
     setAddress();
     window.toggleFormElement(mapFilters, false);
     window.validateNumbers();
     window.validateRoomTypeAndMinPrice();
-    window.toggleFormElement(window.form.newForm, false);
-    addPinsOnMap();
+    window.toggleFormElement(window.formClass.newForm, false);
+    window.addPinsOnMap();
     mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
   };
@@ -58,38 +52,8 @@
     myAddress.value = pinCenterPositionX + ', ' + newPinPositionY;
   };
 
-  // Добавление пинов на карту
-  var addPinsOnMap = function () {
-    createPins();
-    mapPins.appendChild(fragment);
-  };
-
-  var createPins = function () {
-    for (var n = 0; n < window.const.OFFER_NUMBER; n++) {
-      fragment.appendChild(renderPins(window.pin.offerPins[n]));
-    }
-  };
-
-  // создание пинов и открытие карточек для каждого пина
-  var pinTemplate = document.querySelector('#pin').content;
-  var clickedButton;
-
-  var renderPins = function (offerPin) {
-    var newOfferPin = pinTemplate.cloneNode(true);
-    var pinButton = newOfferPin.querySelector('.map__pin');
-    var pinButtonImage = pinButton.querySelector('img');
-    pinButtonImage.src = offerPin.author.avatar;
-    pinButtonImage.alt = offerPin.offer.title;
-    pinButton.style.left = offerPin.location.x - (window.const.PIN_WIDTH / 2) + 'px';
-    pinButton.style.top = offerPin.location.y - window.const.PIN_HEIGHT + 'px';
-
-    pinButton.addEventListener('click', function (evt) {
-      if (pinButton !== clickedButton) {
-        window.replaceOfferCard(offerPin);
-      }
-      clickedButton = evt.currentTarget;
-    });
-
-    return newOfferPin;
+  window.mapClass = {
+    map: map,
+    mapPins: mapPins
   };
 })();
