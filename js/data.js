@@ -61,7 +61,6 @@
   // Объявление экспорта
   window.data = {
     getOffers: getOffers,
-    OFFER_NUMBER: OFFER_NUMBER,
     FEATURES: FEATURES
   };
 })();

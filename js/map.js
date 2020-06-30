@@ -18,7 +18,7 @@
 
   // Добавление пинов на карту
   var addPinsOnMap = function () {
-    for (var n = 0; n < window.data.OFFER_NUMBER; n++) {
+    for (var n = 0; n < offerPins.length; n++) {
       fragment.appendChild(window.pin.render(offerPins[n]));
     }
     mapPins.appendChild(fragment);
