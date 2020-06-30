@@ -1,15 +1,7 @@
 'use strict';
 (function () {
-  var fragment = document.createDocumentFragment();
-  var offerPins = window.data.getOffers();
   var pinTemplate = document.querySelector('#pin').content;
   var clickedButton;
-
-  var createPins = function () {
-    for (var n = 0; n < window.main.OFFER_NUMBER; n++) {
-      fragment.appendChild(renderPins(offerPins[n]));
-    }
-  };
 
   // создание пинов и открытие карточек для каждого пина
   var renderPins = function (offerPin) {
@@ -33,7 +25,6 @@
 
   // Объявление экспорта
   window.pin = {
-    fragment: fragment,
-    create: createPins
+    render: renderPins
   };
 })();

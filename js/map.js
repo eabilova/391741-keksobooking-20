@@ -3,6 +3,9 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
+  var offerPins = window.data.getOffers();
+  var fragment = document.createDocumentFragment();
+
 
   // Активация карты
   var activateMap = function () {
@@ -15,8 +18,10 @@
 
   // Добавление пинов на карту
   var addPinsOnMap = function () {
-    window.pin.create();
-    window.map.pins.appendChild(window.pin.fragment);
+    for (var n = 0; n < window.main.OFFER_NUMBER; n++) {
+      fragment.appendChild(window.pin.render(offerPins[n]));
+    }
+    mapPins.appendChild(fragment);
   };
 
   // Обработчики событий
