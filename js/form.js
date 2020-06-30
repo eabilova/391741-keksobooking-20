@@ -7,6 +7,10 @@
   var roomPrice = formElement.querySelector('#price');
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
+  var myAddress = document.querySelector('#address');
+  var pinCenterPositionX = Math.round(window.map.mainPin.offsetLeft + window.main.BIG_PIN_WIDTH / 2);
+  var pinCenterPositionY = Math.round(window.map.mainPin.offsetTop + window.main.BIG_PIN_HEIGHT / 2);
+  var newPinPositionY = Math.round(window.map.mainPin.offsetTop + window.main.BIG_PIN_HEIGHT + window.main.PIN_TAIL_HEIGHT);
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -17,11 +21,17 @@
 
   toggleFormElement(formElement, true);
 
+  // Определение положение главного пина после активации и смещения
+  var setAddress = function (x, y) {
+    myAddress.value = x + ', ' + y;
+  };
+
+  setAddress(pinCenterPositionX, pinCenterPositionY);
 
   // Активация формы
   var activateFormElements = function () {
     formElement.classList.remove('ad-form--disabled');
-    setAddress();
+    setAddress(pinCenterPositionX, newPinPositionY);
     toggleFormElement(window.filter.set, false);
     validateNumbers();
     validateRoomTypeAndMinPrice();
@@ -63,12 +73,6 @@
     }
   };
 
-  // Определение положение главного пина после активации и смещения
-  var setAddress = function () {
-    var newPinPositionY = Math.round(window.map.mainPin.offsetTop + window.main.BIG_PIN_HEIGHT + window.main.PIN_TAIL_HEIGHT);
-    window.map.address.value = window.map.pinCenterPositionX + ', ' + newPinPositionY;
-  };
-
   // Обработчики событий
   roomNumber.addEventListener('change', function () {
     validateNumbers();
@@ -91,11 +95,13 @@
 
   // Объявление экспорта
   window.form = {
+    element: formElement,
+    pinPositionX: pinCenterPositionX,
+    pinStartPositionY: pinCenterPositionY,
+    setAddress: setAddress,
     toggle: toggleFormElement,
     activate: activateFormElements,
-    element: formElement,
     validateNumbers: validateNumbers,
-    validatePrice: validateRoomTypeAndMinPrice,
-    setAddress: setAddress
+    validatePrice: validateRoomTypeAndMinPrice
   };
 })();

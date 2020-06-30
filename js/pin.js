@@ -5,12 +5,6 @@
   var pinTemplate = document.querySelector('#pin').content;
   var clickedButton;
 
-  // Добавление пинов на карту
-  var addPinsOnMap = function () {
-    createPins();
-    window.map.pins.appendChild(fragment);
-  };
-
   var createPins = function () {
     for (var n = 0; n < window.main.OFFER_NUMBER; n++) {
       fragment.appendChild(renderPins(offerPins[n]));
@@ -39,6 +33,7 @@
 
   // Объявление экспорта
   window.pin = {
-    addPins: addPinsOnMap
+    fragment: fragment,
+    create: createPins
   };
 })();
