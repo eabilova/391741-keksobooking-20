@@ -9,6 +9,8 @@
   var CHECK_IN_OUT = ['12:00', '13:00', '14:00'];
   var PIN_POSITION_Y_START = 130;
   var PIN_POSITION_Y_FINISH = 630;
+  var OFFER_NUMBER = 8;
+
 
   // получение рандомной информации из массива (пока не понимаю откуда брать данные)
   var getRandomData = function (data) {
@@ -50,7 +52,7 @@
   // создание массива из объектов
   var getOffers = function () {
     var offerArray = [];
-    for (var i = 0; i < window.main.OFFER_NUMBER; i++) {
+    for (var i = 0; i < OFFER_NUMBER; i++) {
       offerArray[i] = createPinObject();
     }
     return offerArray;
@@ -59,6 +61,7 @@
   // Объявление экспорта
   window.data = {
     getOffers: getOffers,
+    OFFER_NUMBER: OFFER_NUMBER,
     FEATURES: FEATURES
   };
 })();
