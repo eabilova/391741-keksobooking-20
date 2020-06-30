@@ -1,5 +1,9 @@
 'use strict';
 (function () {
+  var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HEIGHT = 65;
+  var PIN_TAIL_HEIGHT = 22;
+
   var formElement = document.querySelector('.ad-form');
   var roomNumber = formElement.querySelector('#room_number');
   var capacity = formElement.querySelector('#capacity');
@@ -8,9 +12,9 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
-  var pinCenterPositionX = Math.round(window.map.mainPin.offsetLeft + window.main.BIG_PIN_WIDTH / 2);
-  var pinCenterPositionY = Math.round(window.map.mainPin.offsetTop + window.main.BIG_PIN_HEIGHT / 2);
-  var newPinPositionY = Math.round(window.map.mainPin.offsetTop + window.main.BIG_PIN_HEIGHT + window.main.PIN_TAIL_HEIGHT);
+  var pinCenterPositionX = Math.round(window.map.mainPin.offsetLeft + MAIN_PIN_WIDTH / 2);
+  var pinCenterPositionY = Math.round(window.map.mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
+  var newPinPositionY = Math.round(window.map.mainPin.offsetTop + MAIN_PIN_HEIGHT + PIN_TAIL_HEIGHT);
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
