@@ -99,13 +99,7 @@
 
   // Объявление экспорта
   window.form = {
-    element: formElement,
-    pinPositionX: pinCenterPositionX,
-    pinStartPositionY: pinCenterPositionY,
-    setAddress: setAddress,
     toggle: toggleFormElement,
-    activate: activateFormElements,
-    validateNumbers: validateNumbers,
-    validatePrice: validateRoomTypeAndMinPrice
+    activate: activateFormElements
   };
 })();

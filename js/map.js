@@ -43,7 +43,6 @@
   // Объявление экспорта
   window.map = {
     element: map,
-    pins: mapPins,
     mainPin: mainMapPin
   };
 })();
