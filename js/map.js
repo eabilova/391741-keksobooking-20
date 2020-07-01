@@ -40,6 +40,43 @@
   mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
   mainMapPin.addEventListener('keydown', onMainPinKeyDown);
 
+  mainMapPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startPosition = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMainPinMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var changedPosition = {
+        x: startPosition.x - moveEvt.clientX,
+        y: startPosition.y - moveEvt.clientY
+      };
+
+      startPosition = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
+      mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
+    };
+
+    var onMainPinMouseUp = function () {
+      evt.preventDefault();
+      window.form.setAddress(evt.clientX, evt.clientY);
+
+      document.removeEventListener('mousemove', onMainPinMouseMove);
+      document.removeEventListener('mouseup', onMainPinMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMainPinMouseMove);
+    document.addEventListener('mouseup', onMainPinMouseUp);
+  });
+
   // Объявление экспорта
   window.map = {
     element: map,

@@ -12,9 +12,10 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
+  var pinTail = MAIN_PIN_HEIGHT + PIN_TAIL_HEIGHT;
   var pinCenterPositionX = Math.round(window.map.mainPin.offsetLeft + MAIN_PIN_WIDTH / 2);
   var pinCenterPositionY = Math.round(window.map.mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
-  var newPinPositionY = Math.round(window.map.mainPin.offsetTop + MAIN_PIN_HEIGHT + PIN_TAIL_HEIGHT);
+  var newPinPositionY = Math.round(window.map.mainPin.offsetTop + pinTail);
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -100,6 +101,8 @@
   // Объявление экспорта
   window.form = {
     toggle: toggleFormElement,
-    activate: activateFormElements
+    pinTail: pinTail,
+    activate: activateFormElements,
+    setAddress: setAddress
   };
 })();

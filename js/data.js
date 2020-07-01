@@ -61,6 +61,8 @@
   // Объявление экспорта
   window.data = {
     getOffers: getOffers,
-    FEATURES: FEATURES
+    FEATURES: FEATURES,
+    PIN_POSITION_Y_START: PIN_POSITION_Y_START,
+    PIN_POSITION_Y_FINISH: PIN_POSITION_Y_FINISH
   };
 })();
