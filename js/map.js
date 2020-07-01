@@ -67,7 +67,7 @@
 
     var onMainPinMouseUp = function () {
       evt.preventDefault();
-      window.form.setAddress(evt.clientX, evt.clientY);
+      window.form.setAddress(mainMapPin.offsetLeft, mainMapPin.offsetTop + window.form.pinFullHeight);
 
       document.removeEventListener('mousemove', onMainPinMouseMove);
       document.removeEventListener('mouseup', onMainPinMouseUp);
