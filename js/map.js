@@ -78,15 +78,14 @@
         y: mainMapPin.offsetTop - changedPosition.y
       };
 
-      if (result.x < 0 && DragLimit.x.min <= (result.x + halfOfPinWidth)) {
-        mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
-      } else if (result.x > 0 && DragLimit.x.max >= (result.x + halfOfPinWidth)) {
+      var positionHalfPin = result.x + halfOfPinWidth;
+      var positionFullHeightPin = result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight;
+
+      if ((result.x < 0 && DragLimit.x.min <= positionHalfPin) || (result.x > 0 && DragLimit.x.max >= positionHalfPin)) {
         mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
       }
 
-      if ((result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight) < DragLimit.y.max && DragLimit.y.min <= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
-        mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
-      } else if ((result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight) > DragLimit.y.min && DragLimit.y.max >= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
+      if ((positionFullHeightPin < DragLimit.y.max && DragLimit.y.min <= positionFullHeightPin) && (positionFullHeightPin > DragLimit.y.min && DragLimit.y.max >= positionFullHeightPin)) {
         mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
       }
     };
