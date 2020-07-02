@@ -5,6 +5,8 @@
   var mainMapPin = mapPins.querySelector('.map__pin--main');
   var offerPins = window.data.getOffers();
   var fragment = document.createDocumentFragment();
+  var halfOfPinWidth = mainMapPin.offsetWidth / 2;
+  var halfOfPinHeight = mainMapPin.offsetHeight / 2;
   var DragLimit = {
     x: {
       min: 0,
@@ -71,17 +73,27 @@
         y: moveEvt.clientY
       };
 
-      if (DragLimit.x.min <= startPosition.x && DragLimit.x.max >= startPosition.x) {
+      var result = {
+        x: mainMapPin.offsetLeft - changedPosition.x,
+        y: mainMapPin.offsetTop - changedPosition.y
+      };
+
+      if (result.x < 0 && DragLimit.x.min <= (result.x + halfOfPinWidth)) {
+        mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
+      } else if (result.x > 0 && DragLimit.x.max >= (result.x + halfOfPinWidth)) {
         mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
       }
-      if (DragLimit.y.min <= startPosition.y && DragLimit.y.max >= startPosition.y) {
+
+      if (result.y < 630 && DragLimit.y.min <= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
+        mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
+      } else if (result.y > 130 && DragLimit.y.max >= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
         mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
       }
     };
 
     var onMainPinMouseUp = function () {
       evt.preventDefault();
-      window.form.setAddress(mainMapPin.offsetLeft, mainMapPin.offsetTop + window.form.pinFullHeight);
+      window.form.setAddress(mainMapPin.offsetLeft, mainMapPin.offsetTop + halfOfPinHeight + window.form.PIN_TAIL_HEIGHT);
 
       document.removeEventListener('mousemove', onMainPinMouseMove);
       document.removeEventListener('mouseup', onMainPinMouseUp);
@@ -94,6 +106,8 @@
   // Объявление экспорта
   window.map = {
     element: map,
-    mainPin: mainMapPin
+    mainPin: mainMapPin,
+    halfOfPinWidth: halfOfPinWidth,
+    halfOfPinHeight: halfOfPinHeight
   };
 })();

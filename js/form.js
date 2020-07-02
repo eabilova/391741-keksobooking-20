@@ -10,10 +10,9 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
-  var pinFullHeight = (window.map.mainPin.offsetHeight / 2) + PIN_TAIL_HEIGHT;
-  var pinCenterPositionX = Math.round(window.map.mainPin.offsetLeft);
-  var pinCenterPositionY = Math.round(window.map.mainPin.offsetTop);
-  var PinWithTailPositionY = Math.round(window.map.mainPin.offsetTop + pinFullHeight);
+  var pinCenterPositionX = window.map.mainPin.offsetLeft;
+  var pinCenterPositionY = window.map.mainPin.offsetTop;
+  var PinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -26,7 +25,7 @@
 
   // Определение положение главного пина после активации и смещения
   var setAddress = function (x, y) {
-    myAddress.value = Math.round(x + (window.map.mainPin.offsetWidth / 2)) + ', ' + Math.round(y + (window.map.mainPin.offsetHeight / 2));
+    myAddress.value = Math.round(x + window.map.halfOfPinWidth) + ', ' + Math.round(y + window.map.halfOfPinHeight);
   };
 
   setAddress(pinCenterPositionX, pinCenterPositionY);
@@ -101,6 +100,6 @@
     toggle: toggleFormElement,
     activate: activateFormElements,
     setAddress: setAddress,
-    pinFullHeight: pinFullHeight
+    PIN_TAIL_HEIGHT: PIN_TAIL_HEIGHT
   };
 })();
