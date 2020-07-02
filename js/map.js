@@ -84,9 +84,9 @@
         mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
       }
 
-      if (result.y < 630 && DragLimit.y.min <= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
+      if ((result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight) < DragLimit.y.max && DragLimit.y.min <= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
         mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
-      } else if (result.y > 130 && DragLimit.y.max >= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
+      } else if ((result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight) > DragLimit.y.min && DragLimit.y.max >= (result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight)) {
         mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
       }
     };
