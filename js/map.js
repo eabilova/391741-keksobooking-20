@@ -5,6 +5,16 @@
   var mainMapPin = mapPins.querySelector('.map__pin--main');
   var offerPins = window.data.getOffers();
   var fragment = document.createDocumentFragment();
+  var DragLimit = {
+    x: {
+      min: 0,
+      max: 1200
+    },
+    y: {
+      min: 130,
+      max: 630
+    }
+  };
 
 
   // Активация карты
@@ -61,8 +71,12 @@
         y: moveEvt.clientY
       };
 
-      mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
-      mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
+      if (DragLimit.x.min <= startPosition.x && DragLimit.x.max >= startPosition.x) {
+        mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
+      }
+      if (DragLimit.y.min <= startPosition.y && DragLimit.y.max >= startPosition.y) {
+        mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
+      }
     };
 
     var onMainPinMouseUp = function () {
