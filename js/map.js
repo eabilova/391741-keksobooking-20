@@ -85,7 +85,7 @@
         mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
       }
 
-      if ((positionFullHeightPin < DragLimit.y.max && DragLimit.y.min <= positionFullHeightPin) && (positionFullHeightPin > DragLimit.y.min && DragLimit.y.max >= positionFullHeightPin)) {
+      if ((positionFullHeightPin <= DragLimit.y.max && DragLimit.y.min <= positionFullHeightPin) && (positionFullHeightPin >= DragLimit.y.min && DragLimit.y.max >= positionFullHeightPin)) {
         mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
       }
     };
