@@ -1,7 +1,5 @@
 'use strict';
 (function () {
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 65;
   var PIN_TAIL_HEIGHT = 22;
 
   var formElement = document.querySelector('.ad-form');
@@ -12,9 +10,9 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
-  var pinCenterPositionX = Math.round(window.map.mainPin.offsetLeft + MAIN_PIN_WIDTH / 2);
-  var pinCenterPositionY = Math.round(window.map.mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
-  var newPinPositionY = Math.round(window.map.mainPin.offsetTop + MAIN_PIN_HEIGHT + PIN_TAIL_HEIGHT);
+  var pinCenterPositionX = window.map.mainPin.offsetLeft;
+  var pinCenterPositionY = window.map.mainPin.offsetTop;
+  var PinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -27,7 +25,7 @@
 
   // Определение положение главного пина после активации и смещения
   var setAddress = function (x, y) {
-    myAddress.value = x + ', ' + y;
+    myAddress.value = Math.round(x + window.map.halfOfPinWidth) + ', ' + Math.round(y + window.map.halfOfPinHeight);
   };
 
   setAddress(pinCenterPositionX, pinCenterPositionY);
@@ -35,7 +33,7 @@
   // Активация формы
   var activateFormElements = function () {
     formElement.classList.remove('ad-form--disabled');
-    setAddress(pinCenterPositionX, newPinPositionY);
+    setAddress(pinCenterPositionX, PinWithTailPositionY);
     toggleFormElement(window.filter.set, false);
     validateNumbers();
     validateRoomTypeAndMinPrice();
@@ -100,6 +98,8 @@
   // Объявление экспорта
   window.form = {
     toggle: toggleFormElement,
-    activate: activateFormElements
+    activate: activateFormElements,
+    setAddress: setAddress,
+    PIN_TAIL_HEIGHT: PIN_TAIL_HEIGHT
   };
 })();

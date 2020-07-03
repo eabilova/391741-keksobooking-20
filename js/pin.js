@@ -13,7 +13,7 @@
     var pinButtonImage = pinButton.querySelector('img');
     pinButtonImage.src = offerPin.author.avatar;
     pinButtonImage.alt = offerPin.offer.title;
-    pinButton.style.left = offerPin.location.x - (PIN_WIDTH / 2) + 'px';
+    pinButton.style.left = offerPin.location.x + (PIN_WIDTH / 2) + 'px';
     pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
 
     pinButton.addEventListener('click', function (evt) {
