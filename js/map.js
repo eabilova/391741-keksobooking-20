@@ -3,7 +3,7 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
-  var offerPins = window.server.getInfo();
+  var offerPins = window.server.getInfo(onSuccess, onError);
   var fragment = document.createDocumentFragment();
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
@@ -26,6 +26,14 @@
     addPinsOnMap();
     mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
+  };
+
+  var onError = function (message) {
+    console.error(message);
+  };
+
+  var onSuccess = function (data) {
+    console.log(data);
   };
 
   // Добавление пинов на карту
