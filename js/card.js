@@ -17,6 +17,7 @@
     var offerFeatures = newOfferCard.querySelector('.popup__features');
     var offerFeature = offerFeatures.querySelectorAll('.popup__feature');
     var popPhotos = newOfferCard.querySelector('.popup__photos');
+    var roomPhoto = popPhotos.querySelector('img');
     var closePopupButton = newOfferCard.querySelector('.popup__close');
 
     mapCard.querySelector('.popup__avatar').src = offerPin.author.avatar;
@@ -29,7 +30,7 @@
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
     hideUnusedFeatures(offerFeature, offerPin);
-    addPhotos(popPhotos, offerPin.offer.photos);
+    addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
 
     window.map.element.appendChild(mapCard);
 
@@ -41,15 +42,18 @@
   };
 
   // перебор фото в карточке
-  var addPhotos = function (parentNode, photo) {
-    var photoList = parentNode.querySelector('img');
+  var addPhotos = function (parentNode, photoElement, photo) {
+    var photoFragment = document.createDocumentFragment();
+    parentNode.removeChild(photoElement);
     if (photo.length !== 0) {
       for (var m = 0; m < photo.length; m++) {
-        photoList.src = photo[m];
-        parentNode.appendChild(photoList);
+        var newPhoto = document.createElement('img');
+        newPhoto.classList.add('popup__photo');
+        newPhoto.width = '45';
+        newPhoto.src = photo[m];
+        photoFragment.appendChild(newPhoto);
       }
-    } else {
-      parentNode.removeChild(photoList);
+      parentNode.appendChild(photoFragment);
     }
   };
 
