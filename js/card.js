@@ -29,7 +29,8 @@
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
     hideUnusedFeatures(offerFeature, offerPin);
-    popPhotos.querySelector('img').src = offerPin.offer.photos;
+    addPhotos(popPhotos, offerPin.offer.photos);
+
     window.map.element.appendChild(mapCard);
 
     closePopupButton.addEventListener('click', function () {
@@ -37,6 +38,19 @@
     });
 
     return mapCard;
+  };
+
+  // перебор фото в карточке
+  var addPhotos = function (parentNode, photo) {
+    var photoList = parentNode.querySelector('img');
+    if (photo.length !== 0) {
+      for (var m = 0; m < photo.length; m++) {
+        photoList.src = photo[m];
+        parentNode.appendChild(photoList);
+      }
+    } else {
+      parentNode.removeChild(photoList);
+    }
   };
 
   var replaceOfferCard = function (offerPin) {
@@ -64,9 +78,11 @@
   var hideUnusedFeatures = function (childrenElements, offerData) {
     for (var k = 0; k < window.data.FEATURES.length; k++) {
       var feature = offerData.offer.features;
-      var featureCheck = childrenElements[k];
-      if (!featureCheck.classList.contains('popup__feature--' + feature)) {
-        featureCheck.classList.add('hidden');
+      for (var n = 0; n < feature.length; n++) {
+        var featureCheck = childrenElements[n];
+        if (!featureCheck.classList.contains('popup__feature--' + feature[k])) {
+          featureCheck.classList.add('hidden');
+        }
       }
     }
   };
