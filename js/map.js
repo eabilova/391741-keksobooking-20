@@ -3,7 +3,7 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
-  var offerPins = window.data.getOffers();
+  var offerPins = window.server.getInfo();
   var fragment = document.createDocumentFragment();
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
