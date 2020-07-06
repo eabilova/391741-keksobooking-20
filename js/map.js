@@ -18,42 +18,23 @@
     }
   };
 
-  var onSuccess = function (data) {
-    var onMainPinMouseDown = function (evt) {
-      if (evt.which === 1) {
-        activateMap();
-      }
-    };
-
-    var onMainPinKeyDown = function (evt) {
-      if (evt.key === 'Enter') {
-        activateMap();
-      }
-    };
-
-    var activateMap = function () {
-      map.classList.remove('map--faded');
-      window.form.activate();
-      addPinsOnMap(data);
-      mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
-      mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
-    };
-
-    mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
-    mainMapPin.addEventListener('keydown', onMainPinKeyDown);
-  };
-
-  var onError = function (message) {
+  var onLoadError = function (message) {
+    var errorBox = document.createElement('div');
+    errorBox.classList.add('error');
     var errorMessage = document.createElement('div');
+    errorMessage.classList.add('error__message');
     errorMessage.textContent = message;
-    errorMessage.style.color = '#ff0000';
-    errorMessage.style.backgroundColor = '#ffffff';
-    errorMessage.style.textAlign = 'center';
-    errorMessage.style.fontSize = '20px';
-    mapOverlay.appendChild(errorMessage);
+    mapOverlay.appendChild(errorBox);
+    errorBox.appendChild(errorMessage);
   };
 
-  window.server(onSuccess, onError);
+  var activateMap = function (data) {
+    map.classList.remove('map--faded');
+    window.form.activate();
+    addPinsOnMap(data);
+    mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
+    mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
+  };
 
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
@@ -64,6 +45,20 @@
   };
 
   // Обработчики событий
+  var onMainPinMouseDown = function (evt) {
+    if (evt.which === 1) {
+      window.server(activateMap, onLoadError);
+    }
+  };
+
+  var onMainPinKeyDown = function (evt) {
+    if (evt.key === 'Enter') {
+      window.server(activateMap, onLoadError);
+    }
+  };
+
+  mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
+  mainMapPin.addEventListener('keydown', onMainPinKeyDown);
   mainMapPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
