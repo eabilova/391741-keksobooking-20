@@ -3,6 +3,7 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
+  var mapOverlay = map.querySelector('.map__overlay');
   var fragment = document.createDocumentFragment();
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
@@ -18,50 +19,51 @@
   };
 
   var onSuccess = function (data) {
-    offerPins = data;
+    var onMainPinMouseDown = function (evt) {
+      if (evt.which === 1) {
+        activateMap();
+      }
+    };
+
+    var onMainPinKeyDown = function (evt) {
+      if (evt.key === 'Enter') {
+        activateMap();
+      }
+    };
+
+    var activateMap = function () {
+      map.classList.remove('map--faded');
+      window.form.activate();
+      addPinsOnMap(data);
+      mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
+      mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
+    };
 
     mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
     mainMapPin.addEventListener('keydown', onMainPinKeyDown);
   };
 
   var onError = function (message) {
-    console.error(message);
+    var errorMessage = document.createElement('div');
+    errorMessage.textContent = message;
+    errorMessage.style.color = '#ff0000';
+    errorMessage.style.backgroundColor = '#ffffff';
+    errorMessage.style.textAlign = 'center';
+    errorMessage.style.fontSize = '20px';
+    mapOverlay.appendChild(errorMessage);
   };
 
   window.server(onSuccess, onError);
 
-  // Активация карты
-  var activateMap = function () {
-    map.classList.remove('map--faded');
-    window.form.activate();
-    addPinsOnMap();
-    mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
-    mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
-  };
-
   // Добавление пинов на карту
-  var offerPins = onSuccess;
-
-  var addPinsOnMap = function () {
-    for (var n = 0; n < offerPins.length; n++) {
-      fragment.appendChild(window.pin.render(offerPins[n]));
+  var addPinsOnMap = function (data) {
+    for (var n = 0; n < data.length; n++) {
+      fragment.appendChild(window.pin.render(data[n]));
     }
     mapPins.appendChild(fragment);
   };
 
   // Обработчики событий
-  var onMainPinMouseDown = function (evt) {
-    if (evt.which === 1) {
-      activateMap();
-    }
-  };
-
-  var onMainPinKeyDown = function (evt) {
-    if (evt.key === 'Enter') {
-      activateMap();
-    }
-  };
-
   mainMapPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
