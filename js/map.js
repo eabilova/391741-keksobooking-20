@@ -3,7 +3,7 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
-  var offerPins = window.data.getOffers();
+  var mapOverlay = map.querySelector('.map__overlay');
   var fragment = document.createDocumentFragment();
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
@@ -18,20 +18,28 @@
     }
   };
 
+  var onLoadError = function (message) {
+    var errorBox = document.createElement('div');
+    errorBox.classList.add('error');
+    var errorMessage = document.createElement('div');
+    errorMessage.classList.add('error__message');
+    errorMessage.textContent = message;
+    mapOverlay.appendChild(errorBox);
+    errorBox.appendChild(errorMessage);
+  };
 
-  // Активация карты
-  var activateMap = function () {
+  var activateMap = function (data) {
     map.classList.remove('map--faded');
     window.form.activate();
-    addPinsOnMap();
+    addPinsOnMap(data);
     mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
   };
 
   // Добавление пинов на карту
-  var addPinsOnMap = function () {
-    for (var n = 0; n < offerPins.length; n++) {
-      fragment.appendChild(window.pin.render(offerPins[n]));
+  var addPinsOnMap = function (data) {
+    for (var n = 0; n < data.length; n++) {
+      fragment.appendChild(window.pin.render(data[n]));
     }
     mapPins.appendChild(fragment);
   };
@@ -39,19 +47,18 @@
   // Обработчики событий
   var onMainPinMouseDown = function (evt) {
     if (evt.which === 1) {
-      activateMap();
+      window.server(activateMap, onLoadError);
     }
   };
 
   var onMainPinKeyDown = function (evt) {
     if (evt.key === 'Enter') {
-      activateMap();
+      window.server(activateMap, onLoadError);
     }
   };
 
   mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
   mainMapPin.addEventListener('keydown', onMainPinKeyDown);
-
   mainMapPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 

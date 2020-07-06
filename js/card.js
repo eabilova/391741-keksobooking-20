@@ -17,6 +17,7 @@
     var offerFeatures = newOfferCard.querySelector('.popup__features');
     var offerFeature = offerFeatures.querySelectorAll('.popup__feature');
     var popPhotos = newOfferCard.querySelector('.popup__photos');
+    var roomPhoto = popPhotos.querySelector('img');
     var closePopupButton = newOfferCard.querySelector('.popup__close');
 
     mapCard.querySelector('.popup__avatar').src = offerPin.author.avatar;
@@ -29,7 +30,8 @@
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
     hideUnusedFeatures(offerFeature, offerPin);
-    popPhotos.querySelector('img').src = offerPin.offer.photos;
+    addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
+
     window.map.element.appendChild(mapCard);
 
     closePopupButton.addEventListener('click', function () {
@@ -37,6 +39,22 @@
     });
 
     return mapCard;
+  };
+
+  // перебор фото в карточке
+  var addPhotos = function (parentNode, photoElement, photo) {
+    var photoFragment = document.createDocumentFragment();
+    parentNode.removeChild(photoElement);
+    if (photo.length !== 0) {
+      for (var m = 0; m < photo.length; m++) {
+        var newPhoto = document.createElement('img');
+        newPhoto.classList.add('popup__photo');
+        newPhoto.width = '45';
+        newPhoto.src = photo[m];
+        photoFragment.appendChild(newPhoto);
+      }
+      parentNode.appendChild(photoFragment);
+    }
   };
 
   var replaceOfferCard = function (offerPin) {
@@ -64,9 +82,11 @@
   var hideUnusedFeatures = function (childrenElements, offerData) {
     for (var k = 0; k < window.data.FEATURES.length; k++) {
       var feature = offerData.offer.features;
-      var featureCheck = childrenElements[k];
-      if (!featureCheck.classList.contains('popup__feature--' + feature)) {
-        featureCheck.classList.add('hidden');
+      for (var n = 0; n < feature.length; n++) {
+        var featureCheck = childrenElements[n];
+        if (!featureCheck.classList.contains('popup__feature--' + feature[k])) {
+          featureCheck.classList.add('hidden');
+        }
       }
     }
   };
