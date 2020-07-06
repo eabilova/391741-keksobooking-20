@@ -17,13 +17,18 @@
     }
   };
 
+  var onSuccess = function (data) {
+    offerPins = data;
+
+    mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
+    mainMapPin.addEventListener('keydown', onMainPinKeyDown);
+  };
+
   var onError = function (message) {
     console.error(message);
   };
 
-  var onSuccess = function (data) {
-    offerPins = data;
-  };
+  window.server(onSuccess, onError);
 
   // Активация карты
   var activateMap = function () {
@@ -35,7 +40,7 @@
   };
 
   // Добавление пинов на карту
-  var offerPins = window.server(onSuccess, onError);
+  var offerPins = onSuccess;
 
   var addPinsOnMap = function () {
     for (var n = 0; n < offerPins.length; n++) {
@@ -56,9 +61,6 @@
       activateMap();
     }
   };
-
-  mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
-  mainMapPin.addEventListener('keydown', onMainPinKeyDown);
 
   mainMapPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
