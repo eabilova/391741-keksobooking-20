@@ -2,8 +2,8 @@
 (function () {
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
+  var allMapPins = document.querySelectorAll('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
-  var mapOverlay = map.querySelector('.map__overlay');
   var fragment = document.createDocumentFragment();
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
@@ -24,8 +24,10 @@
     var errorMessage = document.createElement('div');
     errorMessage.classList.add('error__message');
     errorMessage.textContent = message;
-    mapOverlay.appendChild(errorBox);
+    window.main.element.appendChild(errorBox);
     errorBox.appendChild(errorMessage);
+    document.addEventListener('keydown', window.main.closeMessages);
+    document.addEventListener('mousedown', window.main.closeMessages);
   };
 
   var activateMap = function (data) {
@@ -36,6 +38,14 @@
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
   };
 
+  // Деактивация карты
+  var deactivateMap = function () {
+    map.classList.add('map--faded');
+    removePinsFromMap();
+    mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
+    mainMapPin.addEventListener('keydown', onMainPinKeyDown);
+  };
+
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
     for (var n = 0; n < data.length; n++) {
@@ -44,21 +54,31 @@
     mapPins.appendChild(fragment);
   };
 
-  // Обработчики событий
+  var removePinsFromMap = function () {
+    for (var n = 0; n < allMapPins.length; n++) {
+      if (allMapPins[n].classList.contains('map__pin--main')) {
+        allMapPins[n].remove();
+      }
+    }
+  };
+
+  // Функции для обработчиков событий
   var onMainPinMouseDown = function (evt) {
     if (evt.which === 1) {
-      window.server(activateMap, onLoadError);
+      window.server.getInfo(activateMap, onLoadError);
     }
   };
 
   var onMainPinKeyDown = function (evt) {
     if (evt.key === 'Enter') {
-      window.server(activateMap, onLoadError);
+      window.server.getInfo(activateMap, onLoadError);
     }
   };
 
+  // Обработчики событий
   mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
   mainMapPin.addEventListener('keydown', onMainPinKeyDown);
+
   mainMapPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -113,6 +133,7 @@
   window.map = {
     element: map,
     mainPin: mainMapPin,
+    deactivate: deactivateMap,
     halfOfPinWidth: halfOfPinWidth,
     halfOfPinHeight: halfOfPinHeight
   };

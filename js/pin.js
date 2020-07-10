@@ -28,6 +28,6 @@
 
   // Объявление экспорта
   window.pin = {
-    render: renderPin
+    render: renderPin,
   };
 })();

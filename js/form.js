@@ -10,6 +10,8 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
+  var retryButton;
+  var resetButton = formElement.querySelector('.ad-form__reset');
   var pinCenterPositionX = window.map.mainPin.offsetLeft;
   var pinCenterPositionY = window.map.mainPin.offsetTop;
   var PinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
@@ -38,6 +40,14 @@
     validateNumbers();
     validateRoomTypeAndMinPrice();
     toggleFormElement(formElement, false);
+  };
+
+  // Деактивация формы
+  var deactivateFormElements = function () {
+    formElement.classList.add('ad-form--disabled');
+    setAddress(pinCenterPositionX, PinWithTailPositionY);
+    toggleFormElement(window.filter.set, true);
+    toggleFormElement(formElement, true);
   };
 
   // Функция валидации соответствия количества комнат и гостей
@@ -75,6 +85,32 @@
     }
   };
 
+  // Отправка формы
+  var onSendSuccess = function () {
+    var successMessageTemplate = document.querySelector('#success').content;
+    var successMessage = successMessageTemplate.cloneNode(true);
+    window.main.element.appendChild(successMessage);
+    formElement.reset();
+    deactivateFormElements();
+    window.map.deactivate();
+  };
+
+  var onSendFailure = function () {
+    var errorMessageTemplate = document.querySelector('#error').content;
+    var errorsMessage = errorMessageTemplate.cloneNode(true);
+    window.main.element.appendChild(errorsMessage);
+    retryButton = document.querySelector('.error__button');
+    var popUpMessage = document.querySelector('.error');
+    document.addEventListener('keydown', window.main.closeMessages);
+    document.addEventListener('mousedown', window.main.closeMessages);
+
+    retryButton.addEventListener('mousedown', function (evt) {
+      if (evt.which === 1) {
+        popUpMessage.remove();
+      }
+    });
+  };
+
   // Обработчики событий
   roomNumber.addEventListener('change', function () {
     validateNumbers();
@@ -93,6 +129,18 @@
 
   checkout.addEventListener('change', function () {
     checkin.value = checkout.value;
+  });
+
+  formElement.addEventListener('submit', function (evt) {
+    var formData = new FormData(formElement);
+    window.server.postInfo(formData, onSendSuccess, onSendFailure);
+    evt.preventDefault();
+  });
+
+  resetButton.addEventListener('mousedown', function () {
+    formElement.reset();
+    deactivateFormElements();
+    window.map.deactivate();
   });
 
   // Объявление экспорта
