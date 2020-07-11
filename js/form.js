@@ -14,7 +14,7 @@
   var resetButton = formElement.querySelector('.ad-form__reset');
   var pinCenterPositionX = window.map.mainPin.offsetLeft;
   var pinCenterPositionY = window.map.mainPin.offsetTop;
-  var PinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
+  var pinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -35,7 +35,7 @@
   // Активация формы
   var activateFormElements = function () {
     formElement.classList.remove('ad-form--disabled');
-    setAddress(pinCenterPositionX, PinWithTailPositionY);
+    setAddress(pinCenterPositionX, pinWithTailPositionY);
     toggleFormElement(window.filter.set, false);
     validateNumbers();
     validateRoomTypeAndMinPrice();
@@ -45,7 +45,7 @@
   // Деактивация формы
   var deactivateFormElements = function () {
     formElement.classList.add('ad-form--disabled');
-    setAddress(pinCenterPositionX, PinWithTailPositionY);
+    setAddress(pinCenterPositionX, pinCenterPositionY);
     toggleFormElement(window.filter.set, true);
     toggleFormElement(formElement, true);
   };
@@ -99,10 +99,11 @@
     var errorMessageTemplate = document.querySelector('#error').content;
     var errorsMessage = errorMessageTemplate.cloneNode(true);
     window.main.element.appendChild(errorsMessage);
-    retryButton = document.querySelector('.error__button');
     var popUpMessage = document.querySelector('.error');
-    document.addEventListener('keydown', window.main.keyDown);
-    document.addEventListener('mousedown', window.main.mouseDown);
+    retryButton = popUpMessage.querySelector('.error__button');
+
+    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
+    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
 
     retryButton.addEventListener('mousedown', function (evt) {
       if (evt.which === 1) {
@@ -134,7 +135,7 @@
   formElement.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var formData = new FormData(formElement);
-    window.server.postInfo(formData, onSendSuccess, onSendFailure);
+    window.server.postInfo(onSendSuccess, onSendFailure, formData);
   });
 
   resetButton.addEventListener('mousedown', function () {

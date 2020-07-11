@@ -6,9 +6,7 @@
     postData: 'https://javascript.pages.academy/keksobooking'
   };
 
-  var xhrLoad = function (onSuccess, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+  var xhrLoad = function (xhr, onSuccess, onError) {
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
@@ -39,15 +37,19 @@
   };
 
   var getInfo = function (onSuccess, onError) {
-    var xhr = xhrLoad(onSuccess, onError);
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
     xhr.open('GET', url.getData);
+    xhrLoad(xhr, onSuccess, onError);
     xhr.send();
   };
 
-  var postInfo = function (data, onSuccess, onError) {
-    var xhr = xhrLoad(onSuccess, onError);
+  var postInfo = function (onSuccess, onError, data) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
     xhr.open('POST', url.postData);
     xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+    xhrLoad(xhr, onSuccess, onError);
     xhr.send(data);
   };
 
