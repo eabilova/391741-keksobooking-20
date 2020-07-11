@@ -72,29 +72,37 @@
     switch (roomType.value) {
       case 'palace':
         roomPrice.min = 10000;
+        roomPrice.placeholder = '10000';
         break;
       case 'house':
         roomPrice.min = 5000;
+        roomPrice.placeholder = '5000';
         break;
       case 'flat':
         roomPrice.min = 1000;
+        roomPrice.placeholder = '1000';
         break;
       case 'bungalo':
         roomPrice.min = 0;
+        roomPrice.placeholder = '0';
         break;
     }
   };
 
-  // Отправка формы
+  // Сообщение об удачной отправке формы
   var onSendSuccess = function () {
     var successMessageTemplate = document.querySelector('#success').content;
     var successMessage = successMessageTemplate.cloneNode(true);
     window.main.element.appendChild(successMessage);
+    var popUpMessage = document.querySelector('.success');
     formElement.reset();
     deactivateFormElements();
     window.map.deactivate();
+    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
+    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
   };
 
+  // Сообщение о неудачной отправке формы
   var onSendFailure = function () {
     var errorMessageTemplate = document.querySelector('#error').content;
     var errorsMessage = errorMessageTemplate.cloneNode(true);

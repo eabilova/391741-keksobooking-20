@@ -19,16 +19,18 @@
     }
   };
 
+  // Вывод сообщения при ошибке загрузки данный из сервера
   var onLoadError = function (message) {
     var errorBox = document.createElement('div');
     errorBox.classList.add('error');
-    var errorMessage = document.createElement('div');
+    var errorMessage = document.createElement('p');
     errorMessage.classList.add('error__message');
     errorMessage.textContent = message;
     window.main.element.appendChild(errorBox);
     errorBox.appendChild(errorMessage);
-    document.addEventListener('keydown', window.main.onDocumentKeyDown);
-    document.addEventListener('mousedown', window.main.onDocumentKeyDown);
+    var popUpMessage = document.querySelector('.error');
+    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
+    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
   };
 
   // Активация карты
