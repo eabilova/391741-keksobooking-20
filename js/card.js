@@ -32,8 +32,6 @@
     hideUnusedFeatures(offerFeature, offerPin);
     addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
 
-    window.map.element.appendChild(mapCard);
-
     closePopupButton.addEventListener('click', function () {
       removeCard();
     });
@@ -62,6 +60,7 @@
       removeCard();
     }
     offerCard = createOfferCard(offerPin);
+    window.map.element.appendChild(offerCard);
     document.addEventListener('keydown', onDocumentKeyDown);
   };
 
