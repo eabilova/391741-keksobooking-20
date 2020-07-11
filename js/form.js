@@ -101,8 +101,8 @@
     window.main.element.appendChild(errorsMessage);
     retryButton = document.querySelector('.error__button');
     var popUpMessage = document.querySelector('.error');
-    document.addEventListener('keydown', window.main.closeMessages);
-    document.addEventListener('mousedown', window.main.closeMessages);
+    document.addEventListener('keydown', window.main.keyMouseDown);
+    document.addEventListener('mousedown', window.main.keyMouseDown);
 
     retryButton.addEventListener('mousedown', function (evt) {
       if (evt.which === 1) {
@@ -132,9 +132,9 @@
   });
 
   formElement.addEventListener('submit', function (evt) {
+    evt.preventDefault();
     var formData = new FormData(formElement);
     window.server.postInfo(formData, onSendSuccess, onSendFailure);
-    evt.preventDefault();
   });
 
   resetButton.addEventListener('mousedown', function () {

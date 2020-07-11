@@ -26,10 +26,11 @@
     errorMessage.textContent = message;
     window.main.element.appendChild(errorBox);
     errorBox.appendChild(errorMessage);
-    document.addEventListener('keydown', window.main.closeMessages);
-    document.addEventListener('mousedown', window.main.closeMessages);
+    document.addEventListener('keydown', window.main.keyMouseDown);
+    document.addEventListener('mousedown', window.main.keyMouseDown);
   };
 
+  // Активация карты
   var activateMap = function (data) {
     map.classList.remove('map--faded');
     window.form.activate();

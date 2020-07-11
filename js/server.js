@@ -47,7 +47,7 @@
   var postInfo = function (data, onSuccess, onError) {
     var xhr = xhrLoad(onSuccess, onError);
     xhr.open('POST', url.postData);
-    xhr.setRequestHeader('Content-Type, Access-Control-Allow-Origin', 'multipart/form-data');
+    xhr.setRequestHeader('Content-Type', 'multipart/form-data');
     xhr.send(data);
   };
 
