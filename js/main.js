@@ -5,18 +5,25 @@
   var closeMessages = function () {
     mainElement.querySelector('.error').remove();
     mainElement.querySelector('.success').remove();
-    document.removeEventListener('keydown', onDocumentKeyMouseDown);
-    document.removeEventListener('mousedown', onDocumentKeyMouseDown);
+    document.removeEventListener('keydown', onDocumentKeyDown);
+    document.removeEventListener('mousedown', onDocumentMouseDown);
   };
 
-  var onDocumentKeyMouseDown = function (evt) {
-    if ((evt.key === 'Escape') || (evt.which === 1)) {
+  var onDocumentKeyDown = function (evt) {
+    if (evt.key === 'Escape') {
+      closeMessages();
+    }
+  };
+
+  var onDocumentMouseDown = function (evt) {
+    if (evt.which === 1) {
       closeMessages();
     }
   };
 
   window.main = {
-    keyMouseDown: onDocumentKeyMouseDown,
+    keyDown: onDocumentKeyDown,
+    mouseDown: onDocumentMouseDown,
     element: mainElement
   };
 })();

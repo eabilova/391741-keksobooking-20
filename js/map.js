@@ -2,7 +2,6 @@
 (function () {
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
-  var allMapPins = document.querySelectorAll('.map__pins');
   var mainMapPin = mapPins.querySelector('.map__pin--main');
   var fragment = document.createDocumentFragment();
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
@@ -26,8 +25,8 @@
     errorMessage.textContent = message;
     window.main.element.appendChild(errorBox);
     errorBox.appendChild(errorMessage);
-    document.addEventListener('keydown', window.main.keyMouseDown);
-    document.addEventListener('mousedown', window.main.keyMouseDown);
+    document.addEventListener('keydown', window.main.keyDown);
+    document.addEventListener('mousedown', window.main.mouseDown);
   };
 
   // Активация карты
@@ -39,14 +38,6 @@
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
   };
 
-  // Деактивация карты
-  var deactivateMap = function () {
-    map.classList.add('map--faded');
-    removePinsFromMap();
-    mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
-    mainMapPin.addEventListener('keydown', onMainPinKeyDown);
-  };
-
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
     for (var n = 0; n < data.length; n++) {
@@ -55,9 +46,19 @@
     mapPins.appendChild(fragment);
   };
 
+  // Деактивация карты
+  var deactivateMap = function () {
+    map.classList.add('map--faded');
+    removePinsFromMap();
+    mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
+    mainMapPin.addEventListener('keydown', onMainPinKeyDown);
+  };
+
+  // Удаление пинов с карты
   var removePinsFromMap = function () {
+    var allMapPins = mapPins.querySelectorAll('.map__pin');
     for (var n = 0; n < allMapPins.length; n++) {
-      if (allMapPins[n].classList.contains('map__pin--main')) {
+      if (!allMapPins[n].classList.contains('map__pin--main')) {
         allMapPins[n].remove();
       }
     }

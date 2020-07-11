@@ -101,8 +101,8 @@
     window.main.element.appendChild(errorsMessage);
     retryButton = document.querySelector('.error__button');
     var popUpMessage = document.querySelector('.error');
-    document.addEventListener('keydown', window.main.keyMouseDown);
-    document.addEventListener('mousedown', window.main.keyMouseDown);
+    document.addEventListener('keydown', window.main.keyDown);
+    document.addEventListener('mousedown', window.main.mouseDown);
 
     retryButton.addEventListener('mousedown', function (evt) {
       if (evt.which === 1) {
