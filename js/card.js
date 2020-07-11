@@ -66,8 +66,10 @@
 
   // Удаление карточки предложения
   var removeCard = function () {
-    offerCard.remove();
-    document.removeEventListener('keydown', onDocumentKeyDown);
+    if (window.map.element.querySelector('.map__card')) {
+      offerCard.remove();
+      document.removeEventListener('keydown', onDocumentKeyDown);
+    }
   };
 
   // Закрытие окошка попапа

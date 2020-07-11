@@ -52,11 +52,9 @@
 
   // Деактивация карты
   var deactivateMap = function () {
-    if (map.querySelector('.map__card')) {
-      window.card.remove();
-    }
-    map.classList.add('map--faded');
+    window.card.remove();
     removePinsFromMap();
+    map.classList.add('map--faded');
     mainMapPin.style.left = DEFAULT_MAIN_PIN_LOCATION_X + 'px';
     mainMapPin.style.top = DEFAULT_MAIN_PIN_LOCATION_Y + 'px';
     mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
