@@ -29,7 +29,7 @@
     mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
-    hideUnusedFeatures(offerFeature, offerPin);
+    checkFeatures(offerFeature, offerPin);
     addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
 
     closePopupButton.addEventListener('click', function () {
@@ -43,7 +43,7 @@
   var addPhotos = function (parentNode, photoElement, photo) {
     var photoFragment = document.createDocumentFragment();
     parentNode.removeChild(photoElement);
-    if (photo.length !== 0) {
+    if (photo.length > 0) {
       for (var m = 0; m < photo.length; m++) {
         var newPhoto = document.createElement('img');
         newPhoto.classList.add('popup__photo');
@@ -80,14 +80,18 @@
   };
 
   // Скрытие фич, которых нет в предложении
-  var hideUnusedFeatures = function (childrenElements, offerData) {
-    for (var k = 0; k < window.data.FEATURES.length; k++) {
-      var feature = offerData.offer.features;
-      for (var n = 0; n < feature.length; n++) {
-        var featureCheck = childrenElements[n];
-        if (!featureCheck.classList.contains('popup__feature--' + feature[k])) {
-          featureCheck.classList.add('hidden');
-        }
+  var checkFeatures = function (childrenElements, offerData) {
+    for (var k = 0; k < childrenElements.length; k++) {
+      var features = offerData.offer.features;
+      hideUnusedFeatures(childrenElements, features, features[k]);
+    }
+  };
+
+  var hideUnusedFeatures = function (childrenElements, features, feature) {
+    for (var n = 0; n < features.length; n++) {
+      var featureCheck = childrenElements[n];
+      if (!featureCheck.classList.contains('popup__feature--' + feature)) {
+        featureCheck.classList.add('hidden');
       }
     }
   };
