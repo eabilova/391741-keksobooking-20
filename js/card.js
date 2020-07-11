@@ -93,6 +93,7 @@
 
   // Объявление экспорта
   window.card = {
-    replace: replaceOfferCard
+    replace: replaceOfferCard,
+    remove: removeCard
   };
 })();

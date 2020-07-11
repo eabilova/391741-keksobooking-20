@@ -48,7 +48,6 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.open('POST', url.postData);
-    xhr.setRequestHeader('Content-Type', 'multipart/form-data');
     xhrLoad(xhr, onSuccess, onError);
     xhr.send(data);
   };

@@ -95,11 +95,11 @@
     var successMessage = successMessageTemplate.cloneNode(true);
     window.main.element.appendChild(successMessage);
     var popUpMessage = document.querySelector('.success');
+    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
+    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
     formElement.reset();
     deactivateFormElements();
     window.map.deactivate();
-    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
-    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
   };
 
   // Сообщение о неудачной отправке формы
