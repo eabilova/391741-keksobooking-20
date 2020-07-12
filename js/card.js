@@ -83,15 +83,17 @@
   var checkFeatures = function (childrenElements, offerData) {
     for (var k = 0; k < childrenElements.length; k++) {
       var features = offerData.offer.features;
-      hideUnusedFeatures(childrenElements, features, features[k]);
+      var checkedFeatures = childrenElements;
+      hideUnusedFeatures(checkedFeatures[k], features);
     }
   };
 
-  var hideUnusedFeatures = function (childrenElements, features, feature) {
+  var hideUnusedFeatures = function (checkedFeatures, features) {
     for (var n = 0; n < features.length; n++) {
-      var featureCheck = childrenElements[n];
-      if (!featureCheck.classList.contains('popup__feature--' + feature)) {
-        featureCheck.classList.add('hidden');
+      checkedFeatures.classList.add('hidden');
+      if (checkedFeatures.classList.contains('popup__feature--' + features[n])) {
+        checkedFeatures.classList.remove('hidden');
+        break;
       }
     }
   };
