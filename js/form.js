@@ -12,9 +12,9 @@
   var myAddress = document.querySelector('#address');
   var retryButton;
   var resetButton = formElement.querySelector('.ad-form__reset');
-  var pinCenterPositionX = window.map.mainPin.offsetLeft;
-  var pinCenterPositionY = window.map.mainPin.offsetTop;
-  var pinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
+  var pinCenterPositionX = window.mainpin.element.offsetLeft;
+  var pinCenterPositionY = window.mainpin.element.offsetTop;
+  var pinWithTailPositionY = window.mainpin.element.offsetTop + window.mainpin.halfOfPinHeight + PIN_TAIL_HEIGHT;
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -27,7 +27,7 @@
 
   // Определение положение главного пина после активации и смещения
   var setAddress = function (x, y) {
-    myAddress.value = Math.round(x + window.map.halfOfPinWidth) + ', ' + Math.round(y + window.map.halfOfPinHeight);
+    myAddress.value = Math.round(x + window.mainpin.halfOfPinWidth) + ', ' + Math.round(y + window.mainpin.halfOfPinHeight);
   };
 
   setAddress(pinCenterPositionX, pinCenterPositionY);

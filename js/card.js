@@ -39,10 +39,15 @@
     return mapCard;
   };
 
-  // перебор фото в карточке
+  // Добавление фото  фото в карточке
   var addPhotos = function (parentNode, photoElement, photo) {
-    var photoFragment = document.createDocumentFragment();
     parentNode.removeChild(photoElement);
+    parentNode.appendChild(createPhotoElement(photo));
+  };
+
+  // Создание эелементов для фотографий
+  var createPhotoElement = function (photo) {
+    var photoFragment = document.createDocumentFragment();
     if (photo.length > 0) {
       for (var m = 0; m < photo.length; m++) {
         var newPhoto = document.createElement('img');
@@ -51,8 +56,8 @@
         newPhoto.src = photo[m];
         photoFragment.appendChild(newPhoto);
       }
-      parentNode.appendChild(photoFragment);
     }
+    return photoFragment;
   };
 
   // Удаление карточки предложения
@@ -61,7 +66,6 @@
       offerCard.remove();
       document.removeEventListener('keydown', onDocumentKeyDown);
     }
-
     offerCard = createOfferCard(offerPin);
     window.map.element.appendChild(offerCard);
     document.addEventListener('keydown', onDocumentKeyDown);
