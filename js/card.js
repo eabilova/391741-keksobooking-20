@@ -55,21 +55,16 @@
     }
   };
 
-  var replaceOfferCard = function (offerPin) {
-    if (offerCard) {
-      removeCard();
-    }
-    offerCard = createOfferCard(offerPin);
-    window.map.element.appendChild(offerCard);
-    document.addEventListener('keydown', onDocumentKeyDown);
-  };
-
   // Удаление карточки предложения
-  var removeCard = function () {
-    if (window.map.element.querySelector('.map__card')) {
+  var removeCard = function (offerPin) {
+    if (offerCard) {
       offerCard.remove();
       document.removeEventListener('keydown', onDocumentKeyDown);
     }
+
+    offerCard = createOfferCard(offerPin);
+    window.map.element.appendChild(offerCard);
+    document.addEventListener('keydown', onDocumentKeyDown);
   };
 
   // Закрытие окошка попапа
@@ -83,24 +78,26 @@
   var checkFeatures = function (childrenElements, offerData) {
     for (var k = 0; k < childrenElements.length; k++) {
       var features = offerData.offer.features;
-      var checkedFeatures = childrenElements;
-      hideUnusedFeatures(checkedFeatures[k], features);
+      hideUnusedFeatures(childrenElements[k], features);
     }
   };
 
   var hideUnusedFeatures = function (checkedFeatures, features) {
-    for (var n = 0; n < features.length; n++) {
-      checkedFeatures.classList.add('hidden');
-      if (checkedFeatures.classList.contains('popup__feature--' + features[n])) {
-        checkedFeatures.classList.remove('hidden');
-        break;
+    if (features.length !== 0) {
+      for (var n = 0; n < features.length; n++) {
+        checkedFeatures.classList.add('hidden');
+        if (checkedFeatures.classList.contains('popup__feature--' + features[n])) {
+          checkedFeatures.classList.remove('hidden');
+          break;
+        }
       }
+    } else {
+      checkedFeatures.classList.add('hidden');
     }
   };
 
   // Объявление экспорта
   window.card = {
-    replace: replaceOfferCard,
     remove: removeCard
   };
 })();

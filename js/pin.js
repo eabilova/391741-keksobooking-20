@@ -20,7 +20,7 @@
 
     pinButton.addEventListener('click', function (evt) {
       if (pinButton !== clickedButton) {
-        window.card.replace(offerPin);
+        window.card.remove(offerPin);
       }
       clickedButton = evt.currentTarget;
     });
