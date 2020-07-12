@@ -95,12 +95,10 @@
     document.addEventListener('mouseup', onMainPinMouseUp);
   });
 
-  window.mainpin = {
+  window.mainPin = {
     element: mainMapPin,
     halfOfPinWidth: halfOfPinWidth,
     halfOfPinHeight: halfOfPinHeight,
-    onMainPinKeyDown: onMainPinKeyDown,
-    onMainPinMouseDown: onMainPinMouseDown,
     activate: activateMainPin,
     deactivate: deactivateMainPin
   };

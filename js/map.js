@@ -28,7 +28,7 @@
     map.classList.remove('map--faded');
     window.form.activate();
     addPinsOnMap(data);
-    window.mainpin.activate();
+    window.mainPin.activate();
   };
 
   // Добавление пинов на карту
@@ -44,7 +44,7 @@
     window.card.remove();
     removePinsFromMap();
     map.classList.add('map--faded');
-    window.mainpin.deactivate();
+    window.mainPin.deactivate();
   };
 
   // Удаление пинов с карты
