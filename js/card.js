@@ -49,13 +49,13 @@
   var createPhotoElement = function (photo) {
     var photoFragment = document.createDocumentFragment();
     if (photo.length > 0) {
-      for (var m = 0; m < photo.length; m++) {
+      photo.forEach(function (item) {
         var newPhoto = document.createElement('img');
         newPhoto.classList.add('popup__photo');
         newPhoto.width = '45';
-        newPhoto.src = photo[m];
+        newPhoto.src = item;
         photoFragment.appendChild(newPhoto);
-      }
+      });
     }
     return photoFragment;
   };
@@ -80,10 +80,10 @@
 
   // Скрытие фич, которых нет в предложении
   var checkFeatures = function (childrenElements, offerData) {
-    for (var k = 0; k < childrenElements.length; k++) {
+    childrenElements.forEach(function (item) {
       var features = offerData.offer.features;
-      hideUnusedFeatures(childrenElements[k], features);
-    }
+      hideUnusedFeatures(item, features);
+    });
   };
 
   var hideUnusedFeatures = function (checkedFeatures, features) {

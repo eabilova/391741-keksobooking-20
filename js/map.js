@@ -33,9 +33,9 @@
 
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
-    for (var n = 0; n < data.length; n++) {
-      fragment.appendChild(window.pin.render(data[n]));
-    }
+    data.forEach(function (item) {
+      return fragment.appendChild(window.pin.render(item));
+    });
     mapPins.appendChild(fragment);
   };
 
@@ -50,11 +50,11 @@
   // Удаление пинов с карты
   var removePinsFromMap = function () {
     var allMapPins = mapPins.querySelectorAll('.map__pin');
-    for (var n = 0; n < allMapPins.length; n++) {
-      if (!allMapPins[n].classList.contains('map__pin--main')) {
-        allMapPins[n].remove();
+    allMapPins.forEach(function (item) {
+      if (!item.classList.contains('map__pin--main')) {
+        item.remove();
       }
-    }
+    });
   };
 
   // Объявление экспорта
