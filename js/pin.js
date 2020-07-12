@@ -21,6 +21,7 @@
     pinButton.addEventListener('click', function (evt) {
       if (pinButton !== clickedButton) {
         window.card.remove(offerPin);
+        window.card.create(offerPin);
       }
       clickedButton = evt.currentTarget;
     });

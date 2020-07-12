@@ -60,15 +60,18 @@
     return photoFragment;
   };
 
+  var createCard = function (offerPin) {
+    offerCard = createOfferCard(offerPin);
+    window.map.element.appendChild(offerCard);
+    document.addEventListener('keydown', onDocumentKeyDown);
+  };
+
   // Удаление карточки предложения
-  var removeCard = function (offerPin) {
+  var removeCard = function () {
     if (offerCard) {
       offerCard.remove();
       document.removeEventListener('keydown', onDocumentKeyDown);
     }
-    offerCard = createOfferCard(offerPin);
-    window.map.element.appendChild(offerCard);
-    document.addEventListener('keydown', onDocumentKeyDown);
   };
 
   // Закрытие окошка попапа
@@ -102,6 +105,7 @@
 
   // Объявление экспорта
   window.card = {
+    create: createCard,
     remove: removeCard
   };
 })();
