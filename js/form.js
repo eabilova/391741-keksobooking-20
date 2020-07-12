@@ -10,9 +10,11 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
-  var pinCenterPositionX = window.map.mainPin.offsetLeft;
-  var pinCenterPositionY = window.map.mainPin.offsetTop;
-  var PinWithTailPositionY = window.map.mainPin.offsetTop + window.map.halfOfPinHeight + PIN_TAIL_HEIGHT;
+  var retryButton;
+  var resetButton = formElement.querySelector('.ad-form__reset');
+  var pinCenterPositionX = window.mainPin.element.offsetLeft;
+  var pinCenterPositionY = window.mainPin.element.offsetTop;
+  var pinWithTailPositionY = window.mainPin.element.offsetTop + window.mainPin.halfOfPinHeight + PIN_TAIL_HEIGHT;
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (element, isDisabled) {
@@ -25,7 +27,7 @@
 
   // Определение положение главного пина после активации и смещения
   var setAddress = function (x, y) {
-    myAddress.value = Math.round(x + window.map.halfOfPinWidth) + ', ' + Math.round(y + window.map.halfOfPinHeight);
+    myAddress.value = Math.round(x + window.mainPin.halfOfPinWidth) + ', ' + Math.round(y + window.mainPin.halfOfPinHeight);
   };
 
   setAddress(pinCenterPositionX, pinCenterPositionY);
@@ -33,11 +35,19 @@
   // Активация формы
   var activateFormElements = function () {
     formElement.classList.remove('ad-form--disabled');
-    setAddress(pinCenterPositionX, PinWithTailPositionY);
+    setAddress(pinCenterPositionX, pinWithTailPositionY);
     toggleFormElement(window.filter.set, false);
     validateNumbers();
     validateRoomTypeAndMinPrice();
     toggleFormElement(formElement, false);
+  };
+
+  // Деактивация формы
+  var deactivateFormElements = function () {
+    formElement.classList.add('ad-form--disabled');
+    setAddress(pinCenterPositionX, pinCenterPositionY);
+    toggleFormElement(window.filter.set, true);
+    toggleFormElement(formElement, true);
   };
 
   // Функция валидации соответствия количества комнат и гостей
@@ -62,17 +72,60 @@
     switch (roomType.value) {
       case 'palace':
         roomPrice.min = 10000;
+        roomPrice.placeholder = '10000';
         break;
       case 'house':
         roomPrice.min = 5000;
+        roomPrice.placeholder = '5000';
         break;
       case 'flat':
         roomPrice.min = 1000;
+        roomPrice.placeholder = '1000';
         break;
       case 'bungalo':
         roomPrice.min = 0;
+        roomPrice.placeholder = '0';
         break;
     }
+  };
+  // Создание сообщения об удачной операции
+  var createSuccessMessage = function () {
+    var successMessageTemplate = document.querySelector('#success').content;
+    var successMessage = successMessageTemplate.cloneNode(true);
+    window.main.element.appendChild(successMessage);
+  };
+
+  // Сообщение об удачной отправке формы
+  var onSendSuccess = function () {
+    createSuccessMessage();
+    var popUpMessage = document.querySelector('.success');
+    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
+    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
+    formElement.reset();
+    deactivateFormElements();
+    window.map.deactivate();
+  };
+
+  // Создание сообщения об удачной операции
+  var createErrorMessage = function () {
+    var errorMessageTemplate = document.querySelector('#error').content;
+    var errorsMessage = errorMessageTemplate.cloneNode(true);
+    window.main.element.appendChild(errorsMessage);
+  };
+
+  // Сообщение о неудачной отправке формы
+  var onSendFailure = function () {
+    createErrorMessage();
+    var popUpMessage = document.querySelector('.error');
+    retryButton = popUpMessage.querySelector('.error__button');
+    document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
+    document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
+
+    retryButton.addEventListener('mousedown', function (evt) {
+      if (evt.which === 1) {
+        popUpMessage.remove();
+      }
+    });
   };
 
   // Обработчики событий
@@ -93,6 +146,18 @@
 
   checkout.addEventListener('change', function () {
     checkin.value = checkout.value;
+  });
+
+  formElement.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var formData = new FormData(formElement);
+    window.server.postInfo(onSendSuccess, onSendFailure, formData);
+  });
+
+  resetButton.addEventListener('mousedown', function () {
+    formElement.reset();
+    deactivateFormElements();
+    window.map.deactivate();
   });
 
   // Объявление экспорта

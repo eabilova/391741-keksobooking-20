@@ -29,10 +29,8 @@
     mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
-    hideUnusedFeatures(offerFeature, offerPin);
+    checkFeatures(offerFeature, offerPin);
     addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
-
-    window.map.element.appendChild(mapCard);
 
     closePopupButton.addEventListener('click', function () {
       removeCard();
@@ -41,34 +39,39 @@
     return mapCard;
   };
 
-  // перебор фото в карточке
+  // Добавление фото  фото в карточке
   var addPhotos = function (parentNode, photoElement, photo) {
-    var photoFragment = document.createDocumentFragment();
     parentNode.removeChild(photoElement);
-    if (photo.length !== 0) {
-      for (var m = 0; m < photo.length; m++) {
+    parentNode.appendChild(createPhotoElement(photo));
+  };
+
+  // Создание эелементов для фотографий
+  var createPhotoElement = function (photo) {
+    var photoFragment = document.createDocumentFragment();
+    if (photo.length > 0) {
+      photo.forEach(function (item) {
         var newPhoto = document.createElement('img');
         newPhoto.classList.add('popup__photo');
         newPhoto.width = '45';
-        newPhoto.src = photo[m];
+        newPhoto.src = item;
         photoFragment.appendChild(newPhoto);
-      }
-      parentNode.appendChild(photoFragment);
+      });
     }
+    return photoFragment;
   };
 
-  var replaceOfferCard = function (offerPin) {
-    if (offerCard) {
-      removeCard();
-    }
+  var createCard = function (offerPin) {
     offerCard = createOfferCard(offerPin);
+    window.map.element.appendChild(offerCard);
     document.addEventListener('keydown', onDocumentKeyDown);
   };
 
   // Удаление карточки предложения
   var removeCard = function () {
-    offerCard.remove();
-    document.removeEventListener('keydown', onDocumentKeyDown);
+    if (offerCard) {
+      offerCard.remove();
+      document.removeEventListener('keydown', onDocumentKeyDown);
+    }
   };
 
   // Закрытие окошка попапа
@@ -79,20 +82,30 @@
   };
 
   // Скрытие фич, которых нет в предложении
-  var hideUnusedFeatures = function (childrenElements, offerData) {
-    for (var k = 0; k < window.data.FEATURES.length; k++) {
-      var feature = offerData.offer.features;
-      for (var n = 0; n < feature.length; n++) {
-        var featureCheck = childrenElements[n];
-        if (!featureCheck.classList.contains('popup__feature--' + feature[k])) {
-          featureCheck.classList.add('hidden');
+  var checkFeatures = function (childrenElements, offerData) {
+    childrenElements.forEach(function (item) {
+      var features = offerData.offer.features;
+      hideUnusedFeatures(item, features);
+    });
+  };
+
+  var hideUnusedFeatures = function (checkedFeatures, features) {
+    if (features.length !== 0) {
+      for (var n = 0; n < features.length; n++) {
+        checkedFeatures.classList.add('hidden');
+        if (checkedFeatures.classList.contains('popup__feature--' + features[n])) {
+          checkedFeatures.classList.remove('hidden');
+          break;
         }
       }
+    } else {
+      checkedFeatures.classList.add('hidden');
     }
   };
 
   // Объявление экспорта
   window.card = {
-    replace: replaceOfferCard
+    create: createCard,
+    remove: removeCard
   };
 })();

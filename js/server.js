@@ -1,30 +1,60 @@
 'use strict';
 
 (function () {
-  window.server = function (onSuccess, onError) {
-    var xhr = new XMLHttpRequest();
+  var url = {
+    getData: 'https://javascript.pages.academy/keksobooking/data',
+    postData: 'https://javascript.pages.academy/keksobooking'
+  };
 
-    xhr.responseType = 'json';
+  var xhrLoad = function (xhr, onSuccess, onError) {
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onSuccess(xhr.response);
-      } else {
-        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      switch (xhr.status) {
+        case 200:
+          onSuccess(xhr.response);
+          break;
+        case 400:
+          onError('Неверный запрос');
+          break;
+        case 401:
+          onError('Пользователь не авторизован');
+          break;
+        case 404:
+          onError('Ничего не найдено');
+          break;
+        default:
+          onError('Cтатус ответа: : ' + xhr.status + ' ' + xhr.statusText);
       }
     });
-
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения');
     });
-
     xhr.addEventListener('timeout', function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
-
     xhr.timeout = 10000;
+    return xhr;
+  };
 
-    xhr.open('GET', 'https://javascript.pages.academy/keksobooking/data');
+  var getInfo = function (onSuccess, onError) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.open('GET', url.getData);
+    xhrLoad(xhr, onSuccess, onError);
     xhr.send();
+  };
+
+  var postInfo = function (onSuccess, onError, data) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.open('POST', url.postData);
+    xhrLoad(xhr, onSuccess, onError);
+    xhr.send(data);
+  };
+
+
+  window.server = {
+    getInfo: getInfo,
+    postInfo: postInfo
   };
 })();

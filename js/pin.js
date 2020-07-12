@@ -8,17 +8,20 @@
 
   // создание пинов и открытие карточек для каждого пина
   var renderPin = function (offerPin) {
-    var newOfferPin = pinTemplate.cloneNode(true);
-    var pinButton = newOfferPin.querySelector('.map__pin');
-    var pinButtonImage = pinButton.querySelector('img');
-    pinButtonImage.src = offerPin.author.avatar;
-    pinButtonImage.alt = offerPin.offer.title;
-    pinButton.style.left = offerPin.location.x + (PIN_WIDTH / 2) + 'px';
-    pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
+    if (offerPin.hasOwnProperty('offer')) {
+      var newOfferPin = pinTemplate.cloneNode(true);
+      var pinButton = newOfferPin.querySelector('.map__pin');
+      var pinButtonImage = pinButton.querySelector('img');
+      pinButtonImage.src = offerPin.author.avatar;
+      pinButtonImage.alt = offerPin.offer.title;
+      pinButton.style.left = offerPin.location.x + (PIN_WIDTH / 2) + 'px';
+      pinButton.style.top = offerPin.location.y - PIN_HEIGHT + 'px';
+    }
 
     pinButton.addEventListener('click', function (evt) {
       if (pinButton !== clickedButton) {
-        window.card.replace(offerPin);
+        window.card.remove(offerPin);
+        window.card.create(offerPin);
       }
       clickedButton = evt.currentTarget;
     });
@@ -28,6 +31,6 @@
 
   // Объявление экспорта
   window.pin = {
-    render: renderPin
+    render: renderPin,
   };
 })();
