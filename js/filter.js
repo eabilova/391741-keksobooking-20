@@ -4,7 +4,6 @@
 
   var mapFilters = document.querySelector('.map__filters');
   var houseType = mapFilters.querySelector('#housing-type');
-  var availableOffers = window.map.getData();
 
   window.form.toggle(mapFilters, true);
 
@@ -14,31 +13,34 @@
     }
   };
 
-  var filterData = function () {
+  var getFilteredData = function () {
+    var availableOffers = window.map.getData();
     var selectedType = houseType.value;
     var filteredPins = [];
     availableOffers.filter(function(item){
-      if (item.offer.type === selectedType || selectedType === "any") {
+      if (item.offer.type === selectedType || selectedType === 'any') {
         filteredPins.push(item);
       }
     });
-    var shortData = filteredPins.slice(0, OFFER_LIMIT)
-    window.map.addPins(shortData);
+    var shortData = filteredPins.slice(0, OFFER_LIMIT);
+    return shortData;
   }
 
-  var onFilterChange = function () {
-    window.map.removePins();
-    window.card.remove();
-    filterData(availableOffers);
+  var addFilteredData = function () {
+    var filteredData = getFilteredData();
+    window.map.addPins(filteredData);
   };
 
-  houseType.addEventListener('change', onFilterChange);
+  houseType.addEventListener('change', function () {
+    window.map.removePins();
+    window.card.remove();
+    addFilteredData();
+  });
 
   // Объявление экспорта
   window.filter = {
     set: mapFilters,
     activate: activateFilter,
-    check: filterData,
-    change: onFilterChange
+    addData: addFilteredData
   };
 })();

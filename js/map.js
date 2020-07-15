@@ -29,11 +29,11 @@
     availableOffers = data;
     map.classList.remove('map--faded');
     window.form.activate(data);
-    window.filter.check();
+    window.filter.addData();
     window.mainPin.deactivate();
   };
 
-  var returnData = function () {
+  var getData = function () {
     return availableOffers;
   }
 
@@ -67,7 +67,7 @@
   window.map = {
     element: map,
     pins: mapPins,
-    getData: returnData,
+    getData: getData,
     activate: activateMap,
     deactivate: deactivateMap,
     onLoadError: onLoadError,
