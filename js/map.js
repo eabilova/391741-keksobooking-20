@@ -29,7 +29,7 @@
     availableOffers = data;
     map.classList.remove('map--faded');
     window.form.activate(data);
-    window.filter.addData();
+    window.filter.renderData();
     window.mainPin.deactivate();
   };
 

@@ -22,11 +22,10 @@
         filteredPins.push(item);
       }
     });
-    var shortData = filteredPins.slice(0, OFFER_LIMIT);
-    return shortData;
+    return filteredPins.slice(0, OFFER_LIMIT);
   }
 
-  var addFilteredData = function () {
+  var renderFilteredData = function () {
     var filteredData = getFilteredData();
     window.map.addPins(filteredData);
   };
@@ -34,13 +33,13 @@
   houseType.addEventListener('change', function () {
     window.map.removePins();
     window.card.remove();
-    addFilteredData();
+    renderFilteredData();
   });
 
   // Объявление экспорта
   window.filter = {
     set: mapFilters,
     activate: activateFilter,
-    addData: addFilteredData
+    renderData: renderFilteredData
   };
 })();
