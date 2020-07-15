@@ -4,7 +4,7 @@
 
   var mapFilters = document.querySelector('.map__filters');
   var houseType = mapFilters.querySelector('#housing-type');
-  var availableOffers;
+  var availableOffers = window.map.data;
 
   window.form.toggle(mapFilters, true);
 
@@ -14,8 +14,7 @@
     }
   };
 
-  var getData = function (data) {
-    availableOffers = data;
+  var filterData = function () {
     var selectedType = houseType.value;
     var filteredPins = [];
     availableOffers.filter(function(item){
@@ -27,10 +26,11 @@
     window.map.addPins(shortData);
   }
 
+
   var onFilterChange = function () {
     window.map.removePins();
     window.card.remove();
-    getData();
+    filterData(availableOffers);
   };
 
   houseType.addEventListener('change', onFilterChange);
@@ -39,6 +39,7 @@
   window.filter = {
     set: mapFilters,
     activate: activateFilter,
-    getData: getData
+    check: filterData,
+    change: onFilterChange
   };
 })();

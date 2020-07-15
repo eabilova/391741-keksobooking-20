@@ -3,6 +3,7 @@
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
+  var availableOffers;
 
   // Вывод сообщения при ошибке загрузки данный из сервера
   var onLoadError = function (message) {
@@ -25,10 +26,11 @@
 
   // Активация карты
   var activateMap = function (data) {
+    availableOffers = data;
     map.classList.remove('map--faded');
     window.form.activate(data);
-    window.filter.getData(data);
-    window.mainPin.activate();
+    window.filter.check();
+    window.mainPin.deactivate();
   };
 
   // Добавление пинов на карту
@@ -44,7 +46,7 @@
     window.card.remove();
     removePinsFromMap();
     map.classList.add('map--faded');
-    window.mainPin.deactivate();
+    window.mainPin.activate();
   };
 
   // Удаление пинов с карты
@@ -61,6 +63,7 @@
   window.map = {
     element: map,
     pins: mapPins,
+    data: availableOffers,
     activate: activateMap,
     deactivate: deactivateMap,
     onLoadError: onLoadError,
