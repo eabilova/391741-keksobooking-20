@@ -1,7 +1,5 @@
 'use strict';
 (function () {
-  var OFFER_LIMIT = 5;
-
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
@@ -29,15 +27,13 @@
   var activateMap = function (data) {
     map.classList.remove('map--faded');
     window.form.activate(data);
-    addPinsOnMap(data);
+    window.filter.getData(data);
     window.mainPin.activate();
-    window.filter.getInfo(data);
   };
 
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
-    var shortData = data.slice(0, OFFER_LIMIT)
-    shortData.forEach(function (item) {
+    data.forEach(function (item) {
       return fragment.appendChild(window.pin.render(item));
     });
     mapPins.appendChild(fragment);
