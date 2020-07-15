@@ -4,7 +4,7 @@
 
   var mapFilters = document.querySelector('.map__filters');
   var houseType = mapFilters.querySelector('#housing-type');
-  var availableOffers = window.map.data;
+  var availableOffers = window.map.getData();
 
   window.form.toggle(mapFilters, true);
 
@@ -25,7 +25,6 @@
     var shortData = filteredPins.slice(0, OFFER_LIMIT)
     window.map.addPins(shortData);
   }
-
 
   var onFilterChange = function () {
     window.map.removePins();

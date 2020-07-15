@@ -33,6 +33,10 @@
     window.mainPin.deactivate();
   };
 
+  var returnData = function () {
+    return availableOffers;
+  }
+
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
     data.forEach(function (item) {
@@ -63,7 +67,7 @@
   window.map = {
     element: map,
     pins: mapPins,
-    data: availableOffers,
+    getData: returnData,
     activate: activateMap,
     deactivate: deactivateMap,
     onLoadError: onLoadError,
