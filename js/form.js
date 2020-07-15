@@ -33,10 +33,10 @@
   setAddress(pinCenterPositionX, pinCenterPositionY);
 
   // Активация формы
-  var activateFormElements = function () {
+  var activateFormElements = function (data) {
     formElement.classList.remove('ad-form--disabled');
     setAddress(pinCenterPositionX, pinWithTailPositionY);
-    toggleFormElement(window.filter.set, false);
+    window.filter.activate(data);
     validateNumbers();
     validateRoomTypeAndMinPrice();
     toggleFormElement(formElement, false);

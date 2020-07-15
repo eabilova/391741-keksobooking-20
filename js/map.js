@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var OFFER_LIMIT = 5;
+
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
@@ -26,14 +28,16 @@
   // Активация карты
   var activateMap = function (data) {
     map.classList.remove('map--faded');
-    window.form.activate();
+    window.form.activate(data);
     addPinsOnMap(data);
     window.mainPin.activate();
+    window.filter.getInfo(data);
   };
 
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
-    data.forEach(function (item) {
+    var shortData = data.slice(0, OFFER_LIMIT)
+    shortData.forEach(function (item) {
       return fragment.appendChild(window.pin.render(item));
     });
     mapPins.appendChild(fragment);
@@ -63,6 +67,8 @@
     pins: mapPins,
     activate: activateMap,
     deactivate: deactivateMap,
-    onLoadError: onLoadError
+    onLoadError: onLoadError,
+    removePins: removePinsFromMap,
+    addPins: addPinsOnMap
   };
 })();
