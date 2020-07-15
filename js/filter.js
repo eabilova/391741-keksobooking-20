@@ -17,13 +17,13 @@
     var availableOffers = window.map.getData();
     var selectedType = houseType.value;
     var filteredPins = [];
-    availableOffers.filter(function(item){
+    availableOffers.filter(function (item) {
       if (item.offer.type === selectedType || selectedType === 'any') {
         filteredPins.push(item);
       }
     });
     return filteredPins.slice(0, OFFER_LIMIT);
-  }
+  };
 
   var renderFilteredData = function () {
     var filteredData = getFilteredData();

@@ -35,7 +35,7 @@
 
   var getData = function () {
     return availableOffers;
-  }
+  };
 
   // Добавление пинов на карту
   var addPinsOnMap = function (data) {
