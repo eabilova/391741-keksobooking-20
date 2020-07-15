@@ -16,12 +16,12 @@
     }
   };
 
-  var activateMainPin = function () {
+  var deactivateMainPin = function () {
     mainMapPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainMapPin.removeEventListener('keydown', onMainPinKeyDown);
   };
 
-  var deactivateMainPin = function () {
+  var activateMainPin = function () {
     mainMapPin.style.left = DEFAULT_MAIN_PIN_LOCATION_X + 'px';
     mainMapPin.style.top = DEFAULT_MAIN_PIN_LOCATION_Y + 'px';
     mainMapPin.addEventListener('mousedown', onMainPinMouseDown);
