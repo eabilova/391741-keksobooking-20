@@ -25,26 +25,26 @@
     return filteredPins.slice(0, OFFER_LIMIT);
   };
 
-  var filterType = window.debounce(function (item) {
+  var filterType = function (item) {
     return item.offer.type === houseType.value || houseType.value === 'any';
-  });
+  };
 
-  var filterRoomNumber = window.debounce(function (item) {
+  var filterRoomNumber = function (item) {
     return item.offer.rooms === Number(houseRoomNumber.value) || houseRoomNumber.value === 'any';
-  });
+  };
 
-  var filterGuestNumber = window.debounce(function (item) {
+  var filterGuestNumber = function (item) {
     return item.offer.guests === Number(houseGuestNumber.value) || houseGuestNumber.value === 'any';
-  });
+  };
 
-  var filterFeatures = window.debounce(function (item) {
+  var filterFeatures = function (item) {
     var selectedFeatures = houseFeatures.querySelectorAll('input:checked');
     return Array.from(selectedFeatures).every(function (checkedFeature) {
       return item.offer.features.includes(checkedFeature.value);
     });
-  });
+  };
 
-  var filterPrice = window.debounce(function (item) {
+  var filterPrice = function (item) {
     if (item.offer.price <= 10000) {
       item.offer.price = 'low';
     } else if (item.offer.price > 10000 && item.offer.price < 50000) {
@@ -53,18 +53,22 @@
       item.offer.price = 'high';
     }
     return item.offer.price === housePrice.value || housePrice.value === 'any';
-  });
+  };
 
   var renderFilteredData = function () {
     var filteredData = getFilteredData();
     window.map.addPins(filteredData);
   };
 
-  mapFilters.addEventListener('change', function () {
+  // Функции для обработчиков событий
+  var onFilterChange = window.debounce(function () {
     window.map.removePins();
     window.card.remove();
     renderFilteredData();
   });
+
+  // Обработчики событий
+  mapFilters.addEventListener('change', onFilterChange);
 
   // Объявление экспорта
   window.filter = {
