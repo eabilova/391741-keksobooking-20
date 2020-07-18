@@ -45,14 +45,15 @@
   };
 
   var filterPrice = function (item) {
+    var price;
     if (item.offer.price <= 10000) {
-      item.offer.price = 'low';
+      price = 'low';
     } else if (item.offer.price > 10000 && item.offer.price < 50000) {
-      item.offer.price = 'middle';
+      price = 'middle';
     } else if (item.offer.price >= 50000) {
-      item.offer.price = 'high';
+      price = 'high';
     }
-    return item.offer.price === housePrice.value || housePrice.value === 'any';
+    return price === housePrice.value || housePrice.value === 'any';
   };
 
   var renderFilteredData = function () {
