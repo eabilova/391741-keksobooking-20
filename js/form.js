@@ -156,6 +156,7 @@
 
   resetButton.addEventListener('mousedown', function () {
     formElement.reset();
+    window.filter.set.reset();
     deactivateFormElements();
     window.map.deactivate();
   });
