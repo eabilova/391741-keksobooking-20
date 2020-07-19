@@ -1,12 +1,11 @@
 'use strict';
-
 (function () {
-  var url = {
+  var Url = {
     getData: 'https://javascript.pages.academy/keksobooking/data',
     postData: 'https://javascript.pages.academy/keksobooking'
   };
 
-  var xhrLoad = function (xhr, onSuccess, onError) {
+  var loadXhr = function (xhr, onSuccess, onError) {
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
@@ -39,16 +38,16 @@
   var getInfo = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.open('GET', url.getData);
-    xhrLoad(xhr, onSuccess, onError);
+    xhr.open('GET', Url.getData);
+    loadXhr(xhr, onSuccess, onError);
     xhr.send();
   };
 
   var postInfo = function (onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.open('POST', url.postData);
-    xhrLoad(xhr, onSuccess, onError);
+    xhr.open('POST', Url.postData);
+    loadXhr(xhr, onSuccess, onError);
     xhr.send(data);
   };
 

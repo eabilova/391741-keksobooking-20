@@ -9,8 +9,8 @@
   // создание пинов и открытие карточек для каждого пина
   var renderPin = function (offerPin) {
     if (offerPin.hasOwnProperty('offer')) {
-      var newOfferPin = pinTemplate.cloneNode(true);
-      var pinButton = newOfferPin.querySelector('.map__pin');
+      var newOfferPinElement = pinTemplate.cloneNode(true);
+      var pinButton = newOfferPinElement.querySelector('.map__pin');
       var pinButtonImage = pinButton.querySelector('img');
       pinButtonImage.src = offerPin.author.avatar;
       pinButtonImage.alt = offerPin.offer.title;
@@ -20,17 +20,30 @@
 
     pinButton.addEventListener('click', function (evt) {
       if (pinButton !== clickedButton) {
-        window.card.remove(offerPin);
+        window.card.remove(evt.currentTarget);
         window.card.create(offerPin);
       }
       clickedButton = evt.currentTarget;
     });
 
-    return newOfferPin;
+    return newOfferPinElement;
+  };
+
+  // Подствечивание пина при активном состоянии
+  var togglePinStatus = function (button) {
+    var pins = document.querySelectorAll('.map__pin');
+    pins.forEach(function (item) {
+      if (item === button) {
+        item.classList.add('map__pin--active');
+      } else {
+        item.classList.remove('map__pin--active');
+      }
+    });
   };
 
   // Объявление экспорта
   window.pin = {
     render: renderPin,
+    toggleStatus: togglePinStatus
   };
 })();

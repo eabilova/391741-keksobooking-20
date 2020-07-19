@@ -13,43 +13,43 @@
   var createOfferCard = function (offerPin) {
     var cardTemplate = document.querySelector('#card').content;
     var newOfferCard = cardTemplate.cloneNode(true);
-    var mapCard = newOfferCard.querySelector('.map__card');
-    var offerFeatures = newOfferCard.querySelector('.popup__features');
-    var offerFeature = offerFeatures.querySelectorAll('.popup__feature');
-    var popPhotos = newOfferCard.querySelector('.popup__photos');
-    var roomPhoto = popPhotos.querySelector('img');
+    var mapCardElement = newOfferCard.querySelector('.map__card');
+    var featureElement = newOfferCard.querySelector('.popup__features');
+    var offerFeatures = featureElement.querySelectorAll('.popup__feature');
+    var photoElement = newOfferCard.querySelector('.popup__photos');
+    var roomPhoto = photoElement.querySelector('img');
     var closePopupButton = newOfferCard.querySelector('.popup__close');
 
-    mapCard.querySelector('.popup__avatar').src = offerPin.author.avatar;
-    mapCard.querySelector('.popup__avatar').alt = offerPin.offer.title;
-    mapCard.querySelector('.popup__title').textContent = offerPin.offer.title;
-    mapCard.querySelector('.popup__text--address').textContent = offerPin.location.x + '-' + offerPin.location.y + ', ' + offerPin.offer.address;
-    mapCard.querySelector('.popup__text--price').textContent = offerPin.offer.price + '₽/ночь';
-    mapCard.querySelector('.popup__type').textContent = TYPE_DICTIONARY[offerPin.offer.type];
-    mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
-    mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
-    mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
-    checkFeatures(offerFeature, offerPin);
-    addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
+    mapCardElement.querySelector('.popup__avatar').src = offerPin.author.avatar;
+    mapCardElement.querySelector('.popup__avatar').alt = offerPin.offer.title;
+    mapCardElement.querySelector('.popup__title').textContent = offerPin.offer.title;
+    mapCardElement.querySelector('.popup__text--address').textContent = offerPin.offer.address;
+    mapCardElement.querySelector('.popup__text--price').textContent = offerPin.offer.price + '₽/ночь';
+    mapCardElement.querySelector('.popup__type').textContent = TYPE_DICTIONARY[offerPin.offer.type];
+    mapCardElement.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
+    mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
+    mapCardElement.querySelector('.popup__description').textContent = offerPin.offer.description;
+    checkFeatures(offerFeatures, offerPin);
+    addPhotos(photoElement, roomPhoto, offerPin.offer.photos);
 
     closePopupButton.addEventListener('click', function () {
       removeCard();
     });
 
-    return mapCard;
+    return mapCardElement;
   };
 
   // Добавление фото  фото в карточке
-  var addPhotos = function (parentNode, photoElement, photo) {
+  var addPhotos = function (parentNode, photoElement, photos) {
     parentNode.removeChild(photoElement);
-    parentNode.appendChild(createPhotoElement(photo));
+    parentNode.appendChild(createPhotoElement(photos));
   };
 
   // Создание эелементов для фотографий
-  var createPhotoElement = function (photo) {
+  var createPhotoElement = function (photos) {
     var photoFragment = document.createDocumentFragment();
-    if (photo.length > 0) {
-      photo.forEach(function (item) {
+    if (photos.length > 0) {
+      photos.forEach(function (item) {
         var newPhoto = document.createElement('img');
         newPhoto.classList.add('popup__photo');
         newPhoto.width = '45';
@@ -67,7 +67,8 @@
   };
 
   // Удаление карточки предложения
-  var removeCard = function () {
+  var removeCard = function (button) {
+    window.pin.toggleStatus(button);
     if (offerCard) {
       offerCard.remove();
       document.removeEventListener('keydown', onDocumentKeyDown);

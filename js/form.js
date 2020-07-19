@@ -10,16 +10,16 @@
   var checkin = formElement.querySelector('#timein');
   var checkout = formElement.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
-  var retryButton;
   var resetButton = formElement.querySelector('.ad-form__reset');
   var pinCenterPositionX = window.mainPin.element.offsetLeft;
   var pinCenterPositionY = window.mainPin.element.offsetTop;
   var pinWithTailPositionY = window.mainPin.element.offsetTop + window.mainPin.halfOfPinHeight + PIN_TAIL_HEIGHT;
+  var retryButton;
 
   // Изменение состояния карты и форм
-  var toggleFormElement = function (element, isDisabled) {
-    for (var i = 0; i < element.length; i++) {
-      element[i].disabled = isDisabled;
+  var toggleFormElement = function (elements, isDisabled) {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].disabled = isDisabled;
     }
   };
 
@@ -46,7 +46,7 @@
   var deactivateFormElements = function () {
     formElement.classList.add('ad-form--disabled');
     setAddress(pinCenterPositionX, pinCenterPositionY);
-    toggleFormElement(window.filter.set, true);
+    toggleFormElement(window.filter.element, true);
     toggleFormElement(formElement, true);
   };
 
@@ -96,7 +96,7 @@
   };
 
   // Сообщение об удачной отправке формы
-  var onSendSuccess = function () {
+  var showSuccessOnSend = function () {
     createSuccessMessage();
     var popUpMessage = document.querySelector('.success');
     document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
@@ -114,7 +114,7 @@
   };
 
   // Сообщение о неудачной отправке формы
-  var onSendFailure = function () {
+  var showErrorOnSend = function () {
     createErrorMessage();
     var popUpMessage = document.querySelector('.error');
     retryButton = popUpMessage.querySelector('.error__button');
@@ -126,6 +126,32 @@
         popUpMessage.remove();
       }
     });
+
+    retryButton.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Enter') {
+        popUpMessage.remove();
+      }
+    });
+  };
+
+  // Очистка страницы до дефолтного состояния
+  var resetPage = function () {
+    formElement.reset();
+    window.filter.element.reset();
+    deactivateFormElements();
+    window.map.deactivate();
+  };
+
+  var onResetButtonMouseDown = function (evt) {
+    if (evt.which === 1) {
+      resetPage();
+    }
+  };
+
+  var onResetButtonKeyDown = function (evt) {
+    if (evt.key === 'Enter') {
+      resetPage();
+    }
   };
 
   // Обработчики событий
@@ -151,15 +177,11 @@
   formElement.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var formData = new FormData(formElement);
-    window.server.postInfo(onSendSuccess, onSendFailure, formData);
+    window.server.postInfo(showSuccessOnSend, showErrorOnSend, formData);
   });
 
-  resetButton.addEventListener('mousedown', function () {
-    formElement.reset();
-    window.filter.set.reset();
-    deactivateFormElements();
-    window.map.deactivate();
-  });
+  resetButton.addEventListener('mousedown', onResetButtonMouseDown);
+  resetButton.addEventListener('keydown', onResetButtonKeyDown);
 
   // Объявление экспорта
   window.form = {

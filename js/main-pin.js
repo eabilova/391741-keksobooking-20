@@ -2,7 +2,8 @@
 (function () {
   var DEFAULT_MAIN_PIN_LOCATION_X = 567;
   var DEFAULT_MAIN_PIN_LOCATION_Y = 375;
-  var mainMapPin = window.map.pins.querySelector('.map__pin--main');
+
+  var mainMapPin = window.map.pinElement.querySelector('.map__pin--main');
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
   var DragLimit = {
@@ -31,13 +32,13 @@
   // Функции для обработчиков событий
   var onMainPinKeyDown = function (evt) {
     if (evt.key === 'Enter') {
-      window.server.getInfo(window.map.activate, window.map.onLoadError);
+      window.server.getInfo(window.map.activate, window.map.showErrorOnLoad);
     }
   };
 
   var onMainPinMouseDown = function (evt) {
     if (evt.which === 1) {
-      window.server.getInfo(window.map.activate, window.map.onLoadError);
+      window.server.getInfo(window.map.activate, window.map.showErrorOnLoad);
     }
   };
 

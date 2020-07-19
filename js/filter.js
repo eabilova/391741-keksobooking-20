@@ -2,22 +2,24 @@
 (function () {
   var OFFER_LIMIT = 5;
 
-  var mapFilters = document.querySelector('.map__filters');
-  var houseType = mapFilters.querySelector('#housing-type');
-  var houseRoomNumber = mapFilters.querySelector('#housing-rooms');
-  var houseGuestNumber = mapFilters.querySelector('#housing-guests');
-  var houseFeatures = mapFilters.querySelector('#housing-features');
-  var housePrice = mapFilters.querySelector('#housing-price');
+  var filterElement = document.querySelector('.map__filters');
+  var houseType = filterElement.querySelector('#housing-type');
+  var houseRoomNumber = filterElement.querySelector('#housing-rooms');
+  var houseGuestNumber = filterElement.querySelector('#housing-guests');
+  var houseFeatures = filterElement.querySelector('#housing-features');
+  var housePrice = filterElement.querySelector('#housing-price');
 
-  window.form.toggle(mapFilters, true);
+  // Скрытие фильтра
+  window.form.toggle(filterElement, true);
 
+  // Активация фильтра
   var activateFilter = function (data) {
     if (data) {
-      window.form.toggle(mapFilters, false);
+      window.form.toggle(filterElement, false);
     }
   };
 
-
+  // Получение отфильтрованной информации
   var getFilteredData = function () {
     var filteredPins = window.map.getData().filter(function (item) {
       return filterType(item) && filterRoomNumber(item) && filterGuestNumber(item) && filterFeatures(item) && filterPrice(item);
@@ -69,11 +71,11 @@
   });
 
   // Обработчики событий
-  mapFilters.addEventListener('change', onFilterChange);
+  filterElement.addEventListener('change', onFilterChange);
 
   // Объявление экспорта
   window.filter = {
-    set: mapFilters,
+    element: filterElement,
     activate: activateFilter,
     renderData: renderFilteredData
   };

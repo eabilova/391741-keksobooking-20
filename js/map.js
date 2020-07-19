@@ -1,12 +1,12 @@
 'use strict';
 (function () {
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
+  var mapPinElement = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
   var availableOffers;
 
   // Вывод сообщения при ошибке загрузки данный из сервера
-  var onLoadError = function (message) {
+  var showErrorOnLoad = function (message) {
     createErrorMessage(message);
     var popUpMessage = document.querySelector('.error');
     document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
@@ -28,8 +28,8 @@
   var activateMap = function (data) {
     availableOffers = data;
     map.classList.remove('map--faded');
-    window.form.activate(data);
     window.filter.renderData();
+    window.form.activate(data);
     window.mainPin.deactivate();
   };
 
@@ -38,11 +38,11 @@
   };
 
   // Добавление пинов на карту
-  var addPinsOnMap = function (data) {
-    data.forEach(function (item) {
+  var addPinsOnMap = function (offers) {
+    offers.forEach(function (item) {
       return fragment.appendChild(window.pin.render(item));
     });
-    mapPins.appendChild(fragment);
+    mapPinElement.appendChild(fragment);
   };
 
   // Деактивация карты
@@ -55,7 +55,7 @@
 
   // Удаление пинов с карты
   var removePinsFromMap = function () {
-    var allMapPins = mapPins.querySelectorAll('.map__pin');
+    var allMapPins = mapPinElement.querySelectorAll('.map__pin');
     allMapPins.forEach(function (item) {
       if (!item.classList.contains('map__pin--main')) {
         item.remove();
@@ -63,14 +63,15 @@
     });
   };
 
+
   // Объявление экспорта
   window.map = {
     element: map,
-    pins: mapPins,
+    pinElement: mapPinElement,
     getData: getData,
     activate: activateMap,
     deactivate: deactivateMap,
-    onLoadError: onLoadError,
+    showErrorOnLoad: showErrorOnLoad,
     removePins: removePinsFromMap,
     addPins: addPinsOnMap
   };
