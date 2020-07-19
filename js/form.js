@@ -181,7 +181,7 @@
     document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
 
     retryButton.addEventListener('mousedown', function (evt) {
-      if (evt.which === 1) {
+      if (evt.which === window.main.LEFTCLICK) {
         popUpMessage.remove();
       }
     });
@@ -202,7 +202,7 @@
   };
 
   var onResetButtonMouseDown = function (evt) {
-    if (evt.which === 1) {
+    if (evt.which === window.main.LEFTCLICK) {
       resetPage();
     }
   };

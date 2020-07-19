@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var ESCAPE = 'Escape';
+  var LEFTCLICK = 1;
   var mainBlock = document.querySelector('main');
 
   var closeMessages = function (message) {
@@ -19,7 +20,7 @@
 
   var onDocumentMouseDown = function (message) {
     return function (evt) {
-      if (evt.which === 1) {
+      if (evt.which === LEFTCLICK) {
         closeMessages(message);
       }
     };
@@ -29,6 +30,7 @@
     onDocumentKeyDown: onDocumentKeyDown,
     onDocumentMouseDown: onDocumentMouseDown,
     element: mainBlock,
-    ESCAPE: ESCAPE
+    ESCAPE: ESCAPE,
+    LEFTCLICK: LEFTCLICK
   };
 })();

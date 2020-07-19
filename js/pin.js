@@ -4,7 +4,7 @@
   var PIN_WIDTH = 50;
 
   var pinTemplate = document.querySelector('#pin').content;
-  var clickedButton;
+  var currentPin;
 
   // создание пинов и открытие карточек для каждого пина
   var renderPin = function (offerPin) {
@@ -19,27 +19,30 @@
     }
 
     pinButton.addEventListener('click', function (evt) {
-      if (pinButton !== clickedButton) {
-        window.card.remove(evt.currentTarget);
+      if (pinButton !== currentPin) {
+        window.card.remove();
+        deselectPin();
         window.card.create(offerPin);
+        currentPin = evt.currentTarget;
+        currentPin.classList.add('map__pin--active');
       }
-      clickedButton = evt.currentTarget;
     });
 
     return newOfferPin;
   };
 
-  // Подствечивание пина при активном состоянии
-  var togglePinStatus = function (button) {
-    var pins = document.querySelectorAll('.map__pin');
-    pins.forEach(function (item) {
-      item.classList.toggle('map__pin--active', item === button);
-    });
+  // Удаление подсвечивания пина при неактивном состоянии
+  var deselectPin = function () {
+    if (currentPin) {
+      currentPin.classList.remove('map__pin--active');
+    }
+
+    currentPin = null;
   };
 
   // Объявление экспорта
   window.pin = {
     render: renderPin,
-    toggleStatus: togglePinStatus
+    deselect: deselectPin
   };
 })();

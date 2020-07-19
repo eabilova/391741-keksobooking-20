@@ -33,8 +33,8 @@
     addPhotos(photoContainer, roomPhoto, offerPin.offer.photos);
 
     closePopupButton.addEventListener('click', function () {
-      window.pin.clickedButton = null;
       removeCard();
+      window.pin.deselect();
     });
 
     return mapCard;
@@ -68,8 +68,7 @@
   };
 
   // Удаление карточки предложения
-  var removeCard = function (button) {
-    window.pin.toggleStatus(button);
+  var removeCard = function () {
     if (offerCard) {
       offerCard.remove();
       document.removeEventListener('keydown', onDocumentKeyDown);
@@ -80,7 +79,7 @@
   var onDocumentKeyDown = function (evt) {
     if (evt.key === window.main.ESCAPE) {
       removeCard();
-      window.pin.clickedButton = null;
+      window.pin.deselect();
     }
   };
 
