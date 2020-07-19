@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var ResponseList = {
+  var ResponseCode = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
     UNAUTHORIZED: 401,
@@ -15,16 +15,16 @@
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case ResponseList.SUCCESS:
+        case ResponseCode.SUCCESS:
           onSuccess(xhr.response);
           break;
-        case ResponseList.BAD_REQUEST:
+        case ResponseCode.BAD_REQUEST:
           onError('Неверный запрос');
           break;
-        case ResponseList.UNAUTHORIZED:
+        case ResponseCode.UNAUTHORIZED:
           onError('Пользователь не авторизован');
           break;
-        case ResponseList.NOT_FOUND:
+        case ResponseCode.NOT_FOUND:
           onError('Ничего не найдено');
           break;
         default:
