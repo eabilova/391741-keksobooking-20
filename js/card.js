@@ -1,10 +1,10 @@
 'use strict';
 (function () {
-  var TYPE_DICTIONARY = {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalo: 'Бунгало'
+  var TypeDictionary = {
+    PALACE: 'Дворец',
+    FLAT: 'Квартира',
+    HOUSE: 'Дом',
+    BUNGALO: 'Бунгало'
   };
 
   var offerCard;
@@ -25,7 +25,7 @@
     mapCard.querySelector('.popup__title').textContent = offerPin.offer.title;
     mapCard.querySelector('.popup__text--address').textContent = offerPin.offer.address;
     mapCard.querySelector('.popup__text--price').textContent = offerPin.offer.price + '₽/ночь';
-    mapCard.querySelector('.popup__type').textContent = TYPE_DICTIONARY[offerPin.offer.type];
+    mapCard.querySelector('.popup__type').textContent = TypeDictionary[offerPin.offer.type.toUpperCase()];
     mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;

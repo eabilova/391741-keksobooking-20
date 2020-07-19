@@ -2,15 +2,15 @@
 (function () {
   var PIN_TAIL_HEIGHT = 22;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var ROOM_GUEST_VALUES = {
-    min: 0,
-    max: 100
+  var RoomGuestValues = {
+    MIN: 0,
+    MAX: 100
   };
-  var ROOM_PRICES = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+  var RoomPrices = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
 
   var formContainer = document.querySelector('.ad-form');
@@ -73,10 +73,10 @@
     var roomNumberValue = Number(roomNumber.value);
     var capacityError = '';
     var roomNumberError = '';
-    if ((capacityValue > roomNumberValue && capacityValue !== ROOM_GUEST_VALUES.min)) {
+    if ((capacityValue > roomNumberValue && capacityValue !== RoomGuestValues.MIN)) {
       capacityError = 'Число гостей не может превышать количество комнат. Выберите другое значение.';
       roomNumberError = 'Число комнат не может быть меньше количества гостей. Выберите другое значение.';
-    } else if ((roomNumberValue === ROOM_GUEST_VALUES.max && capacityValue !== ROOM_GUEST_VALUES.min) || (roomNumberValue !== ROOM_GUEST_VALUES.max && capacityValue === ROOM_GUEST_VALUES.min)) {
+    } else if ((roomNumberValue === RoomGuestValues.MAX && capacityValue !== RoomGuestValues.MIN) || (roomNumberValue !== RoomGuestValues.MAX && capacityValue === RoomGuestValues.MIN)) {
       capacityError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
       roomNumberError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
     }
@@ -88,20 +88,20 @@
   var validateRoomTypeAndMinPrice = function () {
     switch (roomType.value) {
       case 'palace':
-        roomPrice.min = ROOM_PRICES.palace;
-        roomPrice.placeholder = ROOM_PRICES.palace;
+        roomPrice.min = RoomPrices.PALACE;
+        roomPrice.placeholder = RoomPrices.PALACE;
         break;
       case 'house':
-        roomPrice.min = ROOM_PRICES.house;
-        roomPrice.placeholder = ROOM_PRICES.house;
+        roomPrice.min = RoomPrices.HOUSE;
+        roomPrice.placeholder = RoomPrices.HOUSE;
         break;
       case 'flat':
-        roomPrice.min = ROOM_PRICES.flat;
-        roomPrice.placeholder = ROOM_PRICES.flat;
+        roomPrice.min = RoomPrices.FLAT;
+        roomPrice.placeholder = RoomPrices.FLAT;
         break;
       case 'bungalo':
-        roomPrice.min = ROOM_PRICES.bungalo;
-        roomPrice.placeholder = ROOM_PRICES.bungalo;
+        roomPrice.min = RoomPrices.BUNGALO;
+        roomPrice.placeholder = RoomPrices.BUNGALO;
         break;
     }
   };

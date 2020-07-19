@@ -1,10 +1,10 @@
 'use strict';
 (function () {
-  var ERROR_LIST = {
-    success: 200,
-    badRequest: 400,
-    unauthorized: 401,
-    notFound: 404
+  var ResponseList = {
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND: 404
   };
   var Url = {
     getData: 'https://javascript.pages.academy/keksobooking/data',
@@ -15,16 +15,16 @@
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case ERROR_LIST.success:
+        case ResponseList.SUCCESS:
           onSuccess(xhr.response);
           break;
-        case ERROR_LIST.badRequest:
+        case ResponseList.BAD_REQUEST:
           onError('Неверный запрос');
           break;
-        case ERROR_LIST.unauthorized:
+        case ResponseList.UNAUTHORIZED:
           onError('Пользователь не авторизован');
           break;
-        case ERROR_LIST.notFound:
+        case ResponseList.NOT_FOUND:
           onError('Ничего не найдено');
           break;
         default:

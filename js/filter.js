@@ -1,15 +1,15 @@
 'use strict';
 (function () {
-  var OFFER_LIMIT = {
-    min: 0,
-    max: 5
-  };
-  var OFFER_START_PRICE = {
-    low: 10000,
-    high: 50000
-  };
   var ANY_VALUE = 'any';
 
+  var OfferLimit = {
+    MIN: 0,
+    MAX: 5
+  };
+  var OfferStartPrice = {
+    LOW: 10000,
+    HIGH: 50000
+  };
   var filterForm = document.querySelector('.map__filters');
   var filterParts = filterForm.querySelectorAll('select, input');
   var houseType = filterForm.querySelector('#housing-type');
@@ -33,7 +33,7 @@
     var filteredPins = window.map.getData().filter(function (item) {
       return filterType(item) && filterRoomNumber(item) && filterGuestNumber(item) && filterFeatures(item) && filterPrice(item);
     });
-    return filteredPins.slice(OFFER_LIMIT.min, OFFER_LIMIT.max);
+    return filteredPins.slice(OfferLimit.MIN, OfferLimit.MAX);
   };
 
   var filterType = function (item) {
@@ -57,11 +57,11 @@
 
   var filterPrice = function (item) {
     var price;
-    if (item.offer.price <= OFFER_START_PRICE.low) {
+    if (item.offer.price <= OfferStartPrice.LOW) {
       price = 'low';
-    } else if (item.offer.price > OFFER_START_PRICE.low && item.offer.price < OFFER_START_PRICE.high) {
+    } else if (item.offer.price > OfferStartPrice.LOW && item.offer.price < OfferStartPrice.HIGH) {
       price = 'middle';
-    } else if (item.offer.price >= OFFER_START_PRICE.high) {
+    } else if (item.offer.price >= OfferStartPrice.HIGH) {
       price = 'high';
     }
     return price === housePrice.value || housePrice.value === ANY_VALUE;
