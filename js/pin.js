@@ -31,15 +31,18 @@
 
   // Подствечивание пина при активном состоянии
   var togglePinStatus = function (button) {
-    var pins = document.querySelectorAll('.map__pin');
-    pins.forEach(function (item) {
-      item.classList.toggle('map__pin--active', item === button);
-    });
+    // var pins = document.querySelectorAll('.map__pin');
+    // pins.forEach(function (item) {
+    //   item.classList.toggle('map__pin--active', item === button);
+    // });
+    if (clickedButton) {
+      clickedButton.classList.toggle('map__pin--active', clickedButton === button);
+      clickedButton = null;
+    }
   };
 
   // Объявление экспорта
   window.pin = {
-    clickedButton: clickedButton,
     render: renderPin,
     toggleStatus: togglePinStatus
   };

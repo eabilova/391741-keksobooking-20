@@ -33,6 +33,7 @@
     addPhotos(photoContainer, roomPhoto, offerPin.offer.photos);
 
     closePopupButton.addEventListener('click', function () {
+      window.pin.clickedButton = null;
       removeCard();
     });
 
@@ -79,6 +80,7 @@
   var onDocumentKeyDown = function (evt) {
     if (evt.key === 'Escape') {
       removeCard();
+      window.pin.clickedButton = null;
     }
   };
 
