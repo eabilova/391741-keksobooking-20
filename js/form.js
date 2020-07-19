@@ -2,6 +2,10 @@
 (function () {
   var PIN_TAIL_HEIGHT = 22;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var ROOM_GUEST_VALUES = {
+    min: 0,
+    max: 100
+  };
   var ROOM_PRICES = {
     bungalo: 0,
     flat: 1000,
@@ -69,10 +73,10 @@
     var roomNumberValue = Number(roomNumber.value);
     var capacityError = '';
     var roomNumberError = '';
-    if ((capacityValue > roomNumberValue && capacityValue !== 0)) {
+    if ((capacityValue > roomNumberValue && capacityValue !== ROOM_GUEST_VALUES.min)) {
       capacityError = 'Число гостей не может превышать количество комнат. Выберите другое значение.';
       roomNumberError = 'Число комнат не может быть меньше количества гостей. Выберите другое значение.';
-    } else if ((roomNumberValue === 100 && capacityValue !== 0) || (roomNumberValue !== 100 && capacityValue === 0)) {
+    } else if ((roomNumberValue === ROOM_GUEST_VALUES.max && capacityValue !== ROOM_GUEST_VALUES.min) || (roomNumberValue !== ROOM_GUEST_VALUES.max && capacityValue === ROOM_GUEST_VALUES.min)) {
       capacityError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
       roomNumberError = 'Ошибка: выберите другой тип жилья, либо иное количество гостей';
     }

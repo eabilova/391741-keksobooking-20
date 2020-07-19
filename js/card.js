@@ -92,7 +92,7 @@
   };
 
   var hideUnusedFeatures = function (checkedFeatures, features) {
-    if (features.length !== 0) {
+    if (features.length > 0) {
       checkedFeatures.classList.add('hidden');
       features.some(function (feature) {
         if (checkedFeatures.classList.contains('popup__feature--' + feature)) {

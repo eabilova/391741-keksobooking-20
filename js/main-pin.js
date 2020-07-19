@@ -76,7 +76,7 @@
       var positionHalfPin = result.x + halfOfPinWidth;
       var positionFullHeightPin = result.y + window.form.PIN_TAIL_HEIGHT + mainMapPin.offsetHeight;
 
-      if ((result.x < 0 && DragLimit.x.min <= Math.ceil(positionHalfPin)) || (result.x >= 0 && DragLimit.x.max >= positionHalfPin)) {
+      if ((result.x < DragLimit.x.min && DragLimit.x.min <= Math.ceil(positionHalfPin)) || (result.x >= DragLimit.x.min && DragLimit.x.max >= positionHalfPin)) {
         mainMapPin.style.left = (mainMapPin.offsetLeft - changedPosition.x) + 'px';
       }
 

@@ -1,10 +1,14 @@
 'use strict';
 (function () {
-  var OFFER_LIMIT = 5;
+  var OFFER_LIMIT = {
+    min: 0,
+    max: 5
+  };
   var OFFER_START_PRICE = {
     low: 10000,
     high: 50000
   };
+  var ANY_VALUE = 'any';
 
   var filterForm = document.querySelector('.map__filters');
   var filterParts = filterForm.querySelectorAll('select, input');
@@ -29,19 +33,19 @@
     var filteredPins = window.map.getData().filter(function (item) {
       return filterType(item) && filterRoomNumber(item) && filterGuestNumber(item) && filterFeatures(item) && filterPrice(item);
     });
-    return filteredPins.slice(0, OFFER_LIMIT);
+    return filteredPins.slice(OFFER_LIMIT.min, OFFER_LIMIT.max);
   };
 
   var filterType = function (item) {
-    return item.offer.type === houseType.value || houseType.value === 'any';
+    return item.offer.type === houseType.value || houseType.value === ANY_VALUE;
   };
 
   var filterRoomNumber = function (item) {
-    return item.offer.rooms === Number(houseRoomNumber.value) || houseRoomNumber.value === 'any';
+    return item.offer.rooms === Number(houseRoomNumber.value) || houseRoomNumber.value === ANY_VALUE;
   };
 
   var filterGuestNumber = function (item) {
-    return item.offer.guests === Number(houseGuestNumber.value) || houseGuestNumber.value === 'any';
+    return item.offer.guests === Number(houseGuestNumber.value) || houseGuestNumber.value === ANY_VALUE;
   };
 
   var filterFeatures = function (item) {
@@ -60,7 +64,7 @@
     } else if (item.offer.price >= OFFER_START_PRICE.high) {
       price = 'high';
     }
-    return price === housePrice.value || housePrice.value === 'any';
+    return price === housePrice.value || housePrice.value === ANY_VALUE;
   };
 
   var renderFilteredData = function () {
