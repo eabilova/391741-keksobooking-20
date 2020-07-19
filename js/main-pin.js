@@ -3,7 +3,7 @@
   var DEFAULT_MAIN_PIN_LOCATION_X = 567;
   var DEFAULT_MAIN_PIN_LOCATION_Y = 375;
 
-  var mainMapPin = window.map.pinElement.querySelector('.map__pin--main');
+  var mainMapPin = window.map.pinContainer.querySelector('.map__pin--main');
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
   var halfOfPinHeight = mainMapPin.offsetHeight / 2;
   var DragLimit = {

@@ -2,15 +2,16 @@
 (function () {
   var PIN_TAIL_HEIGHT = 22;
 
-  var formElement = document.querySelector('.ad-form');
-  var roomNumber = formElement.querySelector('#room_number');
-  var capacity = formElement.querySelector('#capacity');
-  var roomType = formElement.querySelector('#type');
-  var roomPrice = formElement.querySelector('#price');
-  var checkin = formElement.querySelector('#timein');
-  var checkout = formElement.querySelector('#timeout');
+  var formContainer = document.querySelector('.ad-form');
+  var formFieldsets = formContainer.querySelectorAll('fieldset');
+  var roomNumber = formContainer.querySelector('#room_number');
+  var capacity = formContainer.querySelector('#capacity');
+  var roomType = formContainer.querySelector('#type');
+  var roomPrice = formContainer.querySelector('#price');
+  var checkin = formContainer.querySelector('#timein');
+  var checkout = formContainer.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
-  var resetButton = formElement.querySelector('.ad-form__reset');
+  var resetButton = formContainer.querySelector('.ad-form__reset');
   var pinCenterPositionX = window.mainPin.element.offsetLeft;
   var pinCenterPositionY = window.mainPin.element.offsetTop;
   var pinWithTailPositionY = window.mainPin.element.offsetTop + window.mainPin.halfOfPinHeight + PIN_TAIL_HEIGHT;
@@ -18,12 +19,12 @@
 
   // Изменение состояния карты и форм
   var toggleFormElement = function (elements, isDisabled) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].disabled = isDisabled;
-    }
+    elements.forEach(function (item) {
+      item.disabled = isDisabled;
+    });
   };
 
-  toggleFormElement(formElement, true);
+  toggleFormElement(formFieldsets, true);
 
   // Определение положение главного пина после активации и смещения
   var setAddress = function (x, y) {
@@ -34,20 +35,20 @@
 
   // Активация формы
   var activateFormElements = function (data) {
-    formElement.classList.remove('ad-form--disabled');
+    formContainer.classList.remove('ad-form--disabled');
     setAddress(pinCenterPositionX, pinWithTailPositionY);
     window.filter.activate(data);
     validateNumbers();
     validateRoomTypeAndMinPrice();
-    toggleFormElement(formElement, false);
+    toggleFormElement(formFieldsets, false);
   };
 
   // Деактивация формы
   var deactivateFormElements = function () {
-    formElement.classList.add('ad-form--disabled');
+    formContainer.classList.add('ad-form--disabled');
     setAddress(pinCenterPositionX, pinCenterPositionY);
     toggleFormElement(window.filter.element, true);
-    toggleFormElement(formElement, true);
+    toggleFormElement(formContainer, true);
   };
 
   // Функция валидации соответствия количества комнат и гостей
@@ -101,7 +102,7 @@
     var popUpMessage = document.querySelector('.success');
     document.addEventListener('keydown', window.main.onDocumentKeyDown(popUpMessage));
     document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
-    formElement.reset();
+    formContainer.reset();
     deactivateFormElements();
     window.map.deactivate();
   };
@@ -136,7 +137,7 @@
 
   // Очистка страницы до дефолтного состояния
   var resetPage = function () {
-    formElement.reset();
+    formContainer.reset();
     window.filter.element.reset();
     deactivateFormElements();
     window.map.deactivate();
@@ -174,9 +175,9 @@
     checkin.value = checkout.value;
   });
 
-  formElement.addEventListener('submit', function (evt) {
+  formContainer.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    var formData = new FormData(formElement);
+    var formData = new FormData(formContainer);
     window.server.postInfo(showSuccessOnSend, showErrorOnSend, formData);
   });
 

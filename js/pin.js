@@ -9,8 +9,8 @@
   // создание пинов и открытие карточек для каждого пина
   var renderPin = function (offerPin) {
     if (offerPin.hasOwnProperty('offer')) {
-      var newOfferPinElement = pinTemplate.cloneNode(true);
-      var pinButton = newOfferPinElement.querySelector('.map__pin');
+      var newOfferPin = pinTemplate.cloneNode(true);
+      var pinButton = newOfferPin.querySelector('.map__pin');
       var pinButtonImage = pinButton.querySelector('img');
       pinButtonImage.src = offerPin.author.avatar;
       pinButtonImage.alt = offerPin.offer.title;
@@ -26,7 +26,7 @@
       clickedButton = evt.currentTarget;
     });
 
-    return newOfferPinElement;
+    return newOfferPin;
   };
 
   // Подствечивание пина при активном состоянии

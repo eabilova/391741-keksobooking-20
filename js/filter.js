@@ -2,20 +2,21 @@
 (function () {
   var OFFER_LIMIT = 5;
 
-  var filterElement = document.querySelector('.map__filters');
-  var houseType = filterElement.querySelector('#housing-type');
-  var houseRoomNumber = filterElement.querySelector('#housing-rooms');
-  var houseGuestNumber = filterElement.querySelector('#housing-guests');
-  var houseFeatures = filterElement.querySelector('#housing-features');
-  var housePrice = filterElement.querySelector('#housing-price');
+  var filterForm = document.querySelector('.map__filters');
+  var filterParts = filterForm.querySelectorAll('select, input');
+  var houseType = filterForm.querySelector('#housing-type');
+  var houseRoomNumber = filterForm.querySelector('#housing-rooms');
+  var houseGuestNumber = filterForm.querySelector('#housing-guests');
+  var houseFeatures = filterForm.querySelector('#housing-features');
+  var housePrice = filterForm.querySelector('#housing-price');
 
   // Скрытие фильтра
-  window.form.toggle(filterElement, true);
+  window.form.toggle(filterParts, true);
 
   // Активация фильтра
   var activateFilter = function (data) {
     if (data) {
-      window.form.toggle(filterElement, false);
+      window.form.toggle(filterParts, false);
     }
   };
 
@@ -71,11 +72,11 @@
   });
 
   // Обработчики событий
-  filterElement.addEventListener('change', onFilterChange);
+  filterForm.addEventListener('change', onFilterChange);
 
   // Объявление экспорта
   window.filter = {
-    element: filterElement,
+    element: filterForm,
     activate: activateFilter,
     renderData: renderFilteredData
   };

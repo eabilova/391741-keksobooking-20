@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var map = document.querySelector('.map');
-  var mapPinElement = document.querySelector('.map__pins');
+  var mapPinsContainer = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
   var availableOffers;
 
@@ -42,7 +42,7 @@
     offers.forEach(function (item) {
       return fragment.appendChild(window.pin.render(item));
     });
-    mapPinElement.appendChild(fragment);
+    mapPinsContainer.appendChild(fragment);
   };
 
   // Деактивация карты
@@ -55,7 +55,7 @@
 
   // Удаление пинов с карты
   var removePinsFromMap = function () {
-    var allMapPins = mapPinElement.querySelectorAll('.map__pin');
+    var allMapPins = mapPinsContainer.querySelectorAll('.map__pin');
     allMapPins.forEach(function (item) {
       if (!item.classList.contains('map__pin--main')) {
         item.remove();
@@ -67,7 +67,7 @@
   // Объявление экспорта
   window.map = {
     element: map,
-    pinElement: mapPinElement,
+    pinContainer: mapPinsContainer,
     getData: getData,
     activate: activateMap,
     deactivate: deactivateMap,
