@@ -85,6 +85,7 @@
   // Объявление экспорта
   window.filter = {
     element: filterForm,
+    parts: filterParts,
     activate: activateFilter,
     renderData: renderFilteredData
   };

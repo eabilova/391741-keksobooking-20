@@ -63,8 +63,8 @@
   var deactivateFormElements = function () {
     formContainer.classList.add('ad-form--disabled');
     setAddress(pinCenterPositionX, pinCenterPositionY);
-    toggleFormElement(window.filter.element, true);
-    toggleFormElement(formContainer, true);
+    toggleFormElement(window.filter.parts, true);
+    toggleFormElement(formFieldsets, true);
   };
 
   // Функция валидации соответствия количества комнат и гостей
