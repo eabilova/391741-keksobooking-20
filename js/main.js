@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var mainTag = document.querySelector('main');
+  var mainBlock = document.querySelector('main');
 
   var closeMessages = function (message) {
     message.remove();
@@ -27,6 +27,6 @@
   window.main = {
     onDocumentKeyDown: onDocumentKeyDown,
     onDocumentMouseDown: onDocumentMouseDown,
-    element: mainTag
+    element: mainBlock
   };
 })();

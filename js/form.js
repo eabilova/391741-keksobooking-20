@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var PIN_TAIL_HEIGHT = 22;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var formContainer = document.querySelector('.ad-form');
   var formFieldsets = formContainer.querySelectorAll('fieldset');
@@ -11,6 +12,10 @@
   var checkin = formContainer.querySelector('#timein');
   var checkout = formContainer.querySelector('#timeout');
   var myAddress = document.querySelector('#address');
+  var avatarSelector = formContainer.querySelector('.ad-form__field input[type=file]');
+  var avatarPreview = formContainer.querySelector('.ad-form-header__preview img');
+  var housePhotoSelector = formContainer.querySelector('.ad-form__upload input[type=file]');
+  var housePhotoPreview = formContainer.querySelector('.ad-form__photo');
   var resetButton = formContainer.querySelector('.ad-form__reset');
   var pinCenterPositionX = window.mainPin.element.offsetLeft;
   var pinCenterPositionY = window.mainPin.element.offsetTop;
@@ -89,6 +94,53 @@
         break;
     }
   };
+
+  // Создание фото
+  var adjustPhotoContainer = function () {
+    housePhotoPreview.style.display = 'flex';
+    housePhotoPreview.style.width = '200px';
+    housePhotoPreview.style.flexWrap = 'wrap';
+    housePhotoPreview.style.justifyContent = 'space-around';
+  };
+
+  var createPhotoElement = function (result) {
+    var photo = document.createElement('img');
+    photo.style.width = '70px';
+    photo.src = result;
+    housePhotoPreview.appendChild(photo);
+  };
+
+  var uploadPhoto = function (evt) {
+    var file;
+    var currentSelector = housePhotoSelector;
+    if (evt.currentTarget === avatarSelector) {
+      currentSelector = avatarSelector;
+      file = avatarSelector.files[0];
+    } else {
+      file = housePhotoSelector.files[0];
+    }
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        if (currentSelector === avatarSelector) {
+          avatarPreview.src = reader.result;
+        } else {
+          adjustPhotoContainer();
+          createPhotoElement(reader.result);
+        }
+      });
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   // Создание сообщения об удачной операции
   var createSuccessMessage = function () {
     var successMessageTemplate = document.querySelector('#success').content;
@@ -180,6 +232,9 @@
     var formData = new FormData(formContainer);
     window.server.postInfo(showSuccessOnSend, showErrorOnSend, formData);
   });
+
+  avatarSelector.addEventListener('change', uploadPhoto);
+  housePhotoSelector.addEventListener('change', uploadPhoto);
 
   resetButton.addEventListener('mousedown', onResetButtonMouseDown);
   resetButton.addEventListener('keydown', onResetButtonKeyDown);

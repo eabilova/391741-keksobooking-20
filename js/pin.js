@@ -33,16 +33,13 @@
   var togglePinStatus = function (button) {
     var pins = document.querySelectorAll('.map__pin');
     pins.forEach(function (item) {
-      if (item === button) {
-        item.classList.add('map__pin--active');
-      } else {
-        item.classList.remove('map__pin--active');
-      }
+      item.classList.toggle('map__pin--active', item === button);
     });
   };
 
   // Объявление экспорта
   window.pin = {
+    clickedButton: clickedButton,
     render: renderPin,
     toggleStatus: togglePinStatus
   };

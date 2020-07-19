@@ -92,13 +92,12 @@
 
   var hideUnusedFeatures = function (checkedFeatures, features) {
     if (features.length !== 0) {
-      for (var n = 0; n < features.length; n++) {
-        checkedFeatures.classList.add('hidden');
-        if (checkedFeatures.classList.contains('popup__feature--' + features[n])) {
+      checkedFeatures.classList.add('hidden');
+      features.some(function (feature) {
+        if (checkedFeatures.classList.contains('popup__feature--' + feature)) {
           checkedFeatures.classList.remove('hidden');
-          break;
         }
-      }
+      });
     } else {
       checkedFeatures.classList.add('hidden');
     }
