@@ -77,7 +77,7 @@
 
   // Закрытие окошка попапа
   var onDocumentKeyDown = function (evt) {
-    if (evt.key === window.main.ESCAPE) {
+    if (evt.key === window.main.ESCAPE_KEY_CODE) {
       removeCard();
       window.pin.deselect();
     }

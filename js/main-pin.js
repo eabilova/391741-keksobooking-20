@@ -2,7 +2,7 @@
 (function () {
   var DEFAULT_MAIN_PIN_LOCATION_X = 567;
   var DEFAULT_MAIN_PIN_LOCATION_Y = 375;
-  var ENTER = 'Enter';
+  var ENTER_KEY_CODE = 'Enter';
 
   var mainMapPin = window.map.pinContainer.querySelector('.map__pin--main');
   var halfOfPinWidth = mainMapPin.offsetWidth / 2;
@@ -32,13 +32,13 @@
 
   // Функции для обработчиков событий
   var onMainPinKeyDown = function (evt) {
-    if (evt.key === ENTER) {
+    if (evt.key === ENTER_KEY_CODE) {
       window.server.getInfo(window.map.activate, window.map.showErrorOnLoad);
     }
   };
 
   var onMainPinMouseDown = function (evt) {
-    if (evt.which === 1) {
+    if (evt.which === window.main.LEFT_BUTTON_CODE) {
       window.server.getInfo(window.map.activate, window.map.showErrorOnLoad);
     }
   };
@@ -98,7 +98,7 @@
   });
 
   window.mainPin = {
-    ENTER: ENTER,
+    ENTER: ENTER_KEY_CODE,
     element: mainMapPin,
     halfOfPinWidth: halfOfPinWidth,
     halfOfPinHeight: halfOfPinHeight,

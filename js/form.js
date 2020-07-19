@@ -20,6 +20,7 @@
   var myAddress = document.querySelector('#address');
   var avatarSelector = formContainer.querySelector('.ad-form__field input[type=file]');
   var avatarPreview = formContainer.querySelector('.ad-form-header__preview img');
+  var housePhotosUploadContainer = formContainer.querySelector('.ad-form__photo-container');
   var housePhotoSelector = formContainer.querySelector('.ad-form__upload input[type=file]');
   var housePhotoPreview = formContainer.querySelector('.ad-form__photo');
   var resetButton = formContainer.querySelector('.ad-form__reset');
@@ -101,19 +102,17 @@
     }
   };
 
-  // Создание фото
-  var adjustPhotoContainer = function () {
-    housePhotoPreview.style.display = 'flex';
-    housePhotoPreview.style.width = '200px';
-    housePhotoPreview.style.flexWrap = 'wrap';
-    housePhotoPreview.style.justifyContent = 'space-around';
+  var createPhotoBox = function () {
+    var photoBox = document.createElement('div');
+    photoBox.classList.add('ad-form__photo');
+    housePhotosUploadContainer.appendChild(photoBox);
+    return photoBox;
   };
 
-  var createPhotoElement = function (result) {
+  var createPhotoElement = function () {
     var photo = document.createElement('img');
     photo.style.width = '70px';
-    photo.src = result;
-    housePhotoPreview.appendChild(photo);
+    return photo;
   };
 
   var uploadPhoto = function (evt) {
@@ -138,8 +137,14 @@
         if (currentSelector === avatarSelector) {
           avatarPreview.src = reader.result;
         } else {
-          adjustPhotoContainer();
-          createPhotoElement(reader.result);
+          var photo = createPhotoElement();
+          photo.src = reader.result;
+          if (!housePhotoPreview.querySelector('img')) {
+            housePhotoPreview.appendChild(photo);
+          } else {
+            var photoBox = createPhotoBox();
+            photoBox.appendChild(photo);
+          }
         }
       });
 
@@ -181,13 +186,13 @@
     document.addEventListener('mousedown', window.main.onDocumentMouseDown(popUpMessage));
 
     retryButton.addEventListener('mousedown', function (evt) {
-      if (evt.which === window.main.LEFTCLICK) {
+      if (evt.which === window.main.LEFT_BUTTON_CODE) {
         popUpMessage.remove();
       }
     });
 
     retryButton.addEventListener('keydown', function (evt) {
-      if (evt.key === window.mapPin.ENTER) {
+      if (evt.key === window.mapPin.ENTER_KEY_CODE) {
         popUpMessage.remove();
       }
     });
@@ -202,13 +207,13 @@
   };
 
   var onResetButtonMouseDown = function (evt) {
-    if (evt.which === window.main.LEFTCLICK) {
+    if (evt.which === window.main.LEFT_BUTTON_CODE) {
       resetPage();
     }
   };
 
   var onResetButtonKeyDown = function (evt) {
-    if (evt.key === window.mapPin.ENTER) {
+    if (evt.key === window.mapPin.ENTER_KEY_CODE) {
       resetPage();
     }
   };
