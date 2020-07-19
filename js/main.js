@@ -1,6 +1,8 @@
 'use strict';
 (function () {
-  var mainElement = document.querySelector('main');
+  var ESCAPE_KEY_CODE = 'Escape';
+  var LEFT_BUTTON_CODE = 1;
+  var mainBlock = document.querySelector('main');
 
   var closeMessages = function (message) {
     message.remove();
@@ -10,7 +12,7 @@
 
   var onDocumentKeyDown = function (message) {
     return function (evt) {
-      if (evt.key === 'Escape') {
+      if (evt.key === ESCAPE_KEY_CODE) {
         closeMessages(message);
       }
     };
@@ -18,7 +20,7 @@
 
   var onDocumentMouseDown = function (message) {
     return function (evt) {
-      if (evt.which === 1) {
+      if (evt.which === LEFT_BUTTON_CODE) {
         closeMessages(message);
       }
     };
@@ -27,6 +29,8 @@
   window.main = {
     onDocumentKeyDown: onDocumentKeyDown,
     onDocumentMouseDown: onDocumentMouseDown,
-    element: mainElement
+    element: mainBlock,
+    ESCAPE_KEY_CODE: ESCAPE_KEY_CODE,
+    LEFT_BUTTON_CODE: LEFT_BUTTON_CODE
   };
 })();

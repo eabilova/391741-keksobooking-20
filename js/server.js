@@ -1,25 +1,30 @@
 'use strict';
-
 (function () {
-  var url = {
+  var ResponseCode = {
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND: 404
+  };
+  var Url = {
     getData: 'https://javascript.pages.academy/keksobooking/data',
     postData: 'https://javascript.pages.academy/keksobooking'
   };
 
-  var xhrLoad = function (xhr, onSuccess, onError) {
+  var loadXhr = function (xhr, onSuccess, onError) {
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case 200:
+        case ResponseCode.SUCCESS:
           onSuccess(xhr.response);
           break;
-        case 400:
+        case ResponseCode.BAD_REQUEST:
           onError('Неверный запрос');
           break;
-        case 401:
+        case ResponseCode.UNAUTHORIZED:
           onError('Пользователь не авторизован');
           break;
-        case 404:
+        case ResponseCode.NOT_FOUND:
           onError('Ничего не найдено');
           break;
         default:
@@ -39,16 +44,16 @@
   var getInfo = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.open('GET', url.getData);
-    xhrLoad(xhr, onSuccess, onError);
+    xhr.open('GET', Url.getData);
+    loadXhr(xhr, onSuccess, onError);
     xhr.send();
   };
 
   var postInfo = function (onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.open('POST', url.postData);
-    xhrLoad(xhr, onSuccess, onError);
+    xhr.open('POST', Url.postData);
+    loadXhr(xhr, onSuccess, onError);
     xhr.send(data);
   };
 

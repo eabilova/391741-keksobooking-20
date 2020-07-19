@@ -1,10 +1,10 @@
 'use strict';
 (function () {
-  var TYPE_DICTIONARY = {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalo: 'Бунгало'
+  var TypeDictionary = {
+    PALACE: 'Дворец',
+    FLAT: 'Квартира',
+    HOUSE: 'Дом',
+    BUNGALO: 'Бунгало'
   };
 
   var offerCard;
@@ -14,42 +14,43 @@
     var cardTemplate = document.querySelector('#card').content;
     var newOfferCard = cardTemplate.cloneNode(true);
     var mapCard = newOfferCard.querySelector('.map__card');
-    var offerFeatures = newOfferCard.querySelector('.popup__features');
-    var offerFeature = offerFeatures.querySelectorAll('.popup__feature');
-    var popPhotos = newOfferCard.querySelector('.popup__photos');
-    var roomPhoto = popPhotos.querySelector('img');
+    var featureContainer = newOfferCard.querySelector('.popup__features');
+    var offerFeatures = featureContainer.querySelectorAll('.popup__feature');
+    var photoContainer = newOfferCard.querySelector('.popup__photos');
+    var roomPhoto = photoContainer.querySelector('img');
     var closePopupButton = newOfferCard.querySelector('.popup__close');
 
     mapCard.querySelector('.popup__avatar').src = offerPin.author.avatar;
     mapCard.querySelector('.popup__avatar').alt = offerPin.offer.title;
     mapCard.querySelector('.popup__title').textContent = offerPin.offer.title;
-    mapCard.querySelector('.popup__text--address').textContent = offerPin.location.x + '-' + offerPin.location.y + ', ' + offerPin.offer.address;
+    mapCard.querySelector('.popup__text--address').textContent = offerPin.offer.address;
     mapCard.querySelector('.popup__text--price').textContent = offerPin.offer.price + '₽/ночь';
-    mapCard.querySelector('.popup__type').textContent = TYPE_DICTIONARY[offerPin.offer.type];
+    mapCard.querySelector('.popup__type').textContent = TypeDictionary[offerPin.offer.type.toUpperCase()];
     mapCard.querySelector('.popup__text--capacity').textContent = offerPin.offer.rooms + ' комнаты для ' + offerPin.offer.guests + ' гостей.';
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerPin.offer.checkin + ', выезд до ' + offerPin.offer.checkout;
     mapCard.querySelector('.popup__description').textContent = offerPin.offer.description;
-    checkFeatures(offerFeature, offerPin);
-    addPhotos(popPhotos, roomPhoto, offerPin.offer.photos);
+    checkFeatures(offerFeatures, offerPin);
+    addPhotos(photoContainer, roomPhoto, offerPin.offer.photos);
 
     closePopupButton.addEventListener('click', function () {
       removeCard();
+      window.pin.deselect();
     });
 
     return mapCard;
   };
 
   // Добавление фото  фото в карточке
-  var addPhotos = function (parentNode, photoElement, photo) {
+  var addPhotos = function (parentNode, photoElement, photos) {
     parentNode.removeChild(photoElement);
-    parentNode.appendChild(createPhotoElement(photo));
+    parentNode.appendChild(createPhotoElement(photos));
   };
 
   // Создание эелементов для фотографий
-  var createPhotoElement = function (photo) {
+  var createPhotoElement = function (photos) {
     var photoFragment = document.createDocumentFragment();
-    if (photo.length > 0) {
-      photo.forEach(function (item) {
+    if (photos.length > 0) {
+      photos.forEach(function (item) {
         var newPhoto = document.createElement('img');
         newPhoto.classList.add('popup__photo');
         newPhoto.width = '45';
@@ -76,8 +77,9 @@
 
   // Закрытие окошка попапа
   var onDocumentKeyDown = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === window.main.ESCAPE_KEY_CODE) {
       removeCard();
+      window.pin.deselect();
     }
   };
 
@@ -90,14 +92,13 @@
   };
 
   var hideUnusedFeatures = function (checkedFeatures, features) {
-    if (features.length !== 0) {
-      for (var n = 0; n < features.length; n++) {
-        checkedFeatures.classList.add('hidden');
-        if (checkedFeatures.classList.contains('popup__feature--' + features[n])) {
+    if (features.length > 0) {
+      checkedFeatures.classList.add('hidden');
+      features.some(function (feature) {
+        if (checkedFeatures.classList.contains('popup__feature--' + feature)) {
           checkedFeatures.classList.remove('hidden');
-          break;
         }
-      }
+      });
     } else {
       checkedFeatures.classList.add('hidden');
     }
