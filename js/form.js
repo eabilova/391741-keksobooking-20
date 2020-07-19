@@ -2,6 +2,12 @@
 (function () {
   var PIN_TAIL_HEIGHT = 22;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var ROOM_PRICES = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
 
   var formContainer = document.querySelector('.ad-form');
   var formFieldsets = formContainer.querySelectorAll('fieldset');
@@ -77,20 +83,20 @@
   var validateRoomTypeAndMinPrice = function () {
     switch (roomType.value) {
       case 'palace':
-        roomPrice.min = 10000;
-        roomPrice.placeholder = '10000';
+        roomPrice.min = ROOM_PRICES.palace;
+        roomPrice.placeholder = ROOM_PRICES.palace;
         break;
       case 'house':
-        roomPrice.min = 5000;
-        roomPrice.placeholder = '5000';
+        roomPrice.min = ROOM_PRICES.house;
+        roomPrice.placeholder = ROOM_PRICES.house;
         break;
       case 'flat':
-        roomPrice.min = 1000;
-        roomPrice.placeholder = '1000';
+        roomPrice.min = ROOM_PRICES.flat;
+        roomPrice.placeholder = ROOM_PRICES.flat;
         break;
       case 'bungalo':
-        roomPrice.min = 0;
-        roomPrice.placeholder = '0';
+        roomPrice.min = ROOM_PRICES.bungalo;
+        roomPrice.placeholder = ROOM_PRICES.bungalo;
         break;
     }
   };
@@ -181,7 +187,7 @@
     });
 
     retryButton.addEventListener('keydown', function (evt) {
-      if (evt.key === 'Enter') {
+      if (evt.key === window.mapPin.ENTER) {
         popUpMessage.remove();
       }
     });
@@ -202,7 +208,7 @@
   };
 
   var onResetButtonKeyDown = function (evt) {
-    if (evt.key === 'Enter') {
+    if (evt.key === window.mapPin.ENTER) {
       resetPage();
     }
   };

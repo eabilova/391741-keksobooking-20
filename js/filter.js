@@ -1,6 +1,10 @@
 'use strict';
 (function () {
   var OFFER_LIMIT = 5;
+  var OFFER_START_PRICE = {
+    low: 10000,
+    high: 50000
+  };
 
   var filterForm = document.querySelector('.map__filters');
   var filterParts = filterForm.querySelectorAll('select, input');
@@ -49,11 +53,11 @@
 
   var filterPrice = function (item) {
     var price;
-    if (item.offer.price <= 10000) {
+    if (item.offer.price <= OFFER_START_PRICE.low) {
       price = 'low';
-    } else if (item.offer.price > 10000 && item.offer.price < 50000) {
+    } else if (item.offer.price > OFFER_START_PRICE.low && item.offer.price < OFFER_START_PRICE.high) {
       price = 'middle';
-    } else if (item.offer.price >= 50000) {
+    } else if (item.offer.price >= OFFER_START_PRICE.high) {
       price = 'high';
     }
     return price === housePrice.value || housePrice.value === 'any';

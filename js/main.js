@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var ESCAPE = 'Escape';
   var mainBlock = document.querySelector('main');
 
   var closeMessages = function (message) {
@@ -10,7 +11,7 @@
 
   var onDocumentKeyDown = function (message) {
     return function (evt) {
-      if (evt.key === 'Escape') {
+      if (evt.key === ESCAPE) {
         closeMessages(message);
       }
     };
@@ -27,6 +28,7 @@
   window.main = {
     onDocumentKeyDown: onDocumentKeyDown,
     onDocumentMouseDown: onDocumentMouseDown,
-    element: mainBlock
+    element: mainBlock,
+    ESCAPE: ESCAPE
   };
 })();
