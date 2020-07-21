@@ -10,6 +10,12 @@
     LOW: 10000,
     HIGH: 50000
   };
+  var PriceRange = {
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
+  };
+
   var filterForm = document.querySelector('.map__filters');
   var filterParts = filterForm.querySelectorAll('select, input');
   var houseType = filterForm.querySelector('#housing-type');
@@ -58,11 +64,11 @@
   var filterPrice = function (item) {
     var price;
     if (item.offer.price <= OfferStartPrice.LOW) {
-      price = 'low';
+      price = PriceRange.LOW;
     } else if (item.offer.price > OfferStartPrice.LOW && item.offer.price < OfferStartPrice.HIGH) {
-      price = 'middle';
+      price = PriceRange.MIDDLE;
     } else if (item.offer.price >= OfferStartPrice.HIGH) {
-      price = 'high';
+      price = PriceRange.HIGH;
     }
     return price === housePrice.value || housePrice.value === ANY_VALUE;
   };

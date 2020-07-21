@@ -6,6 +6,13 @@
     MIN: 0,
     MAX: 100
   };
+  var RoomTypes = {
+    BUNGALO: 'bungalo',
+    FLAT: 'flat',
+    HOUSE: 'house',
+    PALACE: 'palace'
+  };
+
   var RoomPrices = {
     BUNGALO: 0,
     FLAT: 1000,
@@ -87,19 +94,19 @@
   // Функция валидации количества комнат и минимальной цены
   var validateRoomTypeAndMinPrice = function () {
     switch (roomType.value) {
-      case 'palace':
+      case RoomTypes.PALACE:
         roomPrice.min = RoomPrices.PALACE;
         roomPrice.placeholder = RoomPrices.PALACE;
         break;
-      case 'house':
+      case RoomTypes.HOUSE:
         roomPrice.min = RoomPrices.HOUSE;
         roomPrice.placeholder = RoomPrices.HOUSE;
         break;
-      case 'flat':
+      case RoomTypes.FLAT:
         roomPrice.min = RoomPrices.FLAT;
         roomPrice.placeholder = RoomPrices.FLAT;
         break;
-      case 'bungalo':
+      case RoomTypes.BUNGALO:
         roomPrice.min = RoomPrices.BUNGALO;
         roomPrice.placeholder = RoomPrices.BUNGALO;
         break;

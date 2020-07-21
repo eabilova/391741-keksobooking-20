@@ -84,11 +84,11 @@
       if ((positionFullHeightPin <= DragLimit.Y.max && DragLimit.Y.min <= positionFullHeightPin) && (positionFullHeightPin >= DragLimit.Y.min && DragLimit.Y.max >= positionFullHeightPin)) {
         mainMapPin.style.top = (mainMapPin.offsetTop - changedPosition.y) + 'px';
       }
+      window.form.setAddress(mainMapPin.offsetLeft, mainMapPin.offsetTop + halfOfPinHeight + window.form.PIN_TAIL_HEIGHT);
     };
 
     var onMainPinMouseUp = function () {
       evt.preventDefault();
-      window.form.setAddress(mainMapPin.offsetLeft, mainMapPin.offsetTop + halfOfPinHeight + window.form.PIN_TAIL_HEIGHT);
 
       document.removeEventListener('mousemove', onMainPinMouseMove);
       document.removeEventListener('mouseup', onMainPinMouseUp);
