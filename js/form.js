@@ -2,6 +2,7 @@
 (function () {
   var PIN_TAIL_HEIGHT = 22;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
   var RoomGuestValues = {
     MIN: 0,
     MAX: 100
@@ -33,7 +34,6 @@
   var avatarPreview = formContainer.querySelector('.ad-form-header__preview img');
   var housePhotosUploadContainer = formContainer.querySelector('.ad-form__photo-container');
   var housePhotoSelector = formContainer.querySelector('.ad-form__upload input[type=file]');
-  var housePhotoPreview = formContainer.querySelector('.ad-form__photo');
   var resetButton = formContainer.querySelector('.ad-form__reset');
   var pinCenterPositionX = window.mainPin.element.offsetLeft;
   var pinCenterPositionY = window.mainPin.element.offsetTop;
@@ -127,6 +127,7 @@
   };
 
   var uploadPhoto = function (evt) {
+    var housePhotoPreview = formContainer.querySelector('.ad-form__photo');
     var file;
     var currentSelector = housePhotoSelector;
     if (evt.currentTarget === avatarSelector) {
@@ -161,6 +162,20 @@
 
       reader.readAsDataURL(file);
     }
+  };
+
+  var resetAvatar = function () {
+    avatarPreview.src = DEFAULT_AVATAR_SRC;
+  };
+
+  var resetHomePhotoBlock = function () {
+    var allHomePhotos = Array.from(formContainer.querySelectorAll('.ad-form__photo'));
+    allHomePhotos.forEach(function (item) {
+      item.remove();
+    });
+    var photoBlock = document.createElement('div');
+    photoBlock.classList.add('ad-form__photo');
+    housePhotosUploadContainer.appendChild(photoBlock);
   };
 
   // Создание сообщения об удачной операции
@@ -212,6 +227,8 @@
   // Очистка страницы до дефолтного состояния
   var resetPage = function () {
     formContainer.reset();
+    resetAvatar();
+    resetHomePhotoBlock();
     window.filter.element.reset();
     deactivateFormElements();
     window.map.deactivate();
@@ -253,6 +270,8 @@
     evt.preventDefault();
     var formData = new FormData(formContainer);
     window.server.postInfo(showSuccessOnSend, showErrorOnSend, formData);
+    resetAvatar();
+    resetHomePhotoBlock();
   });
 
   avatarSelector.addEventListener('change', uploadPhoto);
