@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var PIN_TAIL_HEIGHT = 22;
+  var PIN_TAIL_HEIGHT = 15;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
   var RoomGuestValues = {
@@ -136,11 +136,13 @@
     } else {
       file = housePhotoSelector.files[0];
     }
-    var fileName = file.name.toLowerCase();
+    if (file) {
+      var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
+      });
+    }
 
     if (matches) {
       var reader = new FileReader();

@@ -1,7 +1,7 @@
 'use strict';
 (function () {
-  var PIN_HEIGHT = 70;
-  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = window.mainPin.element.offsetHeight;
+  var PIN_WIDTH = window.mainPin.element.offsetWidth;
 
   var pinTemplate = document.querySelector('#pin').content;
   var currentPin;

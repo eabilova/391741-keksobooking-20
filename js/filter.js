@@ -36,10 +36,16 @@
 
   // Получение отфильтрованной информации
   var getFilteredData = function () {
-    var filteredPins = window.map.getData().filter(function (item) {
-      return filterType(item) && filterRoomNumber(item) && filterGuestNumber(item) && filterFeatures(item) && filterPrice(item);
-    });
-    return filteredPins.slice(OfferLimit.MIN, OfferLimit.MAX);
+    var allOffers = window.map.getData();
+    var filteredPins = [];
+    for (var i = 0; i < allOffers.length; i++) {
+      if ((filterType(allOffers[i]) && filterRoomNumber(allOffers[i]) && filterGuestNumber(allOffers[i]) && filterFeatures(allOffers[i]) && filterPrice(allOffers[i])) && (filteredPins.length < OfferLimit.MAX)) {
+        filteredPins.push(allOffers[i]);
+      } else {
+        break;
+      }
+    }
+    return filteredPins;
   };
 
   var filterType = function (item) {
