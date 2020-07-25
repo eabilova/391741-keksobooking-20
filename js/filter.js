@@ -1,11 +1,8 @@
 'use strict';
 (function () {
   var ANY_VALUE = 'any';
+  var MAX_OFFER_LIMIT = 5;
 
-  var OfferLimit = {
-    MIN: 0,
-    MAX: 5
-  };
   var OfferStartPrice = {
     LOW: 10000,
     HIGH: 50000
@@ -39,7 +36,7 @@
     var allOffers = window.map.getData();
     var filteredPins = [];
     for (var i = 0; i < allOffers.length; i++) {
-      if (filteredPins.length < OfferLimit.MAX) {
+      if (filteredPins.length < MAX_OFFER_LIMIT) {
         if (filterType(allOffers[i]) && filterRoomNumber(allOffers[i]) && filterGuestNumber(allOffers[i]) && filterFeatures(allOffers[i]) && filterPrice(allOffers[i])) {
           filteredPins.push(allOffers[i]);
         }
